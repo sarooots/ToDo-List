@@ -1,14 +1,12 @@
 import React from 'react'
-import SayHello from "./components/SayHello";
+import ShowMembers from "./components/ShowMembers";
 import './App.css';
 
 function App() {
 
   return (
     <div className="App">
-      <SayHello
-        name={'gago'}
-      />
+        <ShowMembers/>
     </div>
   );
 }
