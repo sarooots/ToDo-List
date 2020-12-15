@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SayHello = props => (
-    <div>hello {props.name} !</div>
-)
+function SayHello(props) {
+    return <div>hello {props.name} !</div>
+}
 export default SayHello
