@@ -16,7 +16,7 @@ td, th{
 form {
     display: flex;
     width: 500px;
-    margin: 0 auto;
+    margin: 15vh auto 0;
     flex-direction: row;
     flex-wrap: wrap;
 }
