@@ -4,7 +4,7 @@ function Member(props) {
     return (
         <tr>
             <td>{props.name}</td>
-            <td>{props.born}</td>
+            <td>{props.bornDate}</td>
         </tr>
     )
 }
