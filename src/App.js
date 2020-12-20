@@ -1,15 +1,15 @@
 import React from 'react'
-import ShowMembers from "./components/ShowMembers";
-import Counter from "./components/Counter";
+import Product from './components/Product/Product'
 import './App.css';
 
 function App() {
 
   return (
     <div className="App">
-        {/*<ShowMembers/>*/}
-        <Counter
-            defaultValue={0}
+        <Product
+            name='LACALUT white'
+            price='1600 դրամ'
+            desc='Ատամները սպիտակեցնող ատամի մածուկ'
         />
     </div>
   );
