@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import Price from './Price'
 import Name from './Name'
-import Description from './Description'
+import Desc from './Desc'
+import './Product.module.css'
 
 class Product extends Component{
     constructor(props) {
@@ -13,10 +14,24 @@ class Product extends Component{
         const price = this.props.price;
         return (
             <div>
-                {name}
-                <Name name={name}/>
-                <Description desc={desc}/>
-                <Price price={price}/>
+                <table>
+                    <tr>
+                        <th>Product name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <Name name={name}/>
+                        </td>
+                        <td>
+                            <Desc desc={desc}/>
+                        </td>
+                        <td>
+                            <Price price={price}/>
+                        </td>
+                    </tr>
+                </table>
             </div>
         )
     }

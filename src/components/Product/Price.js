@@ -5,11 +5,7 @@ class Price extends Component{
     }
     render() {
         const price = this.props.price;
-        return (
-            <div>
-                <p>{price}</p>
-            </div>
-        )
+        return price
     }
 
 }
