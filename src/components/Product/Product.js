@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Price from './Price'
 import Name from './Name'
 import Desc from './Desc'
-import './Product.module.css'
+import classes from './Product.module.css'
 
 class Product extends Component{
     constructor(props) {
