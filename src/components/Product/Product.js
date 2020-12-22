@@ -9,9 +9,7 @@ class Product extends Component{
         super(props)
     }
     render() {
-        const name = this.props.name;
-        const desc = this.props.desc;
-        const price = this.props.price;
+        const {name, desc, price} = this.props;
         return (
             <div>
                 <table>
@@ -33,5 +31,4 @@ class Product extends Component{
 }
 
 const test = new Product();
-console.log(test.props)
 export default Product
