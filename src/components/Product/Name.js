@@ -5,7 +5,9 @@ class Name extends Component{
     }
     render() {
         const name = this.props.name;
-        return name
+        return (
+            <td>{name}</td>
+        )
     }
 }
 export default Name

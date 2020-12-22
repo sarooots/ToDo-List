@@ -5,7 +5,9 @@ class Desc extends Component{
     }
     render() {
         const desc = this.props.desc;
-        return desc
+        return (
+            <td>{desc}</td>
+        )
     }
 
 }

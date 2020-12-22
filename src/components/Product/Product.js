@@ -21,15 +21,9 @@ class Product extends Component{
                         <th>Price</th>
                     </tr>
                     <tr>
-                        <td>
-                            <Name name={name}/>
-                        </td>
-                        <td>
-                            <Desc desc={desc}/>
-                        </td>
-                        <td>
-                            <Price price={price}/>
-                        </td>
+                        <Name name={name}/>
+                        <Desc desc={desc}/>
+                        <Price price={price}/>
                     </tr>
                 </table>
             </div>
