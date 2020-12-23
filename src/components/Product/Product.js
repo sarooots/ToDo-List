@@ -7,9 +7,22 @@ import classes from './Product.module.css'
 class Product extends Component{
     constructor(props) {
         super(props)
+        this.state = {
+            price: props.price
+        }
+
     }
     render() {
-        const {name, desc, price} = this.props;
+        const {name, desc} = this.props;
+        const {price} = this.state;
+        const changeCurrency = (gag) => {
+            if (gag === this.props.price) {
+                this.setState({price: '$3'})
+            } else {
+                this.setState({price: this.props.price})
+            }
+        }
+
         return (
             <div>
                 <table>
@@ -24,11 +37,11 @@ class Product extends Component{
                         <Price price={price}/>
                     </tr>
                 </table>
+                <button
+                    onClick={() => changeCurrency(this.state.price)}
+                >change currency</button>
             </div>
         )
     }
-
 }
-
-const test = new Product();
 export default Product
