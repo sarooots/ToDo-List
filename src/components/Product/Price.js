@@ -1,12 +1,11 @@
 import React, {Component} from 'react'
+import classes from "./Product.module.sass";
 class Price extends Component{
-    constructor(props) {
-        super(props)
-    }
     render() {
         const price = this.props.price;
+        const currency = this.props.currency;
         return (
-            <td>{price}</td>
+            <td className={classes.price}>{`${price} ${currency}`}</td>
         )
     }
 

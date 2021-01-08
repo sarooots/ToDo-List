@@ -1,12 +1,10 @@
 import React, {Component} from 'react'
+import classes from "./Product.module.sass";
 class Desc extends Component{
-    constructor(props) {
-        super(props)
-    }
     render() {
         const desc = this.props.desc;
         return (
-            <td>{desc}</td>
+            <td className={classes.desc}>{desc}</td>
         )
     }
 
