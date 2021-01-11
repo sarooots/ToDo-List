@@ -2,27 +2,23 @@ import React, {Component} from 'react'
 import moment from "moment"
 import {Button, Col, Form} from "react-bootstrap"
 import classes from "./ToDoList.module.sass"
+import idGenerator from "../../helpers/idGenerator";
 
 class InputTask extends Component {
     state = {
-        task: {
             name: '',
             desc: '',
             startDate: moment().format('YYYY-MM-DDThh:mm'),
             endDate: moment().add(24, 'h').format('YYYY-MM-DDThh:mm'),
             createdDate: moment().format('YYYY-MM-DDThh:mm'),
-            status: 'in progress',
+            status: this.props.status[1],
             assigned: [],
             steps: [],
-            editMode: false
-        }
+            editMode: false,
+            _id: idGenerator()
     }
     changeTask = (event, property ) => {
-        const {task} = this.state
-        const tempTask = task
-        tempTask[property] = event.target.value
-        this.setState({task: tempTask})
-        console.log(task)
+        this.setState({[property]: event.target.value})
     }
     handleInputKeyPress = event => {
         if (event.key === 'Enter') {
@@ -32,7 +28,6 @@ class InputTask extends Component {
     }
 
     render() {
-        const {task} = this.state
         const {addTask} = this.props
 
 
@@ -41,7 +36,7 @@ class InputTask extends Component {
                 <br/>
                 <Form.Control type="text"
                               placeholder="Add new task"
-                              value={task.name}
+                              value={this.state.name}
                               className={classes.input}
                               onKeyPress={(event) => this.handleInputKeyPress(event)}
                               onChange={(event) => {this.changeTask(event, 'name')}}
@@ -49,7 +44,7 @@ class InputTask extends Component {
                 <br/>
                 <Form.Control as="textarea"
                               placeholder="Write task description"
-                              value={task.desc}
+                              value={this.state.desc}
                               onChange={(event) => {this.changeTask(event, 'desc')}}
                 />
                 <br/>
@@ -59,7 +54,7 @@ class InputTask extends Component {
                         <Form.Control type="datetime-local"
                                       placeholder="Write task description"
                                       min={moment().format('YYYY-MM-DDThh:mm').toString()}
-                                      value={task.startDate}
+                                      value={this.state.startDate}
                                       onKeyPress={(event) => this.handleInputKeyPress(event)}
                                       onChange={(event) => {this.changeTask(event, 'startDate')}}
                         />
@@ -68,8 +63,8 @@ class InputTask extends Component {
                         <Form.Label>End date</Form.Label>
                         <Form.Control type="datetime-local"
                                       placeholder="Write task description"
-                                      min={task.startDate}
-                                      value={task.endDate}
+                                      min={this.state.startDate}
+                                      value={this.state.endDate}
                                       onKeyPress={(event) => this.handleInputKeyPress(event)}
                                       onChange={(event) => {this.changeTask(event, 'endDate')}}
                         />
@@ -77,7 +72,9 @@ class InputTask extends Component {
                 </Form.Row>
                 <Button
                     variant="success"
-                    onClick={()=> {addTask(task)}
+                    onClick={()=> {
+                        const newTask = {...this.state}
+                        addTask(newTask)}
                     }
                 >
                     add task</Button>
