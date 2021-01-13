@@ -10,26 +10,42 @@ class ToDo extends Component {
     state = {
         tasks: [],
         status: ['Not started', 'In progress', 'completed'],
-        selectedTasks: []
+        selectedTasks: new Set()
     }
     selectTask = taskId => {
-        const {selectedTasks} = this.state
-        if (!selectedTasks.includes(taskId)) {
-            this.setState({selectedTasks: [...selectedTasks, taskId]})
+        const selectedTasks = new Set(this.state.selectedTasks)
+        if (selectedTasks.has(taskId)) {
+            selectedTasks.delete(taskId)
         } else {
-            this.setState({selectedTasks: selectedTasks.filter((selectedId) => selectedId !== taskId)})
+            selectedTasks.add(taskId)
         }
+        this.setState({selectedTasks})
     }
     removeTask = taskId => {
         const {tasks} = this.state
         this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
     }
+    removeSelected = () => {
+        const {selectedTasks, tasks} = this.state
+
+        const newTask = tasks.filter((task)=>{
+            if (selectedTasks.has(task._id)) {
+                return false
+            } else {
+                return true
+            }
+        })
+        this.setState({
+            tasks: newTask,
+            selectedTasks: new Set()
+        })
+    }
     completeTask = taskId => {
         const {tasks, status} = this.state
-        const allTasks = tasks.filter((task) => task._id === taskId)
-        const completedTask = tasks.filter((task) => task._id !== taskId)
-        console.log(completedTask)
-        this.setState({tasks: tasks})
+        const completedTask = tasks.filter((task) => task._id === taskId)
+        const allTasks = tasks.filter((task) => task._id !== taskId)
+        completedTask[0].status = status[2]
+        this.setState({tasks: [...allTasks, completedTask]})
     }
     addTask = task => {
         const {tasks} = this.state
@@ -46,18 +62,21 @@ class ToDo extends Component {
         const {tasks, selectedTasks} = this.state
         console.log(selectedTasks)
         return (
-            <Container fluid className={classes.ToDoList}>
-                <Row className={classes.addTask}>
-                    <Col>
+            <Container  fluid className={classes.toDoList}>
+                <Row  className={`${classes.addTask} justify-content-md-center`}>
+                    <Col lg={6}>
                         <InputTask
                             addTask={this.addTask}
                             status={this.state.status}
+                            selectedTasks={selectedTasks}
+
                         />
                     </Col>
                 </Row>
                 <br/>
                 <Row className={classes.tasks}>
                     <DeleteSelected
+                        removeSelected={this.removeSelected}
                         selectedTasks={selectedTasks}
                     />
                 </Row>
@@ -68,6 +87,7 @@ class ToDo extends Component {
                         removeTask={this.removeTask}
                         completeTask={this.completeTask}
                         selectTask={this.selectTask}
+                        selectedTasks={selectedTasks}
                     />
                 </Row>
             </Container>

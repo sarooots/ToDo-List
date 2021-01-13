@@ -8,12 +8,8 @@ class InputTask extends Component {
     state = {
             name: '',
             desc: '',
-            startDate: moment().format('YYYY-MM-DDThh:mm'),
-            endDate: moment().add(24, 'h').format('YYYY-MM-DDThh:mm'),
-            createdDate: moment().format('YYYY-MM-DDThh:mm'),
+            deadline: moment().add(24, 'h').format('YYYY-MM-DDThh:mm'),
             status: this.props.status[1],
-            assigned: [],
-            steps: [],
             editMode: false,
             _id: idGenerator()
     }
@@ -28,54 +24,49 @@ class InputTask extends Component {
     }
 
     render() {
-        const {addTask} = this.props
+        const {addTask, selectedTasks} = this.props
 
 
         return (
             <Form onSubmit={(event)=> event.preventDefault()}>
-                <br/>
-                <Form.Control type="text"
-                              placeholder="Add new task"
-                              value={this.state.name}
-                              className={classes.input}
-                              onKeyPress={(event) => this.handleInputKeyPress(event)}
-                              onChange={(event) => {this.changeTask(event, 'name')}}
-                />
-                <br/>
+                <Form.Row >
+                    <Form.Group as={Col} controlId='endData'>
+                        <Form.Label>Task Name</Form.Label>
+                        <Form.Control type="text"
+                                      placeholder="Add new task"
+                                      value={this.state.name}
+                                      className={classes.input}
+                                      onKeyPress={(event) => this.handleInputKeyPress(event)}
+                                      onChange={(event) => {this.changeTask(event, 'name')}}
+                                      disabled={!!selectedTasks.size}
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} controlId='endData'>
+                        <Form.Label>Deadline</Form.Label>
+                        <Form.Control type="datetime-local"
+                                      placeholder="Write task description"
+                                      min={this.state.deadline}
+                                      value={this.state.deadline}
+                                      onKeyPress={(event) => this.handleInputKeyPress(event)}
+                                      onChange={(event) => {this.changeTask(event, 'endDate')}}
+                                      disabled={!!selectedTasks.size}
+                        />
+                    </Form.Group>
+
+                </Form.Row>
                 <Form.Control as="textarea"
                               placeholder="Write task description"
                               value={this.state.desc}
                               onChange={(event) => {this.changeTask(event, 'desc')}}
+                              disabled={!!selectedTasks.size}
                 />
-                <br/>
-                <Form.Row >
-                    <Form.Group as={Col} controlId='startData'>
-                        <Form.Label>Start date</Form.Label>
-                        <Form.Control type="datetime-local"
-                                      placeholder="Write task description"
-                                      min={moment().format('YYYY-MM-DDThh:mm').toString()}
-                                      value={this.state.startDate}
-                                      onKeyPress={(event) => this.handleInputKeyPress(event)}
-                                      onChange={(event) => {this.changeTask(event, 'startDate')}}
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} controlId='endData'>
-                        <Form.Label>End date</Form.Label>
-                        <Form.Control type="datetime-local"
-                                      placeholder="Write task description"
-                                      min={this.state.startDate}
-                                      value={this.state.endDate}
-                                      onKeyPress={(event) => this.handleInputKeyPress(event)}
-                                      onChange={(event) => {this.changeTask(event, 'endDate')}}
-                        />
-                    </Form.Group>
-                </Form.Row>
                 <Button
                     variant="success"
                     onClick={()=> {
                         const newTask = {...this.state}
                         addTask(newTask)}
                     }
+                    disabled={!!selectedTasks.size}
                 >
                     add task</Button>
             </Form>
