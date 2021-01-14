@@ -73,14 +73,12 @@ class ToDo extends Component {
                         />
                     </Col>
                 </Row>
-                <br/>
                 <Row className={classes.tasks}>
                     <DeleteSelected
                         removeSelected={this.removeSelected}
                         selectedTasks={selectedTasks}
                     />
                 </Row>
-                <br/>
                 <Row className={classes.tasks}>
                     <Task
                         tasks={tasks}
