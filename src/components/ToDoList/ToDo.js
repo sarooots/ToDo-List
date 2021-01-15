@@ -4,7 +4,6 @@ import InputTask from './InputTask'
 import classes from './ToDoList.module.sass'
 import {Container, Col, Row } from 'react-bootstrap'
 import idGenerator from "../../helpers/idGenerator"
-import DeleteSelected from "./DeleteSelected"
 
 class ToDo extends Component {
     state = {
@@ -40,6 +39,25 @@ class ToDo extends Component {
             selectedTasks: new Set()
         })
     }
+    selectAllTasks = () => {
+        const {tasks, selectedTasks} = this.state
+        console.log(tasks.length)
+        console.log(selectedTasks.size)
+        if (selectedTasks.size < tasks.length) {
+            tasks.map((task)=>{
+                return selectedTasks.add(task._id)
+            })
+        } else {
+            selectedTasks.clear()
+        }
+        this.setState({selectedTasks: selectedTasks})
+    }
+    deselect = () => {
+        const {selectedTasks} = this.state
+        selectedTasks.clear()
+        this.setState({selectedTasks: selectedTasks})
+
+    }
     completeTask = taskId => {
         const {tasks, status} = this.state
         const completedTask = tasks.filter((task) => task._id === taskId)
@@ -60,24 +78,21 @@ class ToDo extends Component {
 
     render() {
         const {tasks, selectedTasks} = this.state
-        console.log(selectedTasks)
         return (
             <Container  fluid className={classes.toDoList}>
                 <Row  className={`${classes.addTask} justify-content-md-center`}>
                     <Col lg={6}>
                         <InputTask
                             addTask={this.addTask}
+                            tasks={this.state.tasks}
                             status={this.state.status}
                             selectedTasks={selectedTasks}
+                            removeSelected={this.removeSelected}
+                            selectAllTasks={this.selectAllTasks}
+                            deselect={this.deselect}
 
                         />
                     </Col>
-                </Row>
-                <Row className={classes.tasks}>
-                    <DeleteSelected
-                        removeSelected={this.removeSelected}
-                        selectedTasks={selectedTasks}
-                    />
                 </Row>
                 <Row className={classes.tasks}>
                     <Task
