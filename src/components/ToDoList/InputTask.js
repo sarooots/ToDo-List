@@ -2,21 +2,33 @@ import React, {Component} from 'react'
 import moment from "moment"
 import {Button, Col, Form} from "react-bootstrap"
 import classes from "./ToDoList.module.sass"
-import idGenerator from "../../helpers/idGenerator";
+import idGenerator from "../../helpers/idGenerator"
 import DeleteSelected from "./DeleteSelected"
+import PropTypes from "prop-types"
 
 class InputTask extends Component {
+    static propTypes = {
+        addTask: PropTypes.func.isRequired,
+        tasks: PropTypes.array.isRequired,
+        status: PropTypes.array.isRequired,
+        selectedTasks: PropTypes.object.isRequired,
+        removeSelected: PropTypes.func.isRequired,
+        selectAllTasks: PropTypes.func.isRequired,
+        deselect: PropTypes.func.isRequired,
+    }
+
     state = {
         name: '',
         desc: '',
-        deadline: moment().add(24, 'h'),
-        deadlin:  Date.now(),
+        deadline: new Date().getTime() + 1440 * 60 * 1000,
         status: this.props.status[1],
         editMode: false,
         _id: idGenerator()
     }
     changeTask = (event, property ) => {
-        this.setState({[property]: event.target.value})
+         new Date(event.target.value).getTime()
+        const  value = property === 'deadline'? new Date(event.target.value).getTime(): event.target.value
+        this.setState({[property]: value})
     }
     handleInputKeyPress = event => {
         if (event.key === 'Enter') {
@@ -42,14 +54,15 @@ class InputTask extends Component {
                                       disabled={!!selectedTasks.size}
                         />
                     </Form.Group>
-                    <Form.Group as={Col} controlId='endData'>
+                    <Form.Group as={Col} controlId='deadline'>
                         <Form.Label>Deadline</Form.Label>
                         <Form.Control type="datetime-local"
                                       placeholder="Write task description"
-                                      min={this.state.deadline.format('YYYY-MM-DDThh:mm')}
-                                      value={this.state.deadline.format('YYYY-MM-DDThh:mm')}
+                                      format='timestamp'
+                                      min={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
+                                      value={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
                                       onKeyPress={(event) => this.handleInputKeyPress(event)}
-                                      onChange={(event) => {this.changeTask(event, 'endDate')}}
+                                      onChange={(event) => {this.changeTask(event, 'deadline')}}
                                       disabled={!!selectedTasks.size}
                         />
                     </Form.Group>
@@ -71,11 +84,11 @@ class InputTask extends Component {
                         <input type="checkbox"
                                     disabled={!tasks.length}
                                     onChange={selectAllTasks}
-                                    checked={selectedTasks.size === tasks.length && tasks.length > 1 }
+                                    checked={selectedTasks.size === tasks.length && tasks.length > 0 }
 
                         />
                             <span className={classes.checkmark}></span>
-
+                            <span >selected {`${selectedTasks.size} task${selectedTasks.size>1?'s': ''}`} </span>
                         </label>
                     </Col>
                     <Col xs="auto" >
