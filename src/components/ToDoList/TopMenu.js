@@ -10,7 +10,6 @@ class TopMenu extends Component {
     static propTypes = {
         addTask: PropTypes.func.isRequired,
         tasks: PropTypes.array.isRequired,
-        status: PropTypes.array.isRequired,
         selectedTasks: PropTypes.object.isRequired,
         removeSelected: PropTypes.func.isRequired,
         selectAllTasks: PropTypes.func.isRequired,
@@ -21,7 +20,6 @@ class TopMenu extends Component {
         name: '',
         desc: '',
         deadline: new Date().getTime() + 1440 * 60 * 1000,
-        status: this.props.status[1],
         editMode: false,
         _id: idGenerator()
     }
