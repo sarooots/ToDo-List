@@ -1,18 +1,13 @@
 import React from 'react'
-import Product from './components/Product/Product'
-import './App.css';
-
+import ToDo from './components/ToDoList/ToDo'
+import './App.scss'
 function App() {
+    return (
 
-  return (
-    <div className="App">
-        <Product
-            name='LACALUT white'
-            price='1600 դրամ'
-            desc='Ատամները սպիտակեցնող ատամի մածուկ'
-        />
-    </div>
-  );
+        <div className="App">
+            <ToDo/>
+        </div>
+    );
 }
 
 export default App;
