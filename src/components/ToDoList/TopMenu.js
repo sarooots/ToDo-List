@@ -88,7 +88,6 @@ class TopMenu extends Component {
 
                         />
                             <span className={classes.checkmark}></span>
-                            <span >selected {`${selectedTasks.size} task${selectedTasks.size>1?'s': ''}`} </span>
                         </label>
                     </Col>
                     <Col xs="auto" >

@@ -41,8 +41,6 @@ class ToDo extends Component {
     }
     selectAllTasks = () => {
         const {tasks, selectedTasks} = this.state
-        console.log(tasks.length)
-        console.log(selectedTasks.size)
         if (selectedTasks.size < tasks.length) {
             tasks.map((task)=>{
                 return selectedTasks.add(task._id)
@@ -68,7 +66,6 @@ class ToDo extends Component {
     addTask = task => {
         const {tasks} = this.state
         task._id = idGenerator()
-        console.log(task)
         if (task.name.trim() !==  '' & '' !== task.desc.trim() ) {
             const newTask = task
             this.setState({tasks: [...tasks, newTask]})
