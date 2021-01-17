@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Task from './Task'
-import InputTask from './InputTask'
+import TopMenu from './TopMenu'
 import classes from './ToDoList.module.sass'
 import {Container, Col, Row } from 'react-bootstrap'
 import idGenerator from "../../helpers/idGenerator"
@@ -82,7 +82,7 @@ class ToDo extends Component {
             <Container  fluid className={classes.toDoList}>
                 <Row  className={`${classes.addTask} justify-content-md-center`}>
                     <Col lg={6}>
-                        <InputTask
+                        <TopMenu
                             addTask={this.addTask}
                             tasks={this.state.tasks}
                             status={this.state.status}

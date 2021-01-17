@@ -6,7 +6,7 @@ import idGenerator from "../../helpers/idGenerator"
 import DeleteSelected from "./DeleteSelected"
 import PropTypes from "prop-types"
 
-class InputTask extends Component {
+class TopMenu extends Component {
     static propTypes = {
         addTask: PropTypes.func.isRequired,
         tasks: PropTypes.array.isRequired,
@@ -126,4 +126,4 @@ class InputTask extends Component {
     }
 }
 
-export default InputTask
+export default TopMenu
