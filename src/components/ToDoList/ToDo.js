@@ -57,13 +57,6 @@ class ToDo extends Component {
         this.setState({selectedTasks: selectedTasks})
 
     }
-    completeTask = taskId => {
-        const {tasks, status} = this.state
-        const completedTask = tasks.filter((task) => task._id === taskId)
-        const allTasks = tasks.filter((task) => task._id !== taskId)
-        completedTask[0].status = status[2]
-        this.setState({tasks: [...allTasks, completedTask]})
-    }
     addTask = task => {
         const {tasks} = this.state
         task._id = idGenerator()
@@ -79,21 +72,19 @@ class ToDo extends Component {
         const removeTask = this.removeTask
         const completeTask = this.completeTask
         return (
-            <Container  fluid className={classes.toDoList}>
-                <Row  className={`${classes.addTask} justify-content-md-center`}>
-                    <Col lg={6}>
-                        <TopMenu
-                            addTask={this.addTask}
-                            tasks={this.state.tasks}
-                            status={this.state.status}
-                            selectedTasks={selectedTasks}
-                            removeSelected={this.removeSelected}
-                            selectAllTasks={this.selectAllTasks}
-                            deselect={this.deselect}
+            <>
+                <TopMenu
+                    addTask={this.addTask}
+                    tasks={this.state.tasks}
+                    status={this.state.status}
+                    selectedTasks={selectedTasks}
+                    removeSelected={this.removeSelected}
+                    selectAllTasks={this.selectAllTasks}
+                    deselect={this.deselect}
 
-                        />
-                    </Col>
-                </Row>
+                />
+
+                <Container  fluid className={classes.toDoList}>
                 <Row className={classes.tasks}>
                     {
                         tasks.map((task,index)=>{
@@ -150,6 +141,7 @@ class ToDo extends Component {
                     }
                 </Row>
             </Container>
+            </>
         )
     }
 
