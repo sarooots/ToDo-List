@@ -22,7 +22,7 @@ class TopMenu extends Component {
                 <Navbar.Brand href="#home">To Do Lost</Navbar.Brand>
                 <Container>
                     <Row lg={6}>
-                     <Col lg='auto'>
+                     <Col>
                         <label className={classes.select}>
                         <input type="checkbox"
                                     disabled={!tasks.length}
@@ -47,11 +47,13 @@ class TopMenu extends Component {
                             selectedTasks={selectedTasks}
                         />
                         </Col>
+                        <Col>
                         <TaskEditor
                             addTask={addTask}
                             selectedTasks={selectedTasks}
                             tasks={tasks}
                         />
+                        </Col>
                     </Row>
                 </Container>
             </Navbar>
