@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import TopMenu from './TopMenu'
-import classes from './ToDoList.module.sass'
+import Header from './Header'
+import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCheck, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
 import {Container, Col, Row, Button, Card, ButtonGroup } from 'react-bootstrap'
@@ -60,7 +60,7 @@ class ToDo extends Component {
     addTask = task => {
         const {tasks} = this.state
         task._id = idGenerator()
-        if (task.name.trim() !==  '' & '' !== task.desc.trim() ) {
+        if (task.name.trim() !==  '') {
             const newTask = task
             this.setState({tasks: [...tasks, newTask]})
         }
@@ -73,7 +73,7 @@ class ToDo extends Component {
         const completeTask = this.completeTask
         return (
             <>
-                <TopMenu
+                <Header
                     addTask={this.addTask}
                     tasks={this.state.tasks}
                     status={this.state.status}
@@ -98,7 +98,7 @@ class ToDo extends Component {
                                     <Card className={`${classes.task} ${selectedTasks.has(task._id)? classes.selected: ''}`}>
                                         <label  className={classes.select}>
                                             <input type="checkbox"
-                                                   className={classes.select}
+                                                   className={`${classes.select} rounded-0`}
                                                    onChange={()=> selectTask(task._id)}
                                                    checked={selectedTasks.has(task._id)}
                                             />

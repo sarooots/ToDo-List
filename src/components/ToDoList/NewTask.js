@@ -3,8 +3,9 @@ import {Button, Col, Form, Modal} from 'react-bootstrap'
 import PropTypes from "prop-types"
 import moment from "moment";
 import idGenerator from "../../helpers/idGenerator"
+import classes from './NewTask.sass'
 
-class TaskEditor extends Component {
+class NewTask extends Component {
     static propTypes = {
         addTask: PropTypes.func.isRequired,
         tasks: PropTypes.array.isRequired,
@@ -26,12 +27,12 @@ class TaskEditor extends Component {
     handleShow = () => this.setState({show: true})
     render() {
         const {show} = this.state
-        const {selectedTasks, addTask} = this.props
+        const {selectedTasks, addTask, className} = this.props
 
         return (
             <>
-                <Button variant="outline-primary" onClick={this.handleShow}>
-                    Add task
+                <Button variant="success" onClick={this.handleShow} className={`${className} text-nowrap`} disabled={!!selectedTasks.size}>
+                    new task
                 </Button>
 
                 <Modal
@@ -39,11 +40,12 @@ class TaskEditor extends Component {
                     onHide={() => this.setState({show: false})}
                     backdrop="static"
                     keyboard={false}
+                    class='rounded-0'
                     size="lg"
                     aria-labelledby="contained-modal-title-vcenter"
                     centered
                 >
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton >
                         <Modal.Title>Modal title</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -55,7 +57,7 @@ class TaskEditor extends Component {
                                                   placeholder="Add new task"
                                                   value={this.state.name}
                                                   onChange={(event) => {this.changeTask(event, 'name')}}
-                                                  disabled={!!selectedTasks.size}
+
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId='deadline'>
@@ -105,4 +107,4 @@ class TaskEditor extends Component {
     }
 }
 
-export default TaskEditor
+export default NewTask
