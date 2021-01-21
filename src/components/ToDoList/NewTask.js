@@ -3,7 +3,7 @@ import {Button, Col, Form, Modal} from 'react-bootstrap'
 import PropTypes from "prop-types"
 import moment from "moment";
 import idGenerator from "../../helpers/idGenerator"
-import classes from './NewTask.sass'
+// import classes from './NewTask.sass'
 
 class NewTask extends Component {
     static propTypes = {
@@ -15,7 +15,6 @@ class NewTask extends Component {
         name: '',
         desc: '',
         deadline: new Date().getTime() + 1440 * 60 * 1000,
-        editMode: false,
         _id: idGenerator(),
         show: false
     }
@@ -40,7 +39,6 @@ class NewTask extends Component {
                     onHide={() => this.setState({show: false})}
                     backdrop="static"
                     keyboard={false}
-                    class='rounded-0'
                     size="lg"
                     aria-labelledby="contained-modal-title-vcenter"
                     centered

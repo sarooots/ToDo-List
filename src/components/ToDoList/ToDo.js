@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import Header from './Header'
+import Header from './Header/Header'
 import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faCheck, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
-import {Container, Col, Row, Button, Card, ButtonGroup } from 'react-bootstrap'
+import {Container, Col, Row, Button, Card, ButtonGroup, Modal, Form} from 'react-bootstrap'
 import idGenerator from "../../helpers/idGenerator"
 import moment from "moment"
 
@@ -11,7 +11,8 @@ import moment from "moment"
 class ToDo extends Component {
     state = {
         tasks: [],
-        selectedTasks: new Set()
+        selectedTasks: new Set(),
+        editMode: false
     }
     selectTask = taskId => {
         const selectedTasks = new Set(this.state.selectedTasks)
@@ -66,13 +67,23 @@ class ToDo extends Component {
         }
     }
 
+    editTask = (id) => {
+        const {editMode, tasks} = this.state
+        const tempList = tasks
+        tempList.find()
+        console.log('edit works')
+        this.setState({editMode: !editMode})
+        return ''
+    }
+
     render() {
-        const {tasks, selectedTasks} = this.state
+        const {tasks, selectedTasks, editMode} = this.state
         const selectTask = this.selectTask
         const removeTask = this.removeTask
-        const completeTask = this.completeTask
+        const editTask = this.editTask
         return (
             <>
+                {/*Here goes logo, 'new task' 'select/deselect' and 'delete' buttons*/}
                 <Header
                     addTask={this.addTask}
                     tasks={this.state.tasks}
@@ -83,6 +94,72 @@ class ToDo extends Component {
                     deselect={this.deselect}
 
                 />
+                {/*the following code is for the task editor*/}
+                <Modal
+                    show={editMode}
+                    onHide={() => this.setState({editMode: false})}
+                    backdrop="static"
+                    keyboard={false}
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                >
+                    <Modal.Header closeButton >
+                        <Modal.Title>Editor</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form onSubmit={(event)=> event.preventDefault()}>
+                            <Form.Row >
+                                <Form.Group as={Col} controlId='taskName'>
+                                    <Form.Label>Task Name</Form.Label>
+                                    <Form.Control type="text"
+                                                  placeholder="Add new task"
+                                                  value={this.state.name}
+                                                  onChange={(event) => {this.changeTask(event, 'name')}}
+
+                                    />
+                                </Form.Group>
+                                <Form.Group as={Col} controlId='deadline'>
+                                    <Form.Label>Deadline</Form.Label>
+                                    <Form.Control type="datetime-local"
+                                                  placeholder="Write task description"
+                                                  format='timestamp'
+                                                  min={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
+                                                  value={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
+                                                  onChange={(event) => {this.changeTask(event, 'deadline')}}
+                                                  disabled={!!selectedTasks.size}
+                                    />
+                                </Form.Group>
+
+                            </Form.Row>
+                            <Form.Row >
+                                <Form.Group as={Col} controlId='taskDesc'>
+                                    <Form.Control as="textarea"
+                                                  placeholder="Write task description"
+                                                  value={this.state.desc}
+                                                  onChange={(event) => {this.changeTask(event, 'desc')}}
+                                                  disabled={!!selectedTasks.size}
+                                    />
+                                </Form.Group>
+                            </Form.Row>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary"
+                                onClick={() => {
+                                    this.setState({show: false})
+                                    const newTask = {...this.state}
+                                    delete newTask.show
+                                    this.setState({name: '', desc: ''})
+                                }
+                                }
+                                disabled={!!selectedTasks.size}
+                        >
+                            Add
+                        </Button>
+                        <Button variant="danger">Cancel</Button>
+                    </Modal.Footer>
+                </Modal>
 
                 <Container  fluid className={classes.toDoList}>
                 <Row className={classes.tasks}>
@@ -107,22 +184,21 @@ class ToDo extends Component {
 
                                         </label>
                                         <Card.Body className={classes.cBody}>
-                                            <Card.Title>{task.name}</Card.Title>
-                                            <Card.Subtitle className="mb-2 text-muted">{`Deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
-                                            <Card.Text>{task.desc}</Card.Text>
+                                            <Card.Title className={classes.title}>{task.name}</Card.Title>
+                                            <Card.Subtitle className={`mb-2 text-muted ${classes.deadline}`}>{`deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
+                                            <Card.Text className={`${classes.desc} ${task.desc ===''?classes.emptyDesc:''}`}>{task.desc === '' ? 'this task has no description': task.desc}</Card.Text>
                                             <ButtonGroup size="sm" className={classes.actions}>
                                                 <Button
                                                     disabled={!!selectedTasks.size}
                                                     variant='primary'
                                                     className={`${classes.removeTask} ${classes.action}`}
-                                                    onClick={()=> removeTask(index)}
+                                                    onClick={()=> editTask(task._id)}
                                                 > <FontAwesomeIcon icon={faEdit} />
                                                 </Button>
                                                 <Button
                                                     disabled={!!selectedTasks.size}
                                                     variant='success'
                                                     className={`${classes.removeTask} ${classes.action}`}
-                                                    onClick={()=> completeTask(task._id)}
                                                 > <FontAwesomeIcon icon={faCheck} />
                                                 </Button>
                                                 <Button

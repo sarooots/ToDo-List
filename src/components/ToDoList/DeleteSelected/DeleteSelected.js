@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Button, Modal} from 'react-bootstrap'
 import PropTypes from "prop-types"
-import classes from "./DeleteSelected.sass";
 
 class DeleteSelected extends Component {
     static propTypes = {
@@ -26,7 +25,7 @@ class DeleteSelected extends Component {
                 >
                     delete
                 </Button>
-                <Modal show={show} onHide={handleClose} >
+                <Modal show={show} onHide={handleClose} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Selected</Modal.Title>
                     </Modal.Header>

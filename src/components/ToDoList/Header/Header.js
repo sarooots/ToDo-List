@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {Button, Col, Container, Row, Navbar, Dropdown, ButtonGroup} from "react-bootstrap"
+import {Button, Dropdown, ButtonGroup} from "react-bootstrap"
 import classes from "./Header.module.sass"
-import DeleteSelected from "./DeleteSelected/DeleteSelected"
+import DeleteSelected from "../DeleteSelected/DeleteSelected"
 import PropTypes from "prop-types"
-import NewTask from "./NewTask"
+import NewTask from "../NewTask"
 
 class Header extends Component {
     static propTypes = {
