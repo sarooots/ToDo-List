@@ -121,7 +121,7 @@ class ToDo extends Component {
                                                     mode='edit'
                                                     selectedTasks={selectedTasks}
                                                     editTask={editTask}
-                                                    variant='primary'
+                                                    variant='dark'
                                                     id={task._id}
                                                     tasks={tasks}
                                                 />

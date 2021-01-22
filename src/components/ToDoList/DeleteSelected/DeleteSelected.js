@@ -21,7 +21,12 @@ class DeleteSelected extends Component {
                 <Button variant="danger"
                         className={className}
                         disabled={!selectedTasks.size}
-                        onClick={()=> {handleShow()}}
+                        onClick={()=> {if(selectedTasks.size === 1) {
+                            handleClose()
+                            removeSelected(selectedTasks)
+                            } else {
+                            handleShow()
+                        }}}
                 >
                     delete
                 </Button>
