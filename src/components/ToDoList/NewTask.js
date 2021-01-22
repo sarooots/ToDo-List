@@ -7,9 +7,10 @@ import idGenerator from "../../helpers/idGenerator"
 
 class NewTask extends Component {
     static propTypes = {
-        addTask: PropTypes.func.isRequired,
+        addTask: PropTypes.func,
         tasks: PropTypes.array.isRequired,
         selectedTasks: PropTypes.object.isRequired,
+        editTask: PropTypes.func,
     }
     state = {
         name: '',
@@ -18,20 +19,24 @@ class NewTask extends Component {
         _id: idGenerator(),
         show: false
     }
-    changeTask = (event, property ) => {
+
+    changeTaskProperty = (event, property ) => {
         new Date(event.target.value).getTime()
         const  value = property === 'deadline'? new Date(event.target.value).getTime(): event.target.value
         this.setState({[property]: value})
     }
-    handleShow = () => this.setState({show: true})
+    handleShow = () => {
+        this.setState({show: true})
+    }
+
     render() {
         const {show} = this.state
-        const {selectedTasks, addTask, className} = this.props
-
+        const {selectedTasks, addTask, className, mode, buttonName, variant} = this.props
+        // console.log(editMode)
         return (
             <>
-                <Button variant="success" onClick={this.handleShow} className={`${className} text-nowrap`} disabled={!!selectedTasks.size}>
-                    new task
+                <Button variant={variant} onClick={this.handleShow} className={`${className} text-nowrap`} disabled={!!selectedTasks.size}>
+                    {buttonName}
                 </Button>
 
                 <Modal
@@ -44,7 +49,7 @@ class NewTask extends Component {
                     centered
                 >
                     <Modal.Header closeButton >
-                        <Modal.Title>Modal title</Modal.Title>
+                        <Modal.Title>{mode==='edit'? 'Edit task': 'New task'}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={(event)=> event.preventDefault()}>
@@ -54,8 +59,7 @@ class NewTask extends Component {
                                     <Form.Control type="text"
                                                   placeholder="Add new task"
                                                   value={this.state.name}
-                                                  onChange={(event) => {this.changeTask(event, 'name')}}
-
+                                                  onChange={(event) => {this.changeTaskProperty(event, 'name')}}
                                     />
                                 </Form.Group>
                                 <Form.Group as={Col} controlId='deadline'>
@@ -65,7 +69,7 @@ class NewTask extends Component {
                                                   format='timestamp'
                                                   min={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
                                                   value={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
-                                                  onChange={(event) => {this.changeTask(event, 'deadline')}}
+                                                  onChange={(event) => {this.changeTaskProperty(event, 'deadline')}}
                                                   disabled={!!selectedTasks.size}
                                     />
                                 </Form.Group>
@@ -76,7 +80,7 @@ class NewTask extends Component {
                                     <Form.Control as="textarea"
                                                   placeholder="Write task description"
                                                   value={this.state.desc}
-                                                  onChange={(event) => {this.changeTask(event, 'desc')}}
+                                                  onChange={(event) => {this.changeTaskProperty(event, 'desc')}}
                                                   disabled={!!selectedTasks.size}
                                     />
                                 </Form.Group>
@@ -91,13 +95,16 @@ class NewTask extends Component {
                                     delete newTask.show
                                     addTask(newTask)
                                     this.setState({name: '', desc: ''})
-                                }
-                                }
+                                }}
                                 disabled={!!selectedTasks.size}
                         >
                             Add
                         </Button>
-                        <Button variant="danger">Cancel</Button>
+                        <Button variant="danger"
+                                onClick={() => {
+                                    this.setState({show: false})
+                                }}
+                        >Cancel</Button>
                     </Modal.Footer>
                 </Modal>
             </>

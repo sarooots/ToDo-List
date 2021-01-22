@@ -52,6 +52,9 @@ class Header extends Component {
                         addTask={addTask}
                         selectedTasks={selectedTasks}
                         tasks={tasks}
+                        mode='new'
+                        variant='success'
+                        buttonName='new task'
                     />
                 </div>
             </header>
