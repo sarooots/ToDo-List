@@ -70,7 +70,7 @@ class ToDo extends Component {
     editTask = (id) => {
         const {editMode, tasks} = this.state
         const tempList = tasks
-        tempList.find()
+        tempList.findIndex()
         console.log('edit works')
         this.setState({editMode: !editMode})
         return ''
