@@ -3,14 +3,15 @@ import {Button, Col, Form, Modal} from 'react-bootstrap'
 import PropTypes from "prop-types"
 import moment from "moment";
 import idGenerator from "../../helpers/idGenerator"
-// import classes from './NewTask.sass'
+// import classes from './Editor.sass'
 
-class NewTask extends Component {
+class Editor extends Component {
     static propTypes = {
         addTask: PropTypes.func,
         tasks: PropTypes.array.isRequired,
         selectedTasks: PropTypes.object.isRequired,
         editTask: PropTypes.func,
+        id: PropTypes.string
     }
     state = {
         name: '',
@@ -27,12 +28,45 @@ class NewTask extends Component {
     }
     handleShow = () => {
         this.setState({show: true})
+        const {mode} = this.props
+        if (mode === 'edit') {
+            const {tasks, id} = this.props
+            const editId = tasks.findIndex((el)=> el._id===id)
+            const tempTask = tasks[editId]
+            this.setState({
+                name: tempTask.name,
+                desc: tempTask.desc,
+                deadline: tempTask.deadline,
+                _id: tempTask._id
+            })
+
+        }
+    }
+
+    acceptButton = () => {
+        this.setState({show: false})
+        const newTask = {...this.state}
+        delete newTask.show
+        const {addTask, mode, editTask} = this.props
+        if (mode === 'new') {
+            addTask(newTask)
+            this.setState({name: '', desc: ''})
+        }
+        if (mode === 'edit') {
+            const {tasks, id} = this.props
+            const tempList = tasks
+            const editId = tempList.findIndex((el)=> el._id===id)
+            const editedTask = {...this.state}
+            delete editedTask.show
+            tempList[editId] = editedTask
+            editTask(tempList)
+        }
     }
 
     render() {
         const {show} = this.state
-        const {selectedTasks, addTask, className, mode, buttonName, variant} = this.props
-        // console.log(editMode)
+        const {selectedTasks, className, mode, buttonName, variant} = this.props
+
         return (
             <>
                 <Button variant={variant} onClick={this.handleShow} className={`${className} text-nowrap`} disabled={!!selectedTasks.size}>
@@ -88,21 +122,16 @@ class NewTask extends Component {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="primary"
-                                onClick={() => {
-                                    this.setState({show: false})
-                                    const newTask = {...this.state}
-                                    delete newTask.show
-                                    addTask(newTask)
-                                    this.setState({name: '', desc: ''})
-                                }}
+                        <Button variant={mode ==='edit'?"success":'primary'}
+                                onClick={this.acceptButton}
                                 disabled={!!selectedTasks.size}
                         >
-                            Add
+                            {mode ==='edit'?"save changes":'add task'}
                         </Button>
                         <Button variant="danger"
                                 onClick={() => {
                                     this.setState({show: false})
+
                                 }}
                         >Cancel</Button>
                     </Modal.Footer>
@@ -112,4 +141,4 @@ class NewTask extends Component {
     }
 }
 
-export default NewTask
+export default Editor

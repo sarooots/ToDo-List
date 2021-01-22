@@ -3,7 +3,7 @@ import {Button, Dropdown, ButtonGroup} from "react-bootstrap"
 import classes from "./Header.module.sass"
 import DeleteSelected from "../DeleteSelected/DeleteSelected"
 import PropTypes from "prop-types"
-import NewTask from "../NewTask"
+import Editor from "../Editor"
 
 class Header extends Component {
     static propTypes = {
@@ -47,7 +47,7 @@ class Header extends Component {
                         removeSelected={removeSelected}
                         selectedTasks={selectedTasks}
                     />
-                    <NewTask
+                    <Editor
                         className={`${classes.item} rounded-0`}
                         addTask={addTask}
                         selectedTasks={selectedTasks}

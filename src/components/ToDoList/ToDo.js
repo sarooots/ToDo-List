@@ -2,11 +2,11 @@ import React, {Component} from 'react'
 import Header from './Header/Header'
 import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCheck, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
+import {faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
 import {Container, Col, Row, Button, Card, ButtonGroup} from 'react-bootstrap'
 import idGenerator from "../../helpers/idGenerator"
 import moment from "moment"
-import NewTask from "./NewTask"
+import Editor from "./Editor"
 
 
 class ToDo extends Component {
@@ -116,19 +116,15 @@ class ToDo extends Component {
                                             <Card.Subtitle className={`mb-2 text-muted ${classes.deadline}`}>{`deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
                                             <Card.Text className={`${classes.desc} ${task.desc ===''?classes.emptyDesc:''}`}>{task.desc === '' ? 'this task has no description': task.desc}</Card.Text>
                                             <ButtonGroup size="sm" className={classes.actions}>
-                                                <NewTask
+                                                <Editor
                                                     buttonName={<FontAwesomeIcon icon={faEdit} />}
                                                     mode='edit'
                                                     selectedTasks={selectedTasks}
                                                     editTask={editTask}
                                                     variant='primary'
+                                                    id={task._id}
+                                                    tasks={tasks}
                                                 />
-                                                <Button
-                                                    disabled={!!selectedTasks.size}
-                                                    variant='success'
-                                                    className={`${classes.removeTask} ${classes.action}`}
-                                                > <FontAwesomeIcon icon={faCheck} />
-                                                </Button>
                                                 <Button
                                                     disabled={!!selectedTasks.size}
                                                     variant='danger'
