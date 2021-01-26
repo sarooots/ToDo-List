@@ -138,7 +138,6 @@ class ToDo extends Component {
                                                     selectedTasks={selectedTasks}
                                                     editTask={editTask}
                                                     task={task}
-                                                    id={task._id}
                                                     showEdit={this.state.showEdit}
                                                     toggleShowEdit={this.toggleShowEdit}
 

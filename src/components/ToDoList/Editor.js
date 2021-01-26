@@ -10,7 +10,7 @@ class Editor extends Component {
         super(props);
         const {mode} = this.props
         if (mode === 'edit') {
-            const {task, id} = props
+            const {task} = props
             this.state = {...task}
         } else {
             this.state = {
