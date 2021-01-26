@@ -13,6 +13,8 @@ class ToDo extends Component {
     state = {
         tasks: [],
         selectedTasks: new Set(),
+        showNew: false,
+        showEdit: false
     }
     selectTask = taskId => {
         const selectedTasks = new Set(this.state.selectedTasks)
@@ -67,8 +69,19 @@ class ToDo extends Component {
         }
     }
 
-    editTask = (newList) => {
+    editTask = (editedTask) => {
+        const {tasks} = this.state
+        const newList = tasks
+        const editId = tasks.findIndex((el)=> el._id===editedTask._id)
+        newList[editId] = editedTask
         this.setState({tasks: newList})
+    }
+    
+    toggleShowNew = () => {
+        this.setState({showNew: !this.state.showNew})
+    }
+    toggleShowEdit = () => {
+        this.setState({showEdit: !this.state.showEdit})
     }
 
     render() {
@@ -82,11 +95,12 @@ class ToDo extends Component {
                 <Header
                     addTask={this.addTask}
                     tasks={this.state.tasks}
-                    status={this.state.status}
+                    showNew={this.state.showNew}
                     selectedTasks={selectedTasks}
                     removeSelected={this.removeSelected}
                     selectAllTasks={this.selectAllTasks}
                     deselect={this.deselect}
+                    toggleShowNew={this.toggleShowNew}
 
                 />
                 <Container  fluid className={classes.toDoList}>
@@ -117,13 +131,17 @@ class ToDo extends Component {
                                             <Card.Text className={`${classes.desc} ${task.desc ===''?classes.emptyDesc:''}`}>{task.desc === '' ? 'this task has no description': task.desc}</Card.Text>
                                             <ButtonGroup size="sm" className={classes.actions}>
                                                 <Editor
-                                                    buttonName={<FontAwesomeIcon icon={faEdit} />}
+                                                    button={ <Button variant='dark' onClick={this.toggleShowEdit} className={`${classes.item} rounded-0 text-nowrap`} disabled={!!selectedTasks.size}>
+                                                        <FontAwesomeIcon icon={faEdit} />
+                                                    </Button>}
                                                     mode='edit'
                                                     selectedTasks={selectedTasks}
                                                     editTask={editTask}
-                                                    variant='dark'
+                                                    task={task}
                                                     id={task._id}
-                                                    tasks={tasks}
+                                                    showEdit={this.state.showEdit}
+                                                    toggleShowEdit={this.toggleShowEdit}
+
                                                 />
                                                 <Button
                                                     disabled={!!selectedTasks.size}

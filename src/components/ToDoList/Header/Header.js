@@ -15,7 +15,7 @@ class Header extends Component {
         deselect: PropTypes.func.isRequired,
     }
     render() {
-        const {addTask, tasks, selectedTasks, removeSelected, selectAllTasks, deselect} = this.props
+        const {addTask, tasks, selectedTasks, removeSelected, selectAllTasks, deselect, toggleShowNew, showNew} = this.props
 
         return (
             <header className={classes.header}>
@@ -48,13 +48,14 @@ class Header extends Component {
                         selectedTasks={selectedTasks}
                     />
                     <Editor
-                        className={`${classes.item} rounded-0`}
                         addTask={addTask}
+                        showNew={showNew}
                         selectedTasks={selectedTasks}
-                        tasks={tasks}
+                        toggleShowNew={toggleShowNew}
                         mode='new'
-                        variant='success'
-                        buttonName='new task'
+                        button={ <Button variant='success' onClick={toggleShowNew} className={`${classes.item} rounded-0 text-nowrap`} disabled={!!selectedTasks.size}>
+                            new task
+                        </Button>}
                     />
                 </div>
             </header>

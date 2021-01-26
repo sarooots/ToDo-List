@@ -6,76 +6,61 @@ import idGenerator from "../../helpers/idGenerator"
 // import classes from './Editor.sass'
 
 class Editor extends Component {
+    constructor(props) {
+        super(props);
+        const {mode} = this.props
+        if (mode === 'edit') {
+            const {task, id} = props
+            this.state = {...task}
+        } else {
+            this.state = {
+                name: '',
+                desc: '',
+                deadline: new Date().getTime() + 1440 * 60 * 1000,
+                _id: idGenerator(),
+            }
+        }
+
+    }
     static propTypes = {
         addTask: PropTypes.func,
-        tasks: PropTypes.array.isRequired,
+        task: PropTypes.object,
         selectedTasks: PropTypes.object.isRequired,
         editTask: PropTypes.func,
-        id: PropTypes.string
     }
-    state = {
-        name: '',
-        desc: '',
-        deadline: new Date().getTime() + 1440 * 60 * 1000,
-        _id: idGenerator(),
-        show: false
-    }
+
 
     changeTaskProperty = (event, property ) => {
         new Date(event.target.value).getTime()
         const  value = property === 'deadline'? new Date(event.target.value).getTime(): event.target.value
         this.setState({[property]: value})
     }
-    handleShow = () => {
-        this.setState({show: true})
-        const {mode} = this.props
-        if (mode === 'edit') {
-            const {tasks, id} = this.props
-            const editId = tasks.findIndex((el)=> el._id===id)
-            const tempTask = tasks[editId]
-            this.setState({
-                name: tempTask.name,
-                desc: tempTask.desc,
-                deadline: tempTask.deadline,
-                _id: tempTask._id
-            })
-
-        }
-    }
 
     acceptButton = () => {
-        this.setState({show: false})
         const newTask = {...this.state}
         delete newTask.show
-        const {addTask, mode, editTask} = this.props
+        const {addTask, mode, editTask, toggleShowNew, toggleShowEdit} = this.props
         if (mode === 'new') {
             addTask(newTask)
             this.setState({name: '', desc: ''})
+            toggleShowNew.call()
         }
         if (mode === 'edit') {
-            const {tasks, id} = this.props
-            const tempList = tasks
-            const editId = tempList.findIndex((el)=> el._id===id)
             const editedTask = {...this.state}
             delete editedTask.show
-            tempList[editId] = editedTask
-            editTask(tempList)
+            editTask(editedTask)
+            toggleShowEdit.call()
         }
     }
 
     render() {
-        const {show} = this.state
-        const {selectedTasks, className, mode, buttonName, variant} = this.props
-
+        const {selectedTasks, mode, button, showNew, showEdit, toggleShowNew, toggleShowEdit} = this.props
         return (
             <>
-                <Button variant={variant} onClick={this.handleShow} className={`${className} text-nowrap`} disabled={!!selectedTasks.size}>
-                    {buttonName}
-                </Button>
-
+                {button}
                 <Modal
-                    show={show}
-                    onHide={() => this.setState({show: false})}
+                    show={mode==='new'?showNew:showEdit}
+                    onHide={mode==='new'?toggleShowNew:toggleShowEdit}
                     backdrop="static"
                     keyboard={false}
                     size="lg"
@@ -83,7 +68,7 @@ class Editor extends Component {
                     centered
                 >
                     <Modal.Header closeButton >
-                        <Modal.Title>{mode==='edit'? 'Edit task': 'New task'}</Modal.Title>
+                        <Modal.Title>{mode==='new'? 'New task': 'Edit task'}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form onSubmit={(event)=> event.preventDefault()}>
@@ -122,17 +107,14 @@ class Editor extends Component {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant={mode ==='edit'?"success":'primary'}
+                        <Button variant={mode ==='new'?"primary":'success'}
                                 onClick={this.acceptButton}
                                 disabled={!!selectedTasks.size}
                         >
-                            {mode ==='edit'?"save changes":'add task'}
+                            {mode ==='new'?"add task":'save changes'}
                         </Button>
                         <Button variant="danger"
-                                onClick={() => {
-                                    this.setState({show: false})
-
-                                }}
+                                onClick={mode ==='new'?toggleShowNew:toggleShowEdit}
                         >Cancel</Button>
                     </Modal.Footer>
                 </Modal>
