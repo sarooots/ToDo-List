@@ -78,10 +78,12 @@ class ToDo extends PureComponent {
 
     editTask = (editedTask) => {
         const {tasks} = this.state
+        if (editedTask.name.trim() !==  '') {
         const newList = tasks
         const editId = tasks.findIndex((el)=> el._id===editedTask._id)
         newList[editId] = editedTask
         this.setState({tasks: newList, showEdit: !this.state.showEdit})
+        }
     }
 
     toggleShow = () => this.setState({show: !this.state.show})

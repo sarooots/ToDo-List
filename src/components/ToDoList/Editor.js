@@ -40,11 +40,13 @@ class Editor extends Component {
     acceptButton = () => {
         const newTask = {...this.state}
         const {mode, action, toggleShow} = this.props
-        if (mode === 'new') {
-            this.setState({name: '', desc: ''})
+        if (newTask.name.trim() !==  '') {
+            action(newTask)
+            toggleShow()
+            if (mode === 'new') {
+                this.setState({name: '', desc: ''})
+            }
         }
-        action(newTask)
-        toggleShow()
 
     }
 
@@ -53,66 +55,64 @@ class Editor extends Component {
         const {selectedTasks, mode, show, toggleShow} = this.props
 
         return (
-                <Modal
-                    show={show}
-                    onHide={toggleShow}
-                    backdrop="static"
-                    keyboard={false}
-                    size="lg"
-                    aria-labelledby="contained-modal-title-vcenter"
-                    centered
-                >
-                    <Modal.Header closeButton >
-                        <Modal.Title>{mode==='new'? 'New task': 'Edit task'}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={(event)=> event.preventDefault()}>
-                            <Form.Row >
-                                <Form.Group as={Col} controlId='taskName'>
-                                    <Form.Label>Task Name</Form.Label>
-                                    <Form.Control type="text"
-                                                  placeholder="Add new task"
-                                                  value={this.state.name}
-                                                  onChange={(event) => {this.changeTaskProperty(event, 'name')}}
-                                    />
-                                </Form.Group>
-                                <Form.Group as={Col} controlId='deadline'>
-                                    <Form.Label>Deadline</Form.Label>
-                                    <Form.Control type="datetime-local"
-                                                  placeholder="Write task description"
-                                                  format='timestamp'
-                                                  min={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
-                                                  value={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
-                                                  onChange={(event) => {this.changeTaskProperty(event, 'deadline')}}
-                                                  disabled={!!selectedTasks.size}
-                                    />
-                                </Form.Group>
+            <Modal
+                show={show}
+                onHide={toggleShow}
+                backdrop="static"
+                keyboard={false}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{mode==='new'? 'New task': 'Edit task'}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={(event)=> event.preventDefault()}>
+                        <Form.Row >
+                            <Form.Group as={Col} controlId='taskName'>
+                                <Form.Label>Task Name</Form.Label>
+                                <Form.Control type="text"
+                                              placeholder="Add new task"
+                                              value={this.state.name}
+                                              onChange={(event) => {
+                                                  this.changeTaskProperty(event, 'name')
+                                              }}/>
+                            </Form.Group>
+                            <Form.Group as={Col} controlId='deadline'>
+                                <Form.Label>Deadline</Form.Label>
+                                <Form.Control type="datetime-local"
+                                              placeholder="Write task description"
+                                              format='timestamp'
+                                              min={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
+                                              value={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
+                                              onChange={(event) => {this.changeTaskProperty(event, 'deadline')}}
+                                              disabled={!!selectedTasks.size}/>
+                            </Form.Group>
 
-                            </Form.Row>
-                            <Form.Row >
-                                <Form.Group as={Col} controlId='taskDesc'>
-                                    <Form.Control as="textarea"
-                                                  placeholder="Write task description"
-                                                  value={this.state.desc}
-                                                  onChange={(event) => {this.changeTaskProperty(event, 'desc')}}
-                                                  disabled={!!selectedTasks.size}
-                                    />
-                                </Form.Group>
-                            </Form.Row>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant={mode ==='new'?"primary":'success'}
-                                onClick={this.acceptButton}
-                                disabled={!!selectedTasks.size}
-                        >
-                            {mode ==='new'?"add task":'save changes'}
-                        </Button>
-                        <Button variant="danger"
-                                onClick={toggleShow}
-                        >Cancel</Button>
-                    </Modal.Footer>
-                </Modal>
+                        </Form.Row>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId='taskDesc'>
+                                <Form.Control as="textarea"
+                                              placeholder="Write task description"
+                                              value={this.state.desc}
+                                              onChange={(event) => {this.changeTaskProperty(event, 'desc')}}
+                                              disabled={!!selectedTasks.size}/>
+                            </Form.Group>
+                        </Form.Row>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant={mode ==='new'?"primary":'success'}
+                            onClick={this.acceptButton}
+                            disabled={!!selectedTasks.size}>
+                        {mode ==='new'?"add task":'save changes'}
+                    </Button>
+                    <Button variant="danger"
+                            onClick={toggleShow}>
+                        Cancel
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 }
