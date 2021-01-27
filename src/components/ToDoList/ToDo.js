@@ -37,7 +37,7 @@ class ToDo extends PureComponent {
         const {tasks} = this.state
         const selectedTasks = new Set(this.state.selectedTasks)
         const newTask = tasks.filter((task)=>{
-           !selectedTasks.has(task._id)
+           return !selectedTasks.has(task._id)
         })
         this.setState({
             tasks: newTask,
