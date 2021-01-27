@@ -20,14 +20,16 @@ class Editor extends Component {
                 _id: idGenerator(),
             }
         }
-
     }
+
     static propTypes = {
         action: PropTypes.func.isRequired,
         task: PropTypes.object,
         selectedTasks: PropTypes.object.isRequired,
+        mode: PropTypes.string.isRequired,
+        show: PropTypes.bool.isRequired,
+        toggleShow: PropTypes.func.isRequired,
     }
-
 
     changeTaskProperty = (event, property ) => {
         new Date(event.target.value).getTime()
@@ -47,9 +49,10 @@ class Editor extends Component {
     }
 
     render() {
+
         const {selectedTasks, mode, show, toggleShow} = this.props
+
         return (
-            <>
                 <Modal
                     show={show}
                     onHide={toggleShow}
@@ -110,7 +113,6 @@ class Editor extends Component {
                         >Cancel</Button>
                     </Modal.Footer>
                 </Modal>
-            </>
         )
     }
 }

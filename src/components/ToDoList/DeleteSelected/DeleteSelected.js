@@ -11,6 +11,7 @@ class DeleteSelected extends Component {
     state = {
         show: false
     }
+
     render() {
         const {show} = this.state
         const handleClose = () => this.setState({show: false})
@@ -26,8 +27,7 @@ class DeleteSelected extends Component {
                             removeSelected(selectedTasks)
                             } else {
                             handleShow()
-                        }}}
-                >
+                        }}}>
                     delete
                 </Button>
                 <Modal show={show} onHide={handleClose} centered>
@@ -42,8 +42,7 @@ class DeleteSelected extends Component {
                             Delete {selectedTasks.size} task{selectedTasks.size>1?'s':''}
                         </Button>
                         <Button variant="secondary"
-                                onClick={handleClose}
-                        >
+                                onClick={handleClose}>
                             Close
                         </Button>
                     </Modal.Footer>

@@ -1,18 +1,20 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import {Button, Dropdown, ButtonGroup} from "react-bootstrap"
 import classes from "./Header.module.sass"
 import DeleteSelected from "../DeleteSelected/DeleteSelected"
 import PropTypes from "prop-types"
 
-class Header extends Component {
+class Header extends PureComponent {
     static propTypes = {
-        addTask: PropTypes.func.isRequired,
         tasks: PropTypes.array.isRequired,
         selectedTasks: PropTypes.object.isRequired,
         removeSelected: PropTypes.func.isRequired,
         selectAllTasks: PropTypes.func.isRequired,
         deselect: PropTypes.func.isRequired,
+        toggleShow: PropTypes.func.isRequired,
+        changeMode: PropTypes.func.isRequired,
     }
+
     render() {
         const {tasks, selectedTasks, removeSelected, selectAllTasks, deselect, toggleShow, changeMode} = this.props
 
@@ -21,15 +23,12 @@ class Header extends Component {
                 <div className={classes.logo}>To Do List</div>
                 <div className={classes.items}>
                     <div className={`${classes.item} ${classes.checkbox}`}>
-
-                        <Dropdown as={ButtonGroup} className={classes.deselect} >
-
+                        <Dropdown as={ButtonGroup} className={classes.deselect}>
                             <Button ><label className={classes.select}>
                                 <input type="checkbox"
                                        disabled={!tasks.length}
                                        onChange={selectAllTasks}
-                                       checked={selectedTasks.size === tasks.length && tasks.length > 0 }
-                                />
+                                       checked={selectedTasks.size === tasks.length && tasks.length > 0 }/>
                                 <span className={classes.checkmark}></span>
                             </label> </Button>
                             <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
@@ -41,11 +40,10 @@ class Header extends Component {
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
-                    <DeleteSelected
-                        className={`${classes.item} rounded-0`}
-                        removeSelected={removeSelected}
-                        selectedTasks={selectedTasks}
-                    />
+                        <DeleteSelected
+                            className={`${classes.item} rounded-0`}
+                            removeSelected={removeSelected}
+                            selectedTasks={selectedTasks}/>
                     <Button variant='success'
                             onClick={()=>{
                                 toggleShow()

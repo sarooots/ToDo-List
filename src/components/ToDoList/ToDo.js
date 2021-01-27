@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import Header from './Header/Header'
 import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,7 +9,7 @@ import moment from "moment"
 import Editor from "./Editor"
 
 
-class ToDo extends Component {
+class ToDo extends PureComponent {
     state = {
         tasks: [],
         selectedTasks: new Set(),
@@ -17,6 +17,7 @@ class ToDo extends Component {
         editTask: null,
         mode: 'new'
     }
+
     selectTask = taskId => {
         const selectedTasks = new Set(this.state.selectedTasks)
         if (selectedTasks.has(taskId)) {
@@ -26,10 +27,12 @@ class ToDo extends Component {
         }
         this.setState({selectedTasks})
     }
+
     removeTask = taskId => {
         const {tasks} = this.state
         this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
     }
+
     removeSelected = () => {
         const {selectedTasks, tasks} = this.state
         const newTask = tasks.filter((task)=>{
@@ -44,6 +47,7 @@ class ToDo extends Component {
             selectedTasks: new Set()
         })
     }
+
     selectAllTasks = () => {
         const {tasks, selectedTasks} = this.state
         if (selectedTasks.size < tasks.length) {
@@ -55,12 +59,14 @@ class ToDo extends Component {
         }
         this.setState({selectedTasks: selectedTasks})
     }
+
     deselect = () => {
         const {selectedTasks} = this.state
         selectedTasks.clear()
         this.setState({selectedTasks: selectedTasks})
 
     }
+
     addTask = task => {
         const {tasks} = this.state
         task._id = idGenerator()
@@ -78,17 +84,11 @@ class ToDo extends Component {
         this.setState({tasks: newList, showEdit: !this.state.showEdit})
     }
 
-    toggleShow = () => {
-        this.setState({show: !this.state.show})
-    }
+    toggleShow = () => this.setState({show: !this.state.show})
 
-    handleEdit = (editTask)=>{
-        this.setState({ editTask,  show: !this.state.show})
-    }
+    handleEdit = editTask => this.setState({ editTask,  show: !this.state.show})
 
-    changeMode = (newMode) => {
-        this.setState({ mode: newMode})
-    }
+    changeMode = newMode => this.setState({ mode: newMode})
 
     render() {
         const {tasks, selectedTasks, editTask, show, mode} = this.state
@@ -96,18 +96,16 @@ class ToDo extends Component {
             <>
                 {/*Here goes logo, 'new task' 'select/deselect' and 'delete' buttons*/}
                 <Header
-                    addTask={this.addTask}
                     tasks={this.state.tasks}
                     selectedTasks={selectedTasks}
                     removeSelected={this.removeSelected}
                     selectAllTasks={this.selectAllTasks}
                     deselect={this.deselect}
                     toggleShow={this.toggleShow}
-                    changeMode={this.changeMode}
+                    changeMode={this.changeMode}/>
 
-                />
                 <Container  fluid className={classes.toDoList}>
-                    <Row className={classes.tasks}>
+                    <Row>
                         {
                             tasks.map((task,index)=>{
                                 return (
@@ -115,15 +113,13 @@ class ToDo extends Component {
                                          lg={3}
                                          md={4}
                                          sm={6}
-                                         xs={12}
-                                    >
+                                         xs={12}>
                                         <Card className={`${classes.task} ${selectedTasks.has(task._id)? classes.selected: ''}`}>
                                             <label  className={classes.select}>
                                                 <input type="checkbox"
                                                        className={`${classes.select} rounded-0`}
                                                        onChange={()=> this.selectTask(task._id)}
-                                                       checked={selectedTasks.has(task._id)}
-                                                />
+                                                       checked={selectedTasks.has(task._id)}/>
                                                 <span className={classes.checkmark}></span>
                                                 <div className={classes.fillWidth}></div>
 
@@ -137,19 +133,16 @@ class ToDo extends Component {
                                                             onClick={() => {
                                                                 this.handleEdit(task)
                                                                 this.changeMode('edit')
-
                                                             }}
-                                                            className={`${classes.item} rounded-0 text-nowrap`}
-                                                            disabled={!!selectedTasks.size}
-                                                    >
+                                                            className="rounded-0 text-nowrap"
+                                                            disabled={!!selectedTasks.size}>
                                                         <FontAwesomeIcon icon={faEdit} />
                                                     </Button>
                                                     <Button
                                                         disabled={!!selectedTasks.size}
                                                         variant='danger'
-                                                        className={`${classes.removeTask} ${classes.action}`}
-                                                        onClick={()=> this.removeTask(task._id)}
-                                                    > <FontAwesomeIcon icon={faTrash} />
+                                                        onClick={()=> this.removeTask(task._id)}>
+                                                        <FontAwesomeIcon icon={faTrash} />
                                                     </Button>
                                                 </ButtonGroup>
                                             </Card.Body>
@@ -168,9 +161,7 @@ class ToDo extends Component {
                         action={this.editTask}
                         selectedTasks={selectedTasks}
                         toggleShow={this.toggleShow}
-                        task={editTask}
-
-                    />
+                        task={editTask}/>
                 }
                 {
                     mode === 'new' && show &&
@@ -179,8 +170,7 @@ class ToDo extends Component {
                         show={show}
                         action={this.addTask}
                         selectedTasks={selectedTasks}
-                        toggleShow={this.toggleShow}
-                    />
+                        toggleShow={this.toggleShow}/>
                 }
             </>
         )
