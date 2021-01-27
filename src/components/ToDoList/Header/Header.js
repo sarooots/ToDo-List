@@ -28,7 +28,7 @@ class Header extends PureComponent {
                                        disabled={!tasks.length}
                                        onChange={selectAllTasks}
                                        checked={selectedTasks.size === tasks.length && tasks.length > 0 }/>
-                                <span className={classes.checkmark}></span>
+                                <span className={classes.checkmark}/>
                             </label> </Button>
                             <Dropdown.Toggle split variant="primary" id="dropdown-split-basic" />
 
