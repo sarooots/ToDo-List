@@ -17,7 +17,6 @@ class Header extends PureComponent {
 
     render() {
         const {tasks, selectedTasks, removeSelected, selectAllTasks, deselect, toggleShow, changeMode} = this.props
-
         return (
             <header className={classes.header}>
                 <div className={classes.logo}>To Do List</div>
@@ -35,7 +34,7 @@ class Header extends PureComponent {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item
-                                    onClick={()=> deselect()}
+                                    onClick={deselect}
                                     disabled={!selectedTasks.size}>deselect</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>

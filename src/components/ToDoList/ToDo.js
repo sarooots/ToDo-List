@@ -34,7 +34,8 @@ class ToDo extends PureComponent {
     }
 
     removeSelected = () => {
-        const {selectedTasks, tasks} = this.state
+        const {tasks} = this.state
+        const selectedTasks = new Set(this.state.selectedTasks)
         const newTask = tasks.filter((task)=>{
             if (selectedTasks.has(task._id)) {
                 return false
@@ -49,7 +50,9 @@ class ToDo extends PureComponent {
     }
 
     selectAllTasks = () => {
-        const {tasks, selectedTasks} = this.state
+        console.log('gago')
+        const {tasks} = this.state
+        const selectedTasks = new Set(this.state.selectedTasks)
         if (selectedTasks.size < tasks.length) {
             tasks.map((task)=>{
                 return selectedTasks.add(task._id)
@@ -61,10 +64,9 @@ class ToDo extends PureComponent {
     }
 
     deselect = () => {
-        const {selectedTasks} = this.state
+        const selectedTasks = new Set(this.state.selectedTasks)
         selectedTasks.clear()
         this.setState({selectedTasks: selectedTasks})
-
     }
 
     addTask = task => {
@@ -101,6 +103,7 @@ class ToDo extends PureComponent {
                     tasks={this.state.tasks}
                     selectedTasks={selectedTasks}
                     removeSelected={this.removeSelected}
+                    // selectAllTasks={this.selectAllTasks}
                     selectAllTasks={this.selectAllTasks}
                     deselect={this.deselect}
                     toggleShow={this.toggleShow}
