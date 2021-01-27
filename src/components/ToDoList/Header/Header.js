@@ -3,7 +3,6 @@ import {Button, Dropdown, ButtonGroup} from "react-bootstrap"
 import classes from "./Header.module.sass"
 import DeleteSelected from "../DeleteSelected/DeleteSelected"
 import PropTypes from "prop-types"
-import Editor from "../Editor"
 
 class Header extends Component {
     static propTypes = {
@@ -15,7 +14,7 @@ class Header extends Component {
         deselect: PropTypes.func.isRequired,
     }
     render() {
-        const {addTask, tasks, selectedTasks, removeSelected, selectAllTasks, deselect, toggleShowNew, showNew} = this.props
+        const {tasks, selectedTasks, removeSelected, selectAllTasks, deselect, toggleShow, changeMode} = this.props
 
         return (
             <header className={classes.header}>
@@ -47,7 +46,13 @@ class Header extends Component {
                         removeSelected={removeSelected}
                         selectedTasks={selectedTasks}
                     />
-                    <Button variant='success' onClick={toggleShowNew} className={`${classes.item} rounded-0 text-nowrap`} disabled={!!selectedTasks.size}>
+                    <Button variant='success'
+                            onClick={()=>{
+                                toggleShow()
+                                changeMode('new')
+                            }}
+                            className={`${classes.item} rounded-0 text-nowrap`}
+                            disabled={!!selectedTasks.size}>
                         new task
                     </Button>
                 </div>

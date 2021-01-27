@@ -13,9 +13,9 @@ class ToDo extends Component {
     state = {
         tasks: [],
         selectedTasks: new Set(),
-        showNew: false,
-        showEdit: false,
-        editTask: null
+        show: false,
+        editTask: null,
+        mode: 'new'
     }
     selectTask = taskId => {
         const selectedTasks = new Set(this.state.selectedTasks)
@@ -78,99 +78,108 @@ class ToDo extends Component {
         this.setState({tasks: newList, showEdit: !this.state.showEdit})
     }
 
-    toggleShowNew = () => {
-        this.setState({showNew: !this.state.showNew})
-    }
-    toggleShowEdit = () => {
-        this.setState({showEdit: !this.state.showEdit})
+    toggleShow = () => {
+        this.setState({show: !this.state.show})
     }
 
     handleEdit = (editTask)=>{
-        this.setState({ editTask,  showEdit: !this.state.showEdit})
-    };
+        this.setState({ editTask,  show: !this.state.show})
+    }
+
+    changeMode = (newMode) => {
+        this.setState({ mode: newMode})
+    }
 
     render() {
-        const {tasks, selectedTasks, editTask, showNew, showEdit} = this.state
+        const {tasks, selectedTasks, editTask, show, mode} = this.state
         return (
             <>
                 {/*Here goes logo, 'new task' 'select/deselect' and 'delete' buttons*/}
                 <Header
                     addTask={this.addTask}
                     tasks={this.state.tasks}
-                    showNew={this.state.showNew}
                     selectedTasks={selectedTasks}
                     removeSelected={this.removeSelected}
                     selectAllTasks={this.selectAllTasks}
                     deselect={this.deselect}
-                    toggleShowNew={this.toggleShowNew}
+                    toggleShow={this.toggleShow}
+                    changeMode={this.changeMode}
 
                 />
                 <Container  fluid className={classes.toDoList}>
-                <Row className={classes.tasks}>
-                    {
-                        tasks.map((task,index)=>{
-                            return (
-                                <Col key={task._id}
-                                     lg={3}
-                                     md={4}
-                                     sm={6}
-                                     xs={12}
-                                >
-                                    <Card className={`${classes.task} ${selectedTasks.has(task._id)? classes.selected: ''}`}>
-                                        <label  className={classes.select}>
-                                            <input type="checkbox"
-                                                   className={`${classes.select} rounded-0`}
-                                                   onChange={()=> this.selectTask(task._id)}
-                                                   checked={selectedTasks.has(task._id)}
-                                            />
-                                            <span className={classes.checkmark}></span>
-                                            <div className={classes.fillWidth}></div>
+                    <Row className={classes.tasks}>
+                        {
+                            tasks.map((task,index)=>{
+                                return (
+                                    <Col key={task._id}
+                                         lg={3}
+                                         md={4}
+                                         sm={6}
+                                         xs={12}
+                                    >
+                                        <Card className={`${classes.task} ${selectedTasks.has(task._id)? classes.selected: ''}`}>
+                                            <label  className={classes.select}>
+                                                <input type="checkbox"
+                                                       className={`${classes.select} rounded-0`}
+                                                       onChange={()=> this.selectTask(task._id)}
+                                                       checked={selectedTasks.has(task._id)}
+                                                />
+                                                <span className={classes.checkmark}></span>
+                                                <div className={classes.fillWidth}></div>
 
-                                        </label>
-                                        <Card.Body className={classes.cBody}>
-                                            <Card.Title className={classes.title}>{task.name}</Card.Title>
-                                            <Card.Subtitle className={`mb-2 text-muted ${classes.deadline}`}>{`deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
-                                            <Card.Text className={`${classes.desc} ${task.desc ===''?classes.emptyDesc:''}`}>{task.desc === '' ? 'this task has no description': task.desc}</Card.Text>
-                                            <ButtonGroup size="sm" className={classes.actions}>
-                                                <Button variant='dark' onClick={() => this.handleEdit(task)} className={`${classes.item} rounded-0 text-nowrap`} disabled={!!selectedTasks.size}>
-                                                    <FontAwesomeIcon icon={faEdit} />
-                                                </Button>
-                                                <Button
-                                                    disabled={!!selectedTasks.size}
-                                                    variant='danger'
-                                                    className={`${classes.removeTask} ${classes.action}`}
-                                                    onClick={()=> this.removeTask(task._id)}
-                                                > <FontAwesomeIcon icon={faTrash} />
-                                                </Button>
-                                            </ButtonGroup>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            )
-                        })
-                    }
-                </Row>
-            </Container>
+                                            </label>
+                                            <Card.Body className={classes.cBody}>
+                                                <Card.Title className={classes.title}>{task.name}</Card.Title>
+                                                <Card.Subtitle className={`mb-2 text-muted ${classes.deadline}`}>{`deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
+                                                <Card.Text className={`${classes.desc} ${task.desc ===''?classes.emptyDesc:''}`}>{task.desc === '' ? 'this task has no description': task.desc}</Card.Text>
+                                                <ButtonGroup size="sm" className={classes.actions}>
+                                                    <Button variant='dark'
+                                                            onClick={() => {
+                                                                this.handleEdit(task)
+                                                                this.changeMode('edit')
+
+                                                            }}
+                                                            className={`${classes.item} rounded-0 text-nowrap`}
+                                                            disabled={!!selectedTasks.size}
+                                                    >
+                                                        <FontAwesomeIcon icon={faEdit} />
+                                                    </Button>
+                                                    <Button
+                                                        disabled={!!selectedTasks.size}
+                                                        variant='danger'
+                                                        className={`${classes.removeTask} ${classes.action}`}
+                                                        onClick={()=> this.removeTask(task._id)}
+                                                    > <FontAwesomeIcon icon={faTrash} />
+                                                    </Button>
+                                                </ButtonGroup>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                )
+                            })
+                        }
+                    </Row>
+                </Container>
                 {
-                    showEdit &&
+                    mode === 'edit' &&
                     <Editor
                         mode='edit'
-                        showEdit={showEdit}
+                        show={show}
                         selectedTasks={selectedTasks}
-                        editTask={this.editTask}
+                        action={this.editTask}
                         task={editTask}
-                        toggleShowEdit={this.toggleShowEdit}
+                        toggleShow={this.toggleShow}
 
                     />
                 }
                 {
-                    showNew &&
+                    mode === 'new' &&
                     <Editor
-                        addTask={this.addTask}
-                        showNew={showNew}
+                        action={this.addTask}
+                        show={show}
                         selectedTasks={selectedTasks}
-                        toggleShowNew={this.toggleShowNew}
-                        mode='new'
+                        toggleShow={this.toggleShow}
+                        mode={mode}
                     />
                 }
             </>

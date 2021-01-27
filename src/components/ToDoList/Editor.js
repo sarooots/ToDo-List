@@ -23,10 +23,9 @@ class Editor extends Component {
 
     }
     static propTypes = {
-        addTask: PropTypes.func,
+        action: PropTypes.func.isRequired,
         task: PropTypes.object,
         selectedTasks: PropTypes.object.isRequired,
-        editTask: PropTypes.func,
     }
 
 
@@ -38,28 +37,26 @@ class Editor extends Component {
 
     acceptButton = () => {
         const newTask = {...this.state}
-        delete newTask.show
-        const {addTask, mode, editTask, toggleShowNew, toggleShowEdit} = this.props
+        const { mode, action, toggleShow} = this.props
         if (mode === 'new') {
-            addTask(newTask)
+            action(newTask)
             this.setState({name: '', desc: ''})
-            toggleShowNew.call()
         }
         if (mode === 'edit') {
             const editedTask = {...this.state}
-            delete editedTask.show
-            editTask(editedTask)
-            toggleShowEdit.call()
+            action(editedTask)
         }
+        toggleShow()
+
     }
 
     render() {
-        const {selectedTasks, mode, showNew, showEdit, toggleShowNew, toggleShowEdit} = this.props
+        const {selectedTasks, mode, show, toggleShow} = this.props
         return (
             <>
                 <Modal
-                    show={mode==='new'?showNew:showEdit}
-                    onHide={mode==='new'?toggleShowNew:toggleShowEdit}
+                    show={show}
+                    onHide={toggleShow}
                     backdrop="static"
                     keyboard={false}
                     size="lg"
@@ -113,7 +110,7 @@ class Editor extends Component {
                             {mode ==='new'?"add task":'save changes'}
                         </Button>
                         <Button variant="danger"
-                                onClick={mode ==='new'?toggleShowNew:toggleShowEdit}
+                                onClick={toggleShow}
                         >Cancel</Button>
                     </Modal.Footer>
                 </Modal>
