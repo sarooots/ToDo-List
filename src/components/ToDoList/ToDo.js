@@ -37,11 +37,7 @@ class ToDo extends PureComponent {
         const {tasks} = this.state
         const selectedTasks = new Set(this.state.selectedTasks)
         const newTask = tasks.filter((task)=>{
-            if (selectedTasks.has(task._id)) {
-                return false
-            } else {
-                return true
-            }
+           !selectedTasks.has(task._id)
         })
         this.setState({
             tasks: newTask,
@@ -73,8 +69,7 @@ class ToDo extends PureComponent {
         const {tasks} = this.state
         task._id = idGenerator()
         if (task.name.trim() !==  '') {
-            const newTask = task
-            this.setState({tasks: [...tasks, newTask], showNew: !this.state.showNew})
+            this.setState({tasks: [...tasks, task], showNew: !this.state.showNew})
         }
     }
 
@@ -112,7 +107,7 @@ class ToDo extends PureComponent {
                 <Container  fluid className={classes.toDoList}>
                     <Row>
                         {
-                            tasks.map((task,index)=>{
+                            tasks.map((task)=>{
                                 return (
                                     <Col key={task._id}
                                          lg={3}
@@ -125,8 +120,8 @@ class ToDo extends PureComponent {
                                                        className={`${classes.select} rounded-0`}
                                                        onChange={()=> this.selectTask(task._id)}
                                                        checked={selectedTasks.has(task._id)}/>
-                                                <span className={classes.checkmark}></span>
-                                                <div className={classes.fillWidth}></div>
+                                                <span className={classes.checkmark}/>
+                                                <div className={classes.fillWidth}/>
 
                                             </label>
                                             <Card.Body className={classes.cBody}>
