@@ -47,16 +47,9 @@ class Header extends Component {
                         removeSelected={removeSelected}
                         selectedTasks={selectedTasks}
                     />
-                    <Editor
-                        addTask={addTask}
-                        showNew={showNew}
-                        selectedTasks={selectedTasks}
-                        toggleShowNew={toggleShowNew}
-                        mode='new'
-                        button={ <Button variant='success' onClick={toggleShowNew} className={`${classes.item} rounded-0 text-nowrap`} disabled={!!selectedTasks.size}>
-                            new task
-                        </Button>}
-                    />
+                    <Button variant='success' onClick={toggleShowNew} className={`${classes.item} rounded-0 text-nowrap`} disabled={!!selectedTasks.size}>
+                        new task
+                    </Button>
                 </div>
             </header>
         )

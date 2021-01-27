@@ -54,10 +54,9 @@ class Editor extends Component {
     }
 
     render() {
-        const {selectedTasks, mode, button, showNew, showEdit, toggleShowNew, toggleShowEdit} = this.props
+        const {selectedTasks, mode, showNew, showEdit, toggleShowNew, toggleShowEdit} = this.props
         return (
             <>
-                {button}
                 <Modal
                     show={mode==='new'?showNew:showEdit}
                     onHide={mode==='new'?toggleShowNew:toggleShowEdit}
