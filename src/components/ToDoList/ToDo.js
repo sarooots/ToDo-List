@@ -1,17 +1,18 @@
 import React, {Component} from 'react'
-import TopMenu from './TopMenu'
-import classes from './ToDoList.module.sass'
+import Header from './Header/Header'
+import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCheck, faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
-import {Container, Col, Row, Button, Card, ButtonGroup } from 'react-bootstrap'
+import {faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
+import {Container, Col, Row, Button, Card, ButtonGroup} from 'react-bootstrap'
 import idGenerator from "../../helpers/idGenerator"
 import moment from "moment"
+import Editor from "./Editor"
 
 
 class ToDo extends Component {
     state = {
         tasks: [],
-        selectedTasks: new Set()
+        selectedTasks: new Set(),
     }
     selectTask = taskId => {
         const selectedTasks = new Set(this.state.selectedTasks)
@@ -57,44 +58,38 @@ class ToDo extends Component {
         this.setState({selectedTasks: selectedTasks})
 
     }
-    completeTask = taskId => {
-        const {tasks, status} = this.state
-        const completedTask = tasks.filter((task) => task._id === taskId)
-        const allTasks = tasks.filter((task) => task._id !== taskId)
-        completedTask[0].status = status[2]
-        this.setState({tasks: [...allTasks, completedTask]})
-    }
     addTask = task => {
         const {tasks} = this.state
         task._id = idGenerator()
-        if (task.name.trim() !==  '' & '' !== task.desc.trim() ) {
+        if (task.name.trim() !==  '') {
             const newTask = task
             this.setState({tasks: [...tasks, newTask]})
         }
     }
 
+    editTask = (newList) => {
+        this.setState({tasks: newList})
+    }
 
     render() {
         const {tasks, selectedTasks} = this.state
         const selectTask = this.selectTask
         const removeTask = this.removeTask
-        const completeTask = this.completeTask
+        const editTask = this.editTask
         return (
-            <Container  fluid className={classes.toDoList}>
-                <Row  className={`${classes.addTask} justify-content-md-center`}>
-                    <Col lg={6}>
-                        <TopMenu
-                            addTask={this.addTask}
-                            tasks={this.state.tasks}
-                            status={this.state.status}
-                            selectedTasks={selectedTasks}
-                            removeSelected={this.removeSelected}
-                            selectAllTasks={this.selectAllTasks}
-                            deselect={this.deselect}
+            <>
+                {/*Here goes logo, 'new task' 'select/deselect' and 'delete' buttons*/}
+                <Header
+                    addTask={this.addTask}
+                    tasks={this.state.tasks}
+                    status={this.state.status}
+                    selectedTasks={selectedTasks}
+                    removeSelected={this.removeSelected}
+                    selectAllTasks={this.selectAllTasks}
+                    deselect={this.deselect}
 
-                        />
-                    </Col>
-                </Row>
+                />
+                <Container  fluid className={classes.toDoList}>
                 <Row className={classes.tasks}>
                     {
                         tasks.map((task,index)=>{
@@ -108,7 +103,7 @@ class ToDo extends Component {
                                     <Card className={`${classes.task} ${selectedTasks.has(task._id)? classes.selected: ''}`}>
                                         <label  className={classes.select}>
                                             <input type="checkbox"
-                                                   className={classes.select}
+                                                   className={`${classes.select} rounded-0`}
                                                    onChange={()=> selectTask(task._id)}
                                                    checked={selectedTasks.has(task._id)}
                                             />
@@ -117,24 +112,19 @@ class ToDo extends Component {
 
                                         </label>
                                         <Card.Body className={classes.cBody}>
-                                            <Card.Title>{task.name}</Card.Title>
-                                            <Card.Subtitle className="mb-2 text-muted">{`Deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
-                                            <Card.Text>{task.desc}</Card.Text>
+                                            <Card.Title className={classes.title}>{task.name}</Card.Title>
+                                            <Card.Subtitle className={`mb-2 text-muted ${classes.deadline}`}>{`deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
+                                            <Card.Text className={`${classes.desc} ${task.desc ===''?classes.emptyDesc:''}`}>{task.desc === '' ? 'this task has no description': task.desc}</Card.Text>
                                             <ButtonGroup size="sm" className={classes.actions}>
-                                                <Button
-                                                    disabled={!!selectedTasks.size}
+                                                <Editor
+                                                    buttonName={<FontAwesomeIcon icon={faEdit} />}
+                                                    mode='edit'
+                                                    selectedTasks={selectedTasks}
+                                                    editTask={editTask}
                                                     variant='primary'
-                                                    className={`${classes.removeTask} ${classes.action}`}
-                                                    onClick={()=> removeTask(index)}
-                                                > <FontAwesomeIcon icon={faEdit} />
-                                                </Button>
-                                                <Button
-                                                    disabled={!!selectedTasks.size}
-                                                    variant='success'
-                                                    className={`${classes.removeTask} ${classes.action}`}
-                                                    onClick={()=> completeTask(task._id)}
-                                                > <FontAwesomeIcon icon={faCheck} />
-                                                </Button>
+                                                    id={task._id}
+                                                    tasks={tasks}
+                                                />
                                                 <Button
                                                     disabled={!!selectedTasks.size}
                                                     variant='danger'
@@ -151,6 +141,7 @@ class ToDo extends Component {
                     }
                 </Row>
             </Container>
+            </>
         )
     }
 

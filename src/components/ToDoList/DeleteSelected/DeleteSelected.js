@@ -15,14 +15,15 @@ class DeleteSelected extends Component {
         const {show} = this.state
         const handleClose = () => this.setState({show: false})
         const handleShow = () => this.setState({show: true})
-        const {selectedTasks, removeSelected} = this.props
+        const {selectedTasks, removeSelected, className} = this.props
         return (
             <>
                 <Button variant="danger"
+                        className={className}
                         disabled={!selectedTasks.size}
                         onClick={()=> {handleShow()}}
                 >
-                    delete selected
+                    delete
                 </Button>
                 <Modal show={show} onHide={handleClose} centered>
                     <Modal.Header closeButton>
@@ -33,9 +34,11 @@ class DeleteSelected extends Component {
                         <Button variant="danger" onClick={() => {
                             handleClose()
                             removeSelected(selectedTasks)}}>
-                            Delete {selectedTasks.size} tasks
+                            Delete {selectedTasks.size} task{selectedTasks.size>1?'s':''}
                         </Button>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary"
+                                onClick={handleClose}
+                        >
                             Close
                         </Button>
                     </Modal.Footer>

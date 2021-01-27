@@ -1,3 +1,5 @@
+*
+  border-radius: 0 !important
 .actions
   width: 100%
   display: flex
@@ -5,7 +7,7 @@
   flex-grow: 3
 
 .toDoList
-  margin-top: 70px
+  margin-top: 2rem
 
 .addTask
 
@@ -38,14 +40,14 @@
       top: 0.3rem
       width: 0.4rem
       height: 0.6rem
-      border: solid white
+      border: solid dodgerblue
       border-width: 0 0.19rem 0.19rem 0
       transform: rotate(45deg)
   input
     display: none
     &:checked + .checkmark
-      background: dodgerblue
-      border-color: dodgerblue
+      background: white
+      border-color: white
       &:after
         display: block
 
@@ -55,7 +57,38 @@
   overflow:
   text-align: left
   margin: 2rem 0 0
+  &:hover
+    border-color: #aaa
   &.selected
     border-color: dodgerblue !important
+    .fillWidth
+      background: dodgerblue
   .cBody
     padding: 0.9rem !important
+  .title
+    width: 100%
+    font-size: 1.1rem
+    cursor: pointer
+    display: -webkit-box
+    -webkit-line-clamp: 2 !important
+    -webkit-box-orient: vertical
+    overflow: hidden
+    line-height: 1.48rem
+    max-height: 3rem
+    &:hover
+      text-decoration: underline
+  .deadline
+    font-size: 0.9rem
+  .desc
+    width: 100%
+    font-size: 1rem
+    display: -webkit-box
+    -webkit-line-clamp: 3 !important
+    -webkit-box-orient: vertical
+    overflow: hidden
+    line-height: 1.3rem
+    min-height: 3.9rem
+    max-height: 4.9rem
+    &.emptyDesc
+      font-style: italic
+      color: grey
