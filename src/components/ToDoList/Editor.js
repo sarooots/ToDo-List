@@ -37,15 +37,11 @@ class Editor extends Component {
 
     acceptButton = () => {
         const newTask = {...this.state}
-        const { mode, action, toggleShow} = this.props
+        const {mode, action, toggleShow} = this.props
         if (mode === 'new') {
-            action(newTask)
             this.setState({name: '', desc: ''})
         }
-        if (mode === 'edit') {
-            const editedTask = {...this.state}
-            action(editedTask)
-        }
+        action(newTask)
         toggleShow()
 
     }

@@ -161,25 +161,25 @@ class ToDo extends Component {
                     </Row>
                 </Container>
                 {
-                    mode === 'edit' &&
+                    mode === 'edit' && show &&
                     <Editor
-                        mode='edit'
+                        mode={mode}
                         show={show}
-                        selectedTasks={selectedTasks}
                         action={this.editTask}
-                        task={editTask}
+                        selectedTasks={selectedTasks}
                         toggleShow={this.toggleShow}
+                        task={editTask}
 
                     />
                 }
                 {
-                    mode === 'new' &&
+                    mode === 'new' && show &&
                     <Editor
-                        action={this.addTask}
+                        mode={mode}
                         show={show}
+                        action={this.addTask}
                         selectedTasks={selectedTasks}
                         toggleShow={this.toggleShow}
-                        mode={mode}
                     />
                 }
             </>
