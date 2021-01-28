@@ -159,7 +159,6 @@ class ToDo extends PureComponent {
                         mode={mode}
                         show={show}
                         action={this.editTask}
-                        selectedTasks={selectedTasks}
                         toggleShow={this.toggleShow}
                         task={editTask}/>
                 }
@@ -169,7 +168,6 @@ class ToDo extends PureComponent {
                         mode={mode}
                         show={show}
                         action={this.addTask}
-                        selectedTasks={selectedTasks}
                         toggleShow={this.toggleShow}/>
                 }
             </>

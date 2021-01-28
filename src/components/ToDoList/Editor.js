@@ -25,7 +25,6 @@ class Editor extends Component {
     static propTypes = {
         action: PropTypes.func.isRequired,
         task: PropTypes.object,
-        selectedTasks: PropTypes.object.isRequired,
         mode: PropTypes.string.isRequired,
         show: PropTypes.bool.isRequired,
         toggleShow: PropTypes.func.isRequired,
@@ -52,7 +51,7 @@ class Editor extends Component {
 
     render() {
 
-        const {selectedTasks, mode, show, toggleShow} = this.props
+        const {mode, show, toggleShow} = this.props
 
         return (
             <Modal
@@ -85,8 +84,7 @@ class Editor extends Component {
                                               format='timestamp'
                                               min={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
                                               value={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
-                                              onChange={(event) => {this.changeTaskProperty(event, 'deadline')}}
-                                              disabled={!!selectedTasks.size}/>
+                                              onChange={(event) => {this.changeTaskProperty(event, 'deadline')}}/>
                             </Form.Group>
 
                         </Form.Row>
@@ -95,16 +93,14 @@ class Editor extends Component {
                                 <Form.Control as="textarea"
                                               placeholder="Write task description"
                                               value={this.state.desc}
-                                              onChange={(event) => {this.changeTaskProperty(event, 'desc')}}
-                                              disabled={!!selectedTasks.size}/>
+                                              onChange={(event) => {this.changeTaskProperty(event, 'desc')}}/>
                             </Form.Group>
                         </Form.Row>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant={mode ==='new'?"primary":'success'}
-                            onClick={this.acceptButton}
-                            disabled={!!selectedTasks.size}>
+                            onClick={this.acceptButton}>
                         {mode ==='new'?"add task":'save changes'}
                     </Button>
                     <Button variant="danger"
