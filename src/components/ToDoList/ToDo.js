@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import Header from './Header/Header'
 import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -9,7 +9,7 @@ import moment from "moment"
 import Editor from "./Editor"
 
 
-class ToDo extends PureComponent {
+class ToDo extends Component {
     state = {
         tasks: [],
         selectedTasks: new Set(),
