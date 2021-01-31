@@ -85,15 +85,40 @@ class ToDo extends Component {
     }
 
     removeSelected = () => {
-        const {tasks} = this.state
-        const selectedTasks = new Set(this.state.selectedTasks)
-        const newTask = tasks.filter((task)=>{
-            return !selectedTasks.has(task._id)
+        fetch(`http://localhost:3001/task/`, {
+            method: 'PATCH',
+            body: JSON.stringify({tasks: Array.from(this.state.selectedTasks)}),
+            headers: {
+                "Content-Type": "application/json"
+            }
         })
-        this.setState({
-            tasks: newTask,
-            selectedTasks: new Set()
-        })
+            .then(async (response)=>{
+                console.log(Array.from(this.state.selectedTasks))
+                const res = await response.json()
+                if (response.status >= 400 && res.status <600) {
+                    if (res.error) {
+                        throw res.error
+                    }
+                    else {
+                        throw new Error('mi ban en chi')
+                    }
+                }
+
+                const {tasks} = this.state
+                const selectedTasks = new Set(this.state.selectedTasks)
+                const newTask = tasks.filter((task)=>{
+                    return !selectedTasks.has(task._id)
+                })
+                this.setState({
+                    tasks: newTask,
+                    selectedTasks: new Set()
+                })
+
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
     }
 
     selectAllTasks = () => {
