@@ -28,15 +28,10 @@ class ToDo extends Component {
             .then(async (response)=>{
                 const res = await response.json()
                 if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                    throw res.error ?res.error : new Error('Something went wrong!')
                 }
-                const {tasks} = this.state
-                        this.setState({tasks: [...tasks, ...res]})
+
+                this.setState({tasks: res})
             })
             .catch(error => {
                 console.log(error)
@@ -63,20 +58,15 @@ class ToDo extends Component {
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                if (response.status >= 400 && response.status <600) {
+                    throw res.error ?res.error : new Error('Something went wrong!')
                 }
                 const {tasks} = this.state
                 this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
 
             })
             .catch(error => {
-                console.log(error)
+                console.log('catch error', error)
             })
 
 
@@ -92,13 +82,8 @@ class ToDo extends Component {
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                if (response.status >= 400 && response.status <600) {
+                    throw res.error ?res.error : new Error('Something went wrong!')
                 }
 
                 const {tasks} = this.state
@@ -113,7 +98,7 @@ class ToDo extends Component {
 
             })
             .catch(error => {
-                console.log(error)
+                console.log('catch error', error)
             })
 
     }
@@ -147,21 +132,14 @@ class ToDo extends Component {
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                    if(response.status >=400 && response.status < 600){
+                        throw res.error ?res.error : new Error('Something went wrong!')
                 }
                 const {tasks} = this.state
-                if (res.title.trim() !==  '') {
-                    this.setState({tasks: [...tasks, res]})
-                }
+                this.setState({tasks: [...tasks, res]})
             })
             .catch(error => {
-                console.log(error)
+                console.log('catch error', error)
             })
     }
 
@@ -175,24 +153,17 @@ class ToDo extends Component {
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                if (response.status >= 400 && response.status <600) {
+                    throw res.error ?res.error : new Error('Something went wrong!')
                 }
                 const {tasks} = this.state
-                if (editedTask.title.trim() !==  '') {
-                    const newList = tasks
-                    const editId = tasks.findIndex((el)=> el._id===editedTask._id)
-                    newList[editId] = res
-                    this.setState({tasks: newList})
-                }
+                const newList = tasks
+                const editId = tasks.findIndex((el)=> el._id===editedTask._id)
+                newList[editId] = res
+                this.setState({tasks: newList})
             })
             .catch(error => {
-                console.log(error)
+                console.log('catch error', error)
             })
     }
 

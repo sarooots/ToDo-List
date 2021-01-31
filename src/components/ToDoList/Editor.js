@@ -15,9 +15,9 @@ class Editor extends Component {
         } else {
             this.state = {
                 title: '',
-                description: '',
-                date: new Date().getTime() + 1440 * 60 * 1000,
-                // _id: idGenerator(),
+                description: 4,
+                // date: new Date(),
+                // date: new Date().getTime() + 1440 * 60 * 1000,
             }
         }
     }
