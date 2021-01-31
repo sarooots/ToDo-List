@@ -166,13 +166,34 @@ class ToDo extends Component {
     }
 
     editTask = (editedTask) => {
-        const {tasks} = this.state
-        if (editedTask.title.trim() !==  '') {
-            const newList = tasks
-            const editId = tasks.findIndex((el)=> el._id===editedTask._id)
-            newList[editId] = editedTask
-            this.setState({tasks: newList, show: !this.state.show})
-        }
+        fetch(`http://localhost:3001/task/${editedTask._id}`, {
+            method: 'PUT',
+            body: JSON.stringify(editedTask),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(async (response)=>{
+                const res = await response.json()
+                if (response.status >= 400 && res.status <600) {
+                    if (res.error) {
+                        throw res.error
+                    }
+                    else {
+                        throw new Error('mi ban en chi')
+                    }
+                }
+                const {tasks} = this.state
+                if (editedTask.title.trim() !==  '') {
+                    const newList = tasks
+                    const editId = tasks.findIndex((el)=> el._id===editedTask._id)
+                    newList[editId] = res
+                    this.setState({tasks: newList})
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     toggleShow = () => this.setState({show: !this.state.show})
@@ -218,10 +239,10 @@ class ToDo extends Component {
                                             </label>
                                             <Card.Body className={classes.cBody}>
                                                 <Card.Title className={classes.title}>{task.title}</Card.Title>
-                                                <Card.Subtitle className={`mb-2 text-muted ${classes.deadline}`}>{`deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
+                                                <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${moment(task.date).format("MMM Do YY")}`}</Card.Subtitle>
                                                 <Card.Text className={`${classes.desc} ${task.description ===''?classes.emptyDesc:''}`}>{task.description === '' ? 'this task has no description': task.description}</Card.Text>
                                                 <ButtonGroup size="sm" className={classes.actions}>
-                                                    <Button variant='dark'
+                                                    <Button variant='success'
                                                             onClick={() => {
                                                                 this.handleEdit(task)
                                                                 this.changeMode('edit')

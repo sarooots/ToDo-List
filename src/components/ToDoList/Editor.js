@@ -16,7 +16,7 @@ class Editor extends Component {
             this.state = {
                 title: '',
                 description: '',
-                deadline: new Date().getTime() + 1440 * 60 * 1000,
+                date: new Date().getTime() + 1440 * 60 * 1000,
                 // _id: idGenerator(),
             }
         }
@@ -32,7 +32,7 @@ class Editor extends Component {
 
     changeTaskProperty = (event, property ) => {
         new Date(event.target.value).getTime()
-        const  value = property === 'deadline'? new Date(event.target.value).getTime(): event.target.value
+        const  value = property === 'date'? new Date(event.target.value).getTime(): event.target.value
         this.setState({[property]: value})
     }
 
@@ -77,14 +77,14 @@ class Editor extends Component {
                                                   this.changeTaskProperty(event, 'title')
                                               }}/>
                             </Form.Group>
-                            <Form.Group as={Col} controlId='deadline'>
-                                <Form.Label>Deadline</Form.Label>
+                            <Form.Group as={Col} controlId='date'>
+                                <Form.Label>Date</Form.Label>
                                 <Form.Control type="datetime-local"
                                               placeholder="Write task description"
                                               format='timestamp'
-                                              min={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
-                                              value={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
-                                              onChange={(event) => {this.changeTaskProperty(event, 'deadline')}}/>
+                                              min={moment(this.state.date).format('YYYY-MM-DDThh:mm')}
+                                              value={moment(this.state.date).format('YYYY-MM-DDThh:mm')}
+                                              onChange={(event) => {this.changeTaskProperty(event, 'date')}}/>
                             </Form.Group>
 
                         </Form.Row>
