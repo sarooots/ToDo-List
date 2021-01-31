@@ -35,7 +35,6 @@ class ToDo extends Component {
                         throw new Error('mi ban en chi')
                     }
                 }
-                console.log(res)
                 const {tasks} = this.state
                         this.setState({tasks: [...tasks, ...res]})
             })
@@ -63,7 +62,6 @@ class ToDo extends Component {
             }
         })
             .then(async (response)=>{
-                console.log(response)
                 const res = await response.json()
                 if (response.status >= 400 && res.status <600) {
                     if (res.error) {
@@ -93,7 +91,6 @@ class ToDo extends Component {
             }
         })
             .then(async (response)=>{
-                console.log(Array.from(this.state.selectedTasks))
                 const res = await response.json()
                 if (response.status >= 400 && res.status <600) {
                     if (res.error) {
@@ -141,7 +138,6 @@ class ToDo extends Component {
     }
 
     addTask = task => {
-        console.log(task)
         fetch('http://localhost:3001/task', {
             method: 'POST',
             body: JSON.stringify(task),
@@ -159,7 +155,6 @@ class ToDo extends Component {
                         throw new Error('mi ban en chi')
                     }
                 }
-                console.log(res)
                 const {tasks} = this.state
                 if (res.title.trim() !==  '') {
                     this.setState({tasks: [...tasks, res]})
