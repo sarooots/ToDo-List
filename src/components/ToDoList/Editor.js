@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Button, Col, Form, Modal} from 'react-bootstrap'
 import PropTypes from "prop-types"
 import moment from "moment";
-import idGenerator from "../../helpers/idGenerator"
+// import idGenerator from "../../helpers/idGenerator"
 // import classes from './Editor.sass'
 
 class Editor extends Component {
@@ -14,10 +14,10 @@ class Editor extends Component {
             this.state = {...task}
         } else {
             this.state = {
-                name: '',
-                desc: '',
-                deadline: new Date().getTime() + 1440 * 60 * 1000,
-                _id: idGenerator(),
+                title: '',
+                description: '',
+                date: new Date().getTime() + 1440 * 60 * 1000,
+                // _id: idGenerator(),
             }
         }
     }
@@ -32,18 +32,18 @@ class Editor extends Component {
 
     changeTaskProperty = (event, property ) => {
         new Date(event.target.value).getTime()
-        const  value = property === 'deadline'? new Date(event.target.value).getTime(): event.target.value
+        const  value = property === 'date'? new Date(event.target.value).getTime(): event.target.value
         this.setState({[property]: value})
     }
 
     acceptButton = () => {
         const newTask = {...this.state}
         const {mode, action, toggleShow} = this.props
-        if (newTask.name.trim() !==  '') {
+        if (newTask.title.trim() !==  '') {
             action(newTask)
             toggleShow()
             if (mode === 'new') {
-                this.setState({name: '', desc: ''})
+                this.setState({title: '', description: ''})
             }
         }
 
@@ -68,23 +68,23 @@ class Editor extends Component {
                 <Modal.Body>
                     <Form onSubmit={(event)=> event.preventDefault()}>
                         <Form.Row >
-                            <Form.Group as={Col} controlId='taskName'>
-                                <Form.Label>Task Name</Form.Label>
+                            <Form.Group as={Col} controlId='taskTitle'>
+                                <Form.Label>Task Title</Form.Label>
                                 <Form.Control type="text"
                                               placeholder="Add new task"
-                                              value={this.state.name}
+                                              value={this.state.title}
                                               onChange={(event) => {
-                                                  this.changeTaskProperty(event, 'name')
+                                                  this.changeTaskProperty(event, 'title')
                                               }}/>
                             </Form.Group>
-                            <Form.Group as={Col} controlId='deadline'>
-                                <Form.Label>Deadline</Form.Label>
+                            <Form.Group as={Col} controlId='date'>
+                                <Form.Label>Date</Form.Label>
                                 <Form.Control type="datetime-local"
                                               placeholder="Write task description"
                                               format='timestamp'
-                                              min={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
-                                              value={moment(this.state.deadline).format('YYYY-MM-DDThh:mm')}
-                                              onChange={(event) => {this.changeTaskProperty(event, 'deadline')}}/>
+                                              min={moment(this.state.date).format('YYYY-MM-DDThh:mm')}
+                                              value={moment(this.state.date).format('YYYY-MM-DDThh:mm')}
+                                              onChange={(event) => {this.changeTaskProperty(event, 'date')}}/>
                             </Form.Group>
 
                         </Form.Row>
@@ -92,8 +92,8 @@ class Editor extends Component {
                             <Form.Group as={Col} controlId='taskDesc'>
                                 <Form.Control as="textarea"
                                               placeholder="Write task description"
-                                              value={this.state.desc}
-                                              onChange={(event) => {this.changeTaskProperty(event, 'desc')}}/>
+                                              value={this.state.description}
+                                              onChange={(event) => {this.changeTaskProperty(event, 'description')}}/>
                             </Form.Group>
                         </Form.Row>
                     </Form>

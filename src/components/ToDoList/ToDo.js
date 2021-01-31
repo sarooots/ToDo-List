@@ -4,7 +4,7 @@ import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
 import {Container, Col, Row, Button, Card, ButtonGroup} from 'react-bootstrap'
-import idGenerator from "../../helpers/idGenerator"
+// import idGenerator from "../../helpers/idGenerator"
 import moment from "moment"
 import Editor from "./Editor"
 
@@ -18,6 +18,31 @@ class ToDo extends Component {
         mode: 'new'
     }
 
+    componentDidMount() {
+        fetch('http://localhost:3001/task', {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(async (response)=>{
+                const res = await response.json()
+                if (response.status >= 400 && res.status <600) {
+                    if (res.error) {
+                        throw res.error
+                    }
+                    else {
+                        throw new Error('mi ban en chi')
+                    }
+                }
+                const {tasks} = this.state
+                        this.setState({tasks: [...tasks, ...res]})
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
     selectTask = taskId => {
         const selectedTasks = new Set(this.state.selectedTasks)
         if (selectedTasks.has(taskId)) {
@@ -29,20 +54,68 @@ class ToDo extends Component {
     }
 
     removeTask = taskId => {
-        const {tasks} = this.state
-        this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
+
+        fetch(`http://localhost:3001/task/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(async (response)=>{
+                const res = await response.json()
+                if (response.status >= 400 && res.status <600) {
+                    if (res.error) {
+                        throw res.error
+                    }
+                    else {
+                        throw new Error('mi ban en chi')
+                    }
+                }
+                const {tasks} = this.state
+                this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
+
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+
     }
 
     removeSelected = () => {
-        const {tasks} = this.state
-        const selectedTasks = new Set(this.state.selectedTasks)
-        const newTask = tasks.filter((task)=>{
-           return !selectedTasks.has(task._id)
+        fetch(`http://localhost:3001/task/`, {
+            method: 'PATCH',
+            body: JSON.stringify({tasks: Array.from(this.state.selectedTasks)}),
+            headers: {
+                "Content-Type": "application/json"
+            }
         })
-        this.setState({
-            tasks: newTask,
-            selectedTasks: new Set()
-        })
+            .then(async (response)=>{
+                const res = await response.json()
+                if (response.status >= 400 && res.status <600) {
+                    if (res.error) {
+                        throw res.error
+                    }
+                    else {
+                        throw new Error('mi ban en chi')
+                    }
+                }
+
+                const {tasks} = this.state
+                const selectedTasks = new Set(this.state.selectedTasks)
+                const newTask = tasks.filter((task)=>{
+                    return !selectedTasks.has(task._id)
+                })
+                this.setState({
+                    tasks: newTask,
+                    selectedTasks: new Set()
+                })
+
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
     }
 
     selectAllTasks = () => {
@@ -65,21 +138,62 @@ class ToDo extends Component {
     }
 
     addTask = task => {
-        const {tasks} = this.state
-        task._id = idGenerator()
-        if (task.name.trim() !==  '') {
-            this.setState({tasks: [...tasks, task], showNew: !this.state.showNew})
-        }
+        fetch('http://localhost:3001/task', {
+            method: 'POST',
+            body: JSON.stringify(task),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(async (response)=>{
+                const res = await response.json()
+                if (response.status >= 400 && res.status <600) {
+                    if (res.error) {
+                        throw res.error
+                    }
+                    else {
+                        throw new Error('mi ban en chi')
+                    }
+                }
+                const {tasks} = this.state
+                if (res.title.trim() !==  '') {
+                    this.setState({tasks: [...tasks, res]})
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     editTask = (editedTask) => {
-        const {tasks} = this.state
-        if (editedTask.name.trim() !==  '') {
-        const newList = tasks
-        const editId = tasks.findIndex((el)=> el._id===editedTask._id)
-        newList[editId] = editedTask
-        this.setState({tasks: newList, showEdit: !this.state.showEdit})
-        }
+        fetch(`http://localhost:3001/task/${editedTask._id}`, {
+            method: 'PUT',
+            body: JSON.stringify(editedTask),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(async (response)=>{
+                const res = await response.json()
+                if (response.status >= 400 && res.status <600) {
+                    if (res.error) {
+                        throw res.error
+                    }
+                    else {
+                        throw new Error('mi ban en chi')
+                    }
+                }
+                const {tasks} = this.state
+                if (editedTask.title.trim() !==  '') {
+                    const newList = tasks
+                    const editId = tasks.findIndex((el)=> el._id===editedTask._id)
+                    newList[editId] = res
+                    this.setState({tasks: newList})
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     toggleShow = () => this.setState({show: !this.state.show})
@@ -124,11 +238,11 @@ class ToDo extends Component {
 
                                             </label>
                                             <Card.Body className={classes.cBody}>
-                                                <Card.Title className={classes.title}>{task.name}</Card.Title>
-                                                <Card.Subtitle className={`mb-2 text-muted ${classes.deadline}`}>{`deadline: ${moment(task.deadline).format("MMM Do YY")}`}</Card.Subtitle>
-                                                <Card.Text className={`${classes.desc} ${task.desc ===''?classes.emptyDesc:''}`}>{task.desc === '' ? 'this task has no description': task.desc}</Card.Text>
+                                                <Card.Title className={classes.title}>{task.title}</Card.Title>
+                                                <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${moment(task.date).format("MMM Do YY")}`}</Card.Subtitle>
+                                                <Card.Text className={`${classes.desc} ${task.description ===''?classes.emptyDesc:''}`}>{task.description === '' ? 'this task has no description': task.description}</Card.Text>
                                                 <ButtonGroup size="sm" className={classes.actions}>
-                                                    <Button variant='dark'
+                                                    <Button variant='success'
                                                             onClick={() => {
                                                                 this.handleEdit(task)
                                                                 this.changeMode('edit')
