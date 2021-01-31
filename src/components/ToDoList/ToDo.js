@@ -46,7 +46,6 @@ class ToDo extends Component {
     }
 
     selectAllTasks = () => {
-        console.log('gago')
         const {tasks} = this.state
         const selectedTasks = new Set(this.state.selectedTasks)
         if (selectedTasks.size < tasks.length) {
