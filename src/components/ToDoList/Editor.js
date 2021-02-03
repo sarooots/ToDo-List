@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {Button, Col, Form, Modal} from 'react-bootstrap'
 import PropTypes from "prop-types"
-import moment from "moment";
-// import idGenerator from "../../helpers/idGenerator"
-// import classes from './Editor.sass'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"
+import {formatDate} from '../../helpers/utils'
+import classes from './Editor.sass'
 
 class Editor extends Component {
     constructor(props) {
@@ -15,9 +16,8 @@ class Editor extends Component {
         } else {
             this.state = {
                 title: '',
-                description: 4,
-                // date: new Date(),
-                // date: new Date().getTime() + 1440 * 60 * 1000,
+                description: '',
+                date: new Date(),
             }
         }
     }
@@ -31,13 +31,20 @@ class Editor extends Component {
     }
 
     changeTaskProperty = (event, property ) => {
-        new Date(event.target.value).getTime()
-        const  value = property === 'date'? new Date(event.target.value).getTime(): event.target.value
-        this.setState({[property]: value})
+        this.setState({[property]: event.target.value})
+    }
+    changeTaskDate = (value) => {
+        this.setState({
+            date: value || new Date()
+        })
+        // console.log(value)
+        // this.setState({date: value})
     }
 
     acceptButton = () => {
         const newTask = {...this.state}
+        newTask.date = formatDate(newTask.date.toISOString())
+        console.log(newTask)
         const {mode, action, toggleShow} = this.props
         if (newTask.title.trim() !==  '') {
             action(newTask)
@@ -79,12 +86,14 @@ class Editor extends Component {
                             </Form.Group>
                             <Form.Group as={Col} controlId='date'>
                                 <Form.Label>Date</Form.Label>
-                                <Form.Control type="datetime-local"
-                                              placeholder="Write task description"
-                                              format='timestamp'
-                                              min={moment(this.state.date).format('YYYY-MM-DDThh:mm')}
-                                              value={moment(this.state.date).format('YYYY-MM-DDThh:mm')}
-                                              onChange={(event) => {this.changeTaskProperty(event, 'date')}}/>
+                                <div>
+                                <DatePicker
+                                    minDate={new Date()}
+                                    selected={this.state.date}
+                                    onChange={this.changeTaskDate}
+                                    customInput={<Form.Control type="text" className={classes.date}/>}
+                                />
+                                </div>
                             </Form.Group>
 
                         </Form.Row>

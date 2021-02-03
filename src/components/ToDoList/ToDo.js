@@ -4,8 +4,7 @@ import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
 import {Container, Col, Row, Button, Card, ButtonGroup} from 'react-bootstrap'
-// import idGenerator from "../../helpers/idGenerator"
-import moment from "moment"
+import {formatDate} from '../../helpers/utils'
 import Editor from "./Editor"
 
 
@@ -182,7 +181,6 @@ class ToDo extends Component {
                     tasks={this.state.tasks}
                     selectedTasks={selectedTasks}
                     removeSelected={this.removeSelected}
-                    // selectAllTasks={this.selectAllTasks}
                     selectAllTasks={this.selectAllTasks}
                     deselect={this.deselect}
                     toggleShow={this.toggleShow}
@@ -210,7 +208,7 @@ class ToDo extends Component {
                                             </label>
                                             <Card.Body className={classes.cBody}>
                                                 <Card.Title className={classes.title}>{task.title}</Card.Title>
-                                                <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${moment(task.date).format("MMM Do YY")}`}</Card.Subtitle>
+                                                <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${formatDate(task.date)}`}</Card.Subtitle>
                                                 <Card.Text className={`${classes.desc} ${task.description ===''?classes.emptyDesc:''}`}>{task.description === '' ? 'this task has no description': task.description}</Card.Text>
                                                 <ButtonGroup size="sm" className={classes.actions}>
                                                     <Button variant='success'
