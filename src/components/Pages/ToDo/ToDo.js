@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import Header from './Header/Header'
+import Header from '../../Header/Header'
 import classes from './ToDo.module.sass'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
 import {Container, Col, Row, Button, Card, ButtonGroup} from 'react-bootstrap'
-import {formatDate} from '../../helpers/utils'
-import Editor from "./Editor"
+import {formatDate} from '../../../helpers/utils'
+import Editor from "../../Editor/Editor"
 
 
 class ToDo extends Component {
