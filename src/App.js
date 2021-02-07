@@ -5,13 +5,13 @@ import Contact from './components/Pages/Contact/Contact'
 import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom'
-import Header from './components/Header/Header'
+import Navbar from './components/NavMenu/NavMenu'
 import './App.scss'
 function App() {
     return (
         <div className="App">
-            {/*<Header/>*/}
             <BrowserRouter>
+                <Navbar/>
                 <Switch>
                     <Route
                         path='/'
@@ -34,7 +34,7 @@ function App() {
                         exact
                     />
                     <Route
-                        path='/task'
+                        path='/task/:taskId'
                         component = {SingleTask}
                         exact
                     />

@@ -1,0 +1,45 @@
+.navMenu
+  height: 3.75rem
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  background: #282c34
+  padding: 0 8rem !important
+  justify-content: left
+  .logo
+    font-family: BebasNeue
+    font-size: 2rem
+    line-height: 3.5rem
+    height: 3.75rem
+    text-transform: uppercase
+    color: white
+    text-align: center
+
+  .item
+  .menu
+    margin: 0 0.5rem
+    display: flex
+    flex-wrap: nowrap
+    .link
+      padding: 0 0.5rem
+      height: 3.75rem
+      line-height: 3.75rem
+      text-align: center
+      color: white
+      &:hover
+        background: #111217
+
+
+
+@media (max-width: 33rem)
+  .navMenu
+    padding: 0 2rem
+@media (max-width: 25.8rem)
+  .navMenu
+    flex-wrap: wrap
+    height: 7.5rem
+    justify-content: center
+    .logo
+      height: 2.5rem
+    .menu
+      flex-wrap: wrap

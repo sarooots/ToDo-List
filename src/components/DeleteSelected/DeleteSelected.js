@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {Button, Modal} from 'react-bootstrap'
+import React, {Component} from "react"
+import {Button, Modal} from "react-bootstrap"
 import PropTypes from "prop-types"
 
 class DeleteSelected extends Component {
@@ -19,7 +19,7 @@ class DeleteSelected extends Component {
         const {selectedTasks, removeSelected, className} = this.props
         return (
             <>
-                <Button variant="danger"
+                <Button variant="outline-danger"
                         className={className}
                         disabled={!selectedTasks.size}
                         onClick={()=> {if(selectedTasks.size === 1) {
@@ -34,12 +34,12 @@ class DeleteSelected extends Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Selected</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>Do you really want to delete selected {selectedTasks.size} task{selectedTasks.size>1?'s':''} ?</Modal.Body>
+                    <Modal.Body>Do you really want to delete selected {selectedTasks.size} task{selectedTasks.size>1?"s":""} ?</Modal.Body>
                     <Modal.Footer>
                         <Button variant="danger" onClick={() => {
                             handleClose()
                             removeSelected(selectedTasks)}}>
-                            Delete {selectedTasks.size} task{selectedTasks.size>1?'s':''}
+                            Delete {selectedTasks.size} task{selectedTasks.size>1?"s":""}
                         </Button>
                         <Button variant="secondary"
                                 onClick={handleClose}>
