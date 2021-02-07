@@ -180,7 +180,6 @@ class ToDo extends Component {
         return (
             <>
                 {/*Here goes logo, "new task" "select/deselect" and "delete" buttons*/}
-
                 <Container  fluid className={classes.toDoList}>
                     <Actions
                         tasks={this.state.tasks}
