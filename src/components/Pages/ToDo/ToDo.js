@@ -215,7 +215,7 @@ class ToDo extends Component {
                                                 </Link>
                                                 <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${formatDate(task.date)}`}</Card.Subtitle>
                                                 <Card.Text className={`${classes.desc} ${task.description ===""?classes.emptyDesc:""}`}>
-                                                    {task.description === "" ? "this task has no description": stringTrimmer(task.description, 10)}
+                                                    {task.description === "" ? "this task has no description": stringTrimmer(task.description, 55)}
                                                 </Card.Text>
                                                 <ButtonGroup size="sm" className={classes.actions}>
                                                     <Button variant="success"

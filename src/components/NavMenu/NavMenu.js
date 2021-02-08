@@ -7,7 +7,9 @@ class NavMenu extends PureComponent {
     render() {
         return (
             <Navbar variant="dark" className={classes.navMenu}>
-                <Navbar.Brand href="#home" className={`${classes.logo} ${classes.item}`}>To Do List</Navbar.Brand>
+                <NavLink to="/">
+                <Navbar.Brand className={`${classes.logo} ${classes.item}`}>To Do List</Navbar.Brand>
+                </NavLink>
                 <Nav className={`${classes.menu} ${classes.item}`}>
                     <NavLink to="/home" className={`${classes.link}`}>Home</NavLink>
                     <NavLink to="/about" className={`${classes.link}`}>About</NavLink>

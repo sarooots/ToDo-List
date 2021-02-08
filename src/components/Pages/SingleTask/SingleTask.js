@@ -44,6 +44,7 @@ export default class SingleTask extends Component{
                     throw res.error ?res.error : new Error("Something went wrong!")
                 }
                 this.setState({task: null})
+                this.props.history.push('/')
 
             })
             .catch(error => {
