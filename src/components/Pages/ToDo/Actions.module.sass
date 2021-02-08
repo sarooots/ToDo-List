@@ -1,33 +1,19 @@
-.header
-  height: 3.75rem
+.items
+  height: 3rem
   display: flex
-  flex-direction: row
-  flex-wrap: nowrap
-  background: #282c34
-  padding: 0 8rem
-  justify-content: space-between
-  .logo
-    font-family: BebasNeue
-    font-size: 2rem
-    line-height: 4rem
-    text-transform: uppercase
-    color: white
-  .items
-    height: 3.75rem
-    display: flex
-    .item
+  .item
+    height: 2.5rem
+    margin: 0 0.3rem 0 0
+    align-self: center
+    &.checkbox
+      width: 4rem
       height: 2.5rem
-      margin: 0.7rem 0.3rem
-      align-self: center
-      &.checkbox
-        width: 4rem
-        height: 2.5rem
 
-        position: relative
-        background: #61dafb
-        .deselect
-          width: 100%
-          height: 100%
+      position: relative
+      background: #61dafb
+      .deselect
+        width: 100%
+        height: 100%
 .select
   width: 1.9rem
   height: 100%

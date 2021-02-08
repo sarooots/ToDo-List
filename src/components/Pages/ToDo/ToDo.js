@@ -1,12 +1,12 @@
-import React, {Component} from 'react'
-import Header from './Header/Header'
-import classes from './ToDo.module.sass'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faEdit, faTrash} from '@fortawesome/free-solid-svg-icons'
-import {Container, Col, Row, Button, Card, ButtonGroup} from 'react-bootstrap'
-// import idGenerator from "../../helpers/idGenerator"
-import moment from "moment"
-import Editor from "./Editor"
+import React, {Component} from "react"
+import Actions from "./Actions"
+import classes from "./ToDo.module.sass"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
+import {Container, Col, Row, Button, Card, ButtonGroup} from "react-bootstrap"
+import {formatDate, stringTrimmer} from "../../../helpers/utils"
+import Editor from "../../Editor/Editor"
+import {Link} from "react-router-dom"
 
 
 class ToDo extends Component {
@@ -15,28 +15,23 @@ class ToDo extends Component {
         selectedTasks: new Set(),
         show: false,
         editTask: null,
-        mode: 'new'
+        mode: "new"
     }
 
     componentDidMount() {
-        fetch('http://localhost:3001/task', {
-            method: 'GET',
+        fetch("http://localhost:3001/task", {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json"
             }
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                if (response.status >= 400 && response.status <600) {
+                    throw res.error ?res.error : new Error("Something went wrong!")
                 }
-                const {tasks} = this.state
-                        this.setState({tasks: [...tasks, ...res]})
+
+                this.setState({tasks: res})
             })
             .catch(error => {
                 console.log(error)
@@ -56,27 +51,22 @@ class ToDo extends Component {
     removeTask = taskId => {
 
         fetch(`http://localhost:3001/task/${taskId}`, {
-            method: 'DELETE',
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
             }
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                if (response.status >= 400 && response.status <600) {
+                    throw res.error ?res.error : new Error("Something went wrong!")
                 }
                 const {tasks} = this.state
                 this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
 
             })
             .catch(error => {
-                console.log(error)
+                console.log("catch error", error)
             })
 
 
@@ -84,7 +74,7 @@ class ToDo extends Component {
 
     removeSelected = () => {
         fetch(`http://localhost:3001/task/`, {
-            method: 'PATCH',
+            method: "PATCH",
             body: JSON.stringify({tasks: Array.from(this.state.selectedTasks)}),
             headers: {
                 "Content-Type": "application/json"
@@ -92,13 +82,8 @@ class ToDo extends Component {
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                if (response.status >= 400 && response.status <600) {
+                    throw res.error ?res.error : new Error("Something went wrong!")
                 }
 
                 const {tasks} = this.state
@@ -113,7 +98,7 @@ class ToDo extends Component {
 
             })
             .catch(error => {
-                console.log(error)
+                console.log("catch error", error)
             })
 
     }
@@ -129,17 +114,19 @@ class ToDo extends Component {
             selectedTasks.clear()
         }
         this.setState({selectedTasks: selectedTasks})
+
     }
 
     deselect = () => {
         const selectedTasks = new Set(this.state.selectedTasks)
         selectedTasks.clear()
         this.setState({selectedTasks: selectedTasks})
+
     }
 
     addTask = task => {
-        fetch('http://localhost:3001/task', {
-            method: 'POST',
+        fetch("http://localhost:3001/task", {
+            method: "POST",
             body: JSON.stringify(task),
             headers: {
                 "Content-Type": "application/json"
@@ -147,27 +134,20 @@ class ToDo extends Component {
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                    if(response.status >=400 && response.status < 600){
+                        throw res.error ?res.error : new Error("Something went wrong!")
                 }
                 const {tasks} = this.state
-                if (res.title.trim() !==  '') {
-                    this.setState({tasks: [...tasks, res]})
-                }
+                this.setState({tasks: [...tasks, res]})
             })
             .catch(error => {
-                console.log(error)
+                console.log("catch error", error)
             })
     }
 
     editTask = (editedTask) => {
         fetch(`http://localhost:3001/task/${editedTask._id}`, {
-            method: 'PUT',
+            method: "PUT",
             body: JSON.stringify(editedTask),
             headers: {
                 "Content-Type": "application/json"
@@ -175,24 +155,17 @@ class ToDo extends Component {
         })
             .then(async (response)=>{
                 const res = await response.json()
-                if (response.status >= 400 && res.status <600) {
-                    if (res.error) {
-                        throw res.error
-                    }
-                    else {
-                        throw new Error('mi ban en chi')
-                    }
+                if (response.status >= 400 && response.status <600) {
+                    throw res.error ?res.error : new Error("Something went wrong!")
                 }
                 const {tasks} = this.state
-                if (editedTask.title.trim() !==  '') {
-                    const newList = tasks
-                    const editId = tasks.findIndex((el)=> el._id===editedTask._id)
-                    newList[editId] = res
-                    this.setState({tasks: newList})
-                }
+                const newList = tasks
+                const editId = tasks.findIndex((el)=> el._id===editedTask._id)
+                newList[editId] = res
+                this.setState({tasks: newList})
             })
             .catch(error => {
-                console.log(error)
+                console.log("catch error", error)
             })
     }
 
@@ -206,18 +179,17 @@ class ToDo extends Component {
         const {tasks, selectedTasks, editTask, show, mode} = this.state
         return (
             <>
-                {/*Here goes logo, 'new task' 'select/deselect' and 'delete' buttons*/}
-                <Header
-                    tasks={this.state.tasks}
-                    selectedTasks={selectedTasks}
-                    removeSelected={this.removeSelected}
-                    // selectAllTasks={this.selectAllTasks}
-                    selectAllTasks={this.selectAllTasks}
-                    deselect={this.deselect}
-                    toggleShow={this.toggleShow}
-                    changeMode={this.changeMode}/>
-
+                {/*Here goes logo, "new task" "select/deselect" and "delete" buttons*/}
                 <Container  fluid className={classes.toDoList}>
+                    <Actions
+                        tasks={this.state.tasks}
+                        selectedTasks={selectedTasks}
+                        removeSelected={this.removeSelected}
+                        selectAllTasks={this.selectAllTasks}
+                        deselect={this.deselect}
+                        toggleShow={this.toggleShow}
+                        changeMode={this.changeMode}/>
+
                     <Row>
                         {
                             tasks.map((task)=>{
@@ -227,7 +199,7 @@ class ToDo extends Component {
                                          md={4}
                                          sm={6}
                                          xs={12}>
-                                        <Card className={`${classes.task} ${selectedTasks.has(task._id)? classes.selected: ''}`}>
+                                        <Card className={`${classes.task} ${selectedTasks.has(task._id)? classes.selected: ""}`}>
                                             <label  className={classes.select}>
                                                 <input type="checkbox"
                                                        className={`${classes.select} rounded-0`}
@@ -238,14 +210,18 @@ class ToDo extends Component {
 
                                             </label>
                                             <Card.Body className={classes.cBody}>
+                                                <Link to={`/task/${task._id}`}>
                                                 <Card.Title className={classes.title}>{task.title}</Card.Title>
-                                                <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${moment(task.date).format("MMM Do YY")}`}</Card.Subtitle>
-                                                <Card.Text className={`${classes.desc} ${task.description ===''?classes.emptyDesc:''}`}>{task.description === '' ? 'this task has no description': task.description}</Card.Text>
+                                                </Link>
+                                                <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${formatDate(task.date)}`}</Card.Subtitle>
+                                                <Card.Text className={`${classes.desc} ${task.description ===""?classes.emptyDesc:""}`}>
+                                                    {task.description === "" ? "this task has no description": stringTrimmer(task.description, 55)}
+                                                </Card.Text>
                                                 <ButtonGroup size="sm" className={classes.actions}>
-                                                    <Button variant='success'
+                                                    <Button variant="success"
                                                             onClick={() => {
                                                                 this.handleEdit(task)
-                                                                this.changeMode('edit')
+                                                                this.changeMode("edit")
                                                             }}
                                                             className="rounded-0 text-nowrap"
                                                             disabled={!!selectedTasks.size}>
@@ -253,7 +229,7 @@ class ToDo extends Component {
                                                     </Button>
                                                     <Button
                                                         disabled={!!selectedTasks.size}
-                                                        variant='danger'
+                                                        variant="danger"
                                                         onClick={()=> this.removeTask(task._id)}>
                                                         <FontAwesomeIcon icon={faTrash} />
                                                     </Button>
@@ -267,7 +243,7 @@ class ToDo extends Component {
                     </Row>
                 </Container>
                 {
-                    mode === 'edit' && show &&
+                    mode === "edit" && show &&
                     <Editor
                         mode={mode}
                         show={show}
@@ -276,7 +252,7 @@ class ToDo extends Component {
                         task={editTask}/>
                 }
                 {
-                    mode === 'new' && show &&
+                    mode === "new" && show &&
                     <Editor
                         mode={mode}
                         show={show}
