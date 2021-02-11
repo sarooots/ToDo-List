@@ -24,7 +24,7 @@ class Editor extends Component {
                 date: new Date(),
             }
         }
-        this.focused = createRef()
+        this.focusedRef = createRef()
     }
 
     static propTypes = {
@@ -36,7 +36,7 @@ class Editor extends Component {
     }
 
     componentDidMount() {
-        this.focused.current.focus()
+        this.focusedRef.current.focus()
     }
 
     changeTaskProperty = (event, property ) => {
@@ -46,7 +46,6 @@ class Editor extends Component {
         this.setState({
             date: value || formatDate(new Date().toISOString())
         })
-        // this.setState({date: value})
     }
 
     acceptButton = () => {
@@ -84,7 +83,7 @@ class Editor extends Component {
                             <Form.Group as={Col} controlId="taskTitle">
                                 <Form.Label>Task Title</Form.Label>
                                 <Form.Control type="text"
-                                              ref={this.focused}
+                                              ref={this.focusedRef}
                                               placeholder="Add new task"
                                               value={this.state.title}
                                               onChange={(event) => {

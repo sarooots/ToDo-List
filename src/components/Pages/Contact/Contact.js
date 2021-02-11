@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useRef, useEffect} from "react"
 import {Container, Row, Form, Button, Alert} from "react-bootstrap";
 
 export function ShowAlert(props) {
@@ -10,6 +10,8 @@ export function ShowAlert(props) {
 }
 
 export default function Contact(){
+    const focusedRef = useRef();
+    useEffect(()=>focusedRef.current.focus())
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
@@ -57,6 +59,7 @@ return (
                     <Form.Control type="text"
                                   placeholder="Enter full name"
                                   onChange={(e) => {setName(e.target.value)}}
+                                  ref={focusedRef}
                     />
                 </Form.Group>
                 <Form.Group controlId="email">
