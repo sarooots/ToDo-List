@@ -11,12 +11,12 @@ export function ShowAlert(props) {
 
 export default function Contact(){
     const focusedRef = useRef();
-    useEffect(()=>focusedRef.current.focus())
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [message, setMessage] = useState('')
     const [variant, setVariant] = useState("")
     const [alert, setAlert] = useState("")
+    useEffect(()=>focusedRef.current.focus(), [])
 
     const submit = () => {
         fetch(`http://localhost:3001/form`, {
