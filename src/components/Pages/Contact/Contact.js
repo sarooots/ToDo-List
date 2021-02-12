@@ -11,9 +11,11 @@ export function ShowAlert(props) {
 
 export default function Contact(){
     const focusedRef = useRef();
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [message, setMessage] = useState('')
+    const [values, setValues] = useState({
+        name: "",
+        email: "",
+        message: "",
+    })
     const [variant, setVariant] = useState("")
     const [alert, setAlert] = useState("")
     useEffect(()=>focusedRef.current.focus(), [])
@@ -21,7 +23,7 @@ export default function Contact(){
     const submit = () => {
         fetch(`http://localhost:3001/form`, {
             method: "POST",
-            body: JSON.stringify({name, email, message}),
+            body: JSON.stringify(values),
             headers: {
                 "Content-Type": "application/json"
             }
@@ -32,12 +34,10 @@ export default function Contact(){
                     throw res.error ?res.error : new Error("Something went wrong!")
 
                 }
-                setMessage('')
-                setName('')
-                setEmail('')
+                setValues({name: "", email: "", message: ""})
                 setVariant("success")
                 setAlert("Your message has been sent successfully?")
-                setInterval(()=>setVariant(''), 7000)
+                setTimeout(()=>setVariant(''), 7000)
 
 
             })
@@ -50,6 +50,9 @@ export default function Contact(){
 
     }
 
+    const changeValues = ({target: {name, value}}) => {
+        setValues({...values, [name]: value})
+    }
 return (
     <Container fluid>
         <Row>
@@ -58,15 +61,19 @@ return (
                     <Form.Label>Name</Form.Label>
                     <Form.Control type="text"
                                   placeholder="Enter full name"
-                                  onChange={(e) => {setName(e.target.value)}}
+                                  name="name"
+                                  value={values.name}
+                                  onChange={(e) => changeValues(e)}
                                   ref={focusedRef}
                     />
                 </Form.Group>
                 <Form.Group controlId="email">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control type="email"
+                                  name="email"
+                                  value={values.email}
                                   placeholder="Enter email"
-                                  onChange={(e) => {setEmail(e.target.value)}}
+                                  onChange={(e) => changeValues(e)}
                     />
                     <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
@@ -75,7 +82,9 @@ return (
                 <Form.Group controlId="message">
                     <Form.Label>Message</Form.Label>
                     <Form.Control as="textarea"
-                                  onChange={(e) => {setMessage(e.target.value)}}
+                                  name="message"
+                                  value={values.message}
+                                  onChange={(e) => changeValues(e)}
                     />
                 </Form.Group>
                 <Button variant="primary"
