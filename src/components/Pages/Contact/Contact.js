@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from "react"
 import {Container, Row, Form, Button, Alert} from "react-bootstrap";
+import classes from "./Contact.module.sass"
 
 export function ShowAlert(props) {
     return(
@@ -16,11 +17,23 @@ export default function Contact(){
         email: "",
         message: "",
     })
+    const [errors, setErrors] = useState({
+        name: null,
+        email: null,
+        message: null,
+    })
     const [variant, setVariant] = useState("")
     const [alert, setAlert] = useState("")
     useEffect(()=>focusedRef.current.focus(), [])
 
     const submit = () => {
+        const errorsArr = Object.values(errors);
+        const errorsExist = !errorsArr.every(el => el===null);
+
+        const valuesArr = Object.values(values);
+        const valuesExist = !valuesArr.some(el => el==='');
+
+        if(valuesExist && !errorsExist){
         fetch(`http://localhost:3001/form`, {
             method: "POST",
             body: JSON.stringify(values),
@@ -45,24 +58,52 @@ export default function Contact(){
                 console.log("catch error", error)
                 setAlert(error.status === 422 ? "Please fill form!": "Something went wrong!")
                 setVariant(error.status === 422 ?"warning": "danger")
-                setInterval(()=>setVariant(''), 7000)
+                setTimeout(()=>setVariant(''), 7000)
             })
+        } else {
+            setAlert("Please fill form!")
+            setVariant("warning")
 
+        }
     }
 
     const changeValues = ({target: {name, value}}) => {
+        console.log(name)
+        if (!value) {
+            setErrors({
+                ...errors,
+                [name]: `Please fill ${name} field`
+            })
+        } else {
+            setErrors({
+                ...errors,
+                [name]: null
+            })
+        }
+
+        if (name==="email" && value) {
+            const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            if(!emailReg.test(value)){
+                setErrors({
+                    ...errors,
+                    email: 'Invalid email'
+                })
+            }
+
+        }
         setValues({...values, [name]: value})
     }
 return (
     <Container fluid>
         <Row>
-            <Form onSubmit={(event)=> event.preventDefault()}>
+            <Form>
                 <Form.Group controlId="name">
                     <Form.Label>Name</Form.Label>
                     <Form.Control type="text"
                                   placeholder="Enter full name"
                                   name="name"
                                   value={values.name}
+                                  className={errors.name? classes.required: ""}
                                   onChange={(e) => changeValues(e)}
                                   ref={focusedRef}
                     />
@@ -72,6 +113,7 @@ return (
                     <Form.Control type="email"
                                   name="email"
                                   value={values.email}
+                                  className={errors.email? classes.required: ""}
                                   placeholder="Enter email"
                                   onChange={(e) => changeValues(e)}
                     />
@@ -84,11 +126,11 @@ return (
                     <Form.Control as="textarea"
                                   name="message"
                                   value={values.message}
+                                  className={errors.message? classes.required: ""}
                                   onChange={(e) => changeValues(e)}
                     />
                 </Form.Group>
                 <Button variant="primary"
-                        type="submit"
                         onClick={submit}
                 >
                     send
