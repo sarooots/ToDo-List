@@ -68,7 +68,6 @@ export default function Contact(){
     }
 
     const changeValues = ({target: {name, value}}) => {
-        console.log(name)
         if (!value) {
             setErrors({
                 ...errors,
