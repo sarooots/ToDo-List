@@ -1,4 +1,4 @@
-import React, {Component} from "react"
+import React, {Component, createRef} from "react"
 import {Button, Col, Form, Modal} from "react-bootstrap"
 import PropTypes from "prop-types"
 import DatePicker from "react-datepicker"
@@ -24,6 +24,7 @@ class Editor extends Component {
                 date: new Date(),
             }
         }
+        this.focusedRef = createRef()
     }
 
     static propTypes = {
@@ -34,6 +35,10 @@ class Editor extends Component {
         toggleShow: PropTypes.func.isRequired,
     }
 
+    componentDidMount() {
+        this.focusedRef.current.focus()
+    }
+
     changeTaskProperty = (event, property ) => {
         this.setState({[property]: event.target.value})
     }
@@ -41,7 +46,6 @@ class Editor extends Component {
         this.setState({
             date: value || formatDate(new Date().toISOString())
         })
-        // this.setState({date: value})
     }
 
     acceptButton = () => {
@@ -61,7 +65,6 @@ class Editor extends Component {
     render() {
 
         const {mode, show, toggleShow} = this.props
-
         return (
             <Modal
                 show={show}
@@ -80,6 +83,7 @@ class Editor extends Component {
                             <Form.Group as={Col} controlId="taskTitle">
                                 <Form.Label>Task Title</Form.Label>
                                 <Form.Control type="text"
+                                              ref={this.focusedRef}
                                               placeholder="Add new task"
                                               value={this.state.title}
                                               onChange={(event) => {
