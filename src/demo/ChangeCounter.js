@@ -29,7 +29,7 @@ function ChangeCounter (props) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onChange: () => {
+        onChange:   () => {
             dispatch({type: "CHANGE_COUNT"})
         },
         changeIncrement: (increment) => {

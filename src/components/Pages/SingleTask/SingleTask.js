@@ -6,6 +6,7 @@ import {formatDate} from "../../../helpers/utils"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import Editor from "../../Editor/Editor";
+import request from "../../../helpers/request";
 
 export default class SingleTask extends Component{
 
@@ -14,66 +15,27 @@ export default class SingleTask extends Component{
         show: false
     }
     componentDidMount() {
-        fetch(`http://localhost:3001/task/${this.props.match.params.taskId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(async (response)=>{
-            const res = await response.json()
-            if (response.status >= 400 && response.status <600) {
-                throw res.error ?res.error : new Error("Something went wrong!")
-            }
+        request(`http://localhost:3001/task/${this.props.match.params.taskId}`,)
+        .then( (res)=>{
             this.setState({task: res})
         })
-            .catch(error => {
-                console.log(error)
-            })
     }
-    removeTask = taskId => {
 
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
+    removeTask = taskId => {
+        request(`http://localhost:3001/task/${taskId}`,"DELETE")
+            .then( ()=>{
                 this.setState({task: null})
                 this.props.history.push('/')
-
             })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-
-
     }
-
 
     editTask = (editedTask) => {
-        fetch(`http://localhost:3001/task/${editedTask._id}`, {
-            method: "PUT",
-            body: JSON.stringify(editedTask),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
+        request(`http://localhost:3001/task/${editedTask._id}`,"PUT", editedTask)
+            .then(()=>{
                 this.setState({task: editedTask})
             })
-            .catch(error => {
-                console.log("catch error", error)
-            })
     }
+
     toggleShow = () => this.setState({show: !this.state.show})
 
     handleEdit = editTask => this.setState({ editTask,  show: !this.state.show})

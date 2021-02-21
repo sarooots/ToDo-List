@@ -1,6 +1,7 @@
 import React, {useState, useRef, useEffect} from "react"
 import {Container, Row, Form, Button, Alert} from "react-bootstrap";
 import classes from "./Contact.module.sass"
+import request from "../../../helpers/request"
 
 export function ShowAlert(props) {
     return(
@@ -34,32 +35,19 @@ export default function Contact(){
         const valuesExist = !valuesArr.some(el => el==='');
 
         if(valuesExist && !errorsExist){
-        fetch(`http://localhost:3001/form`, {
-            method: "POST",
-            body: JSON.stringify(values),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-
-                }
+            request(`http://localhost:3001/form`,"POST", values)
+            .then( ()=>{
                 setValues({name: "", email: "", message: ""})
                 setVariant("success")
-                setAlert("Your message has been sent successfully?")
-                setTimeout(()=>setVariant(''), 7000)
-
-
-            })
-            .catch(error => {
-                console.log("catch error", error)
-                setAlert(error.status === 422 ? "Please fill form!": "Something went wrong!")
-                setVariant(error.status === 422 ?"warning": "danger")
+                setAlert("Your message has been sent successfully!")
                 setTimeout(()=>setVariant(''), 7000)
             })
+            // .catch(error => {
+            //     console.log("catch error", error)
+            //     setAlert(error.status === 422 ? "Please fill form!": "Something went wrong!")
+            //     setVariant(error.status === 422 ?"warning": "danger")
+            //     setTimeout(()=>setVariant(''), 7000)
+            // })
         } else {
             setAlert("Please fill form!")
             setVariant("warning")

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import {Container, Col, Row, Button, Card, ButtonGroup} from "react-bootstrap"
 import {formatDate, stringTrimmer} from "../../../helpers/utils"
+import request from "../../../helpers/request"
 import Editor from "../../Editor/Editor"
 import {Link} from "react-router-dom"
 
@@ -19,22 +20,9 @@ class ToDo extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:3001/task", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
-
+        request("http://localhost:3001/task")
+            .then((res)=>{
                 this.setState({tasks: res})
-            })
-            .catch(error => {
-                console.log(error)
             })
     }
 
@@ -49,43 +37,16 @@ class ToDo extends Component {
     }
 
     removeTask = taskId => {
-
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
+        request(`http://localhost:3001/task/${taskId}`, "DELETE")
+            .then(()=>{
                 const {tasks} = this.state
                 this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
-
             })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-
-
     }
 
     removeSelected = () => {
-        fetch(`http://localhost:3001/task/`, {
-            method: "PATCH",
-            body: JSON.stringify({tasks: Array.from(this.state.selectedTasks)}),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
-
+        request(`http://localhost:3001/task/`,"PATCH", {tasks: Array.from(this.state.selectedTasks)})
+            .then( ()=>{
                 const {tasks} = this.state
                 const selectedTasks = new Set(this.state.selectedTasks)
                 const newTask = tasks.filter((task)=>{
@@ -95,12 +56,7 @@ class ToDo extends Component {
                     tasks: newTask,
                     selectedTasks: new Set()
                 })
-
             })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-
     }
 
     selectAllTasks = () => {
@@ -121,51 +77,24 @@ class ToDo extends Component {
         const selectedTasks = new Set(this.state.selectedTasks)
         selectedTasks.clear()
         this.setState({selectedTasks: selectedTasks})
-
     }
 
     addTask = task => {
-        fetch("http://localhost:3001/task", {
-            method: "POST",
-            body: JSON.stringify(task),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                    if(response.status >=400 && response.status < 600){
-                        throw res.error ?res.error : new Error("Something went wrong!")
-                }
+        request("http://localhost:3001/task", "POST", task)
+            .then((res)=>{
                 const {tasks} = this.state
                 this.setState({tasks: [...tasks, res]})
-            })
-            .catch(error => {
-                console.log("catch error", error)
             })
     }
 
     editTask = (editedTask) => {
-        fetch(`http://localhost:3001/task/${editedTask._id}`, {
-            method: "PUT",
-            body: JSON.stringify(editedTask),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
+        request(`http://localhost:3001/task/${editedTask._id}`, "PUT", editedTask)
+            .then((res)=>{
                 const {tasks} = this.state
                 const newList = tasks
                 const editId = tasks.findIndex((el)=> el._id===editedTask._id)
                 newList[editId] = res
                 this.setState({tasks: newList})
-            })
-            .catch(error => {
-                console.log("catch error", error)
             })
     }
 
