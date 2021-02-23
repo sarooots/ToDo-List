@@ -7,8 +7,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import Editor from "../../Editor/Editor";
 import request from "../../../helpers/request";
+import {connect} from "react-redux";
 
-export default class SingleTask extends Component{
+class SingleTask extends Component{
 
     state = {
         task: null,
@@ -88,11 +89,9 @@ export default class SingleTask extends Component{
                         toggleShow={this.toggleShow}
                         task={task}/>
                 }
-
             </>
         )
-
     }
-
-
 }
+
+export default connect()(SingleTask)

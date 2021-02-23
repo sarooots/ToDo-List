@@ -8,11 +8,11 @@ import {formatDate, stringTrimmer} from "../../../helpers/utils"
 import request from "../../../helpers/request"
 import Editor from "../../Editor/Editor"
 import {Link} from "react-router-dom"
+import {connect} from "react-redux";
 
 
 class ToDo extends Component {
     state = {
-        tasks: [],
         selectedTasks: new Set(),
         show: false,
         editTask: null,
@@ -20,10 +20,7 @@ class ToDo extends Component {
     }
 
     componentDidMount() {
-        request("http://localhost:3001/task")
-            .then((res)=>{
-                this.setState({tasks: res})
-            })
+        this.props.getTasks()
     }
 
     selectTask = taskId => {
@@ -36,27 +33,13 @@ class ToDo extends Component {
         this.setState({selectedTasks})
     }
 
-    removeTask = taskId => {
-        request(`http://localhost:3001/task/${taskId}`, "DELETE")
-            .then(()=>{
-                const {tasks} = this.state
-                this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
-            })
-    }
+    removeTask = taskId => this.props.removeTask(taskId)
 
     removeSelected = () => {
-        request(`http://localhost:3001/task/`,"PATCH", {tasks: Array.from(this.state.selectedTasks)})
-            .then( ()=>{
-                const {tasks} = this.state
-                const selectedTasks = new Set(this.state.selectedTasks)
-                const newTask = tasks.filter((task)=>{
-                    return !selectedTasks.has(task._id)
-                })
-                this.setState({
-                    tasks: newTask,
-                    selectedTasks: new Set()
-                })
-            })
+        this.props.removeSelected(this.state.selectedTasks)
+        this.setState({
+            selectedTasks: new Set()
+        })
     }
 
     selectAllTasks = () => {
@@ -79,23 +62,11 @@ class ToDo extends Component {
         this.setState({selectedTasks: selectedTasks})
     }
 
-    addTask = task => {
-        request("http://localhost:3001/task", "POST", task)
-            .then((res)=>{
-                const {tasks} = this.state
-                this.setState({tasks: [...tasks, res]})
-            })
-    }
+    addTask = task => this.props.addTask(task)
 
-    editTask = (editedTask) => {
-        request(`http://localhost:3001/task/${editedTask._id}`, "PUT", editedTask)
-            .then((res)=>{
-                const {tasks} = this.state
-                const newList = tasks
-                const editId = tasks.findIndex((el)=> el._id===editedTask._id)
-                newList[editId] = res
-                this.setState({tasks: newList})
-            })
+
+    editTask = editedTask => {
+        this.props.editTask(editedTask)
     }
 
     toggleShow = () => this.setState({show: !this.state.show})
@@ -105,13 +76,14 @@ class ToDo extends Component {
     changeMode = newMode => this.setState({ mode: newMode})
 
     render() {
-        const {tasks, selectedTasks, editTask, show, mode} = this.state
+        const {selectedTasks, editTask, show, mode} = this.state
+        const {tasks} = this.props
         return (
             <>
                 {/*Here goes logo, "new task" "select/deselect" and "delete" buttons*/}
                 <Container  fluid className={classes.toDoList}>
                     <Actions
-                        tasks={this.state.tasks}
+                        tasks={this.props.tasks}
                         selectedTasks={selectedTasks}
                         removeSelected={this.removeSelected}
                         selectAllTasks={this.selectAllTasks}
@@ -140,7 +112,7 @@ class ToDo extends Component {
                                             </label>
                                             <Card.Body className={classes.cBody}>
                                                 <Link to={`/task/${task._id}`}>
-                                                <Card.Title className={classes.title}>{task.title}</Card.Title>
+                                                    <Card.Title className={classes.title}>{task.title}</Card.Title>
                                                 </Link>
                                                 <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${formatDate(task.date)}`}</Card.Subtitle>
                                                 <Card.Text className={`${classes.desc} ${task.description ===""?classes.emptyDesc:""}`}>
@@ -191,6 +163,46 @@ class ToDo extends Component {
             </>
         )
     }
-
 }
-export default ToDo
+
+const mapStateToProps = (state) => {
+    return{
+        tasks: state.tasks
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return{
+        getTasks: () =>{
+            request("http://localhost:3001/task")
+                .then((res)=>{
+                    dispatch({type: "GET_TASKS", tasks: res})
+                })
+        },
+        removeTask: (taskId) => {
+            request(`http://localhost:3001/task/${taskId}`, "DELETE")
+                .then(()=>{
+                    dispatch({type: "REMOVE_TASK", taskId})
+                })
+        },
+        removeSelected: (selectedTasks) =>{
+            request(`http://localhost:3001/task/`,"PATCH", {tasks: Array.from(selectedTasks)})
+                .then( ()=>{
+                    dispatch({type: "REMOVE_SELECTED", selectedTasks})
+                })
+        },
+        addTask: (task) => {
+            request("http://localhost:3001/task", "POST", task)
+                .then((res)=>{
+                    dispatch({type: "ADD_TASK", task: res})
+                })
+        },
+        editTask: (editedTask)=>{
+            request(`http://localhost:3001/task/${editedTask._id}`, "PUT", editedTask)
+                .then((res)=>{
+                    dispatch({type: "EDIT_TASK", editedTask: res })
+                })
+
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ToDo)
