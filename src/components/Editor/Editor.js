@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import {formatDate} from "../../helpers/utils"
 import classes from "./Editor.sass"
+import {addTask, editTask} from "../../store/actions";
+import {connect} from "react-redux";
 
 class Editor extends Component {
     constructor(props) {
@@ -51,7 +53,8 @@ class Editor extends Component {
     acceptButton = () => {
         const newTask = {...this.state}
         newTask.date = formatDate(newTask.date.toISOString())
-        const {mode, action, toggleShow} = this.props
+        const {toggleShow, addTask, editTask, mode} = this.props
+        const action = mode==="new"? addTask:editTask
         if (newTask.title.trim() !==  "") {
             action(newTask)
             toggleShow()
@@ -61,6 +64,10 @@ class Editor extends Component {
         }
 
     }
+
+    // addTask = task => this.props.addTask(task)
+    // editTask = editedTask => this.props.editTask(editedTask)
+
 
     render() {
 
@@ -127,5 +134,8 @@ class Editor extends Component {
         )
     }
 }
-
-export default Editor
+const mapDispatchToProps =  {
+    addTask,
+    editTask ,
+}
+export default connect(null, mapDispatchToProps)(Editor)

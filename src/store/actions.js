@@ -29,6 +29,7 @@ export function removeSelected(selectedTasks) {
 
 export function addTask(task) {
     return (dispatch) => {
+        dispatch({type: "SAVING_TASK"})
         request("http://localhost:3001/task", "POST", task)
             .then((res)=>{
                 dispatch({type: "ADD_TASK", task: res})
@@ -38,6 +39,7 @@ export function addTask(task) {
 
 export function editTask(editedTask) {
     return (dispatch)=>{
+        dispatch({type: "SAVING_TASK"})
         request(`http://localhost:3001/task/${editedTask._id}`, "PUT", editedTask)
             .then((res)=>{
                 dispatch({type: "EDIT_TASK", editedTask: res })

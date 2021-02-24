@@ -8,7 +8,7 @@ import {formatDate, stringTrimmer} from "../../../helpers/utils"
 import Editor from "../../Editor/Editor"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux";
-import {getTasks, removeTask, removeSelected, addTask, editTask} from "../../../store/actions";
+import {getTasks, removeTask, removeSelected} from "../../../store/actions";
 
 
 class ToDo extends Component {
@@ -21,6 +21,11 @@ class ToDo extends Component {
 
     componentDidMount() {
         this.props.getTasks()
+    }
+    componentDidUpdate(prevpProps) {
+        if (!prevpProps.saveTaskSuccess===false && this.props.saveTaskSuccess) {
+            this.setState({show: false})
+        }
     }
 
     selectTask = taskId => {
@@ -43,7 +48,7 @@ class ToDo extends Component {
     }
 
     selectAllTasks = () => {
-        const {tasks} = this.state
+        const {tasks} = this.props
         const selectedTasks = new Set(this.state.selectedTasks)
         if (selectedTasks.size < tasks.length) {
             tasks.map((task)=>{
@@ -62,12 +67,6 @@ class ToDo extends Component {
         this.setState({selectedTasks: selectedTasks})
     }
 
-    addTask = task => this.props.addTask(task)
-
-
-    editTask = editedTask => {
-        this.props.editTask(editedTask)
-    }
 
     toggleShow = () => this.setState({show: !this.state.show})
 
@@ -148,7 +147,6 @@ class ToDo extends Component {
                     <Editor
                         mode={mode}
                         show={show}
-                        action={this.editTask}
                         toggleShow={this.toggleShow}
                         task={editTask}/>
                 }
@@ -157,7 +155,6 @@ class ToDo extends Component {
                     <Editor
                         mode={mode}
                         show={show}
-                        action={this.addTask}
                         toggleShow={this.toggleShow}/>
                 }
             </>
@@ -167,14 +164,13 @@ class ToDo extends Component {
 
 const mapStateToProps = (state) => {
     return{
-        tasks: state.tasks
+        tasks: state.tasks,
+        saveTaskSuccess: state.saveTaskSuccess
     }
 }
 const mapDispatchToProps =  {
     getTasks,
     removeTask ,
-    removeSelected ,
-    addTask,
-    editTask
+    removeSelected
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo)

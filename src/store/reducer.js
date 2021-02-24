@@ -1,8 +1,15 @@
 const defaultState = {
-    tasks: []
+    tasks: [],
+    saveTaskSuccess: false,
+    task: {}
 }
 export default  function reducer(state=defaultState, action)  {
     switch (action.type) {
+        case "GET_TASKS":
+            return {
+                ...state,
+                tasks: action.tasks
+            }
         case "GET_TASKS":
             return {
                 ...state,
@@ -23,7 +30,13 @@ export default  function reducer(state=defaultState, action)  {
         case "ADD_TASK":
             return {
                 ...state,
-                tasks: [...state.tasks, action.task]
+                tasks: [...state.tasks, action.task],
+                saveTaskSuccess: false
+            }
+        case "SAVING_TASK":
+            return {
+                ...state,
+                saveTaskSuccess: true
             }
         case "EDIT_TASK":{
             const newList = state.tasks
@@ -31,7 +44,8 @@ export default  function reducer(state=defaultState, action)  {
             newList[editId] = action.editedTask
             return {
                 ...state,
-                tasks: [...newList]
+                tasks: [...newList],
+                saveTaskSuccess: false
             }}
         default : return state
     }
