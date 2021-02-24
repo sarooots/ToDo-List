@@ -1,3 +1,4 @@
+import * as act from "./actTypes"
 const defaultState = {
     tasks: [],
     saveTaskSuccess: false,
@@ -5,40 +6,35 @@ const defaultState = {
 }
 export default  function reducer(state=defaultState, action)  {
     switch (action.type) {
-        case "GET_TASKS":
+        case act.GET_TASKS:
             return {
                 ...state,
                 tasks: action.tasks
             }
-        case "GET_TASKS":
-            return {
-                ...state,
-                tasks: action.tasks
-            }
-        case "REMOVE_TASK":
+        case act.DELETE_TASK:
             return {
                 ...state,
                 tasks: state.tasks.filter((task)=> action.taskId !== task._id)
             }
-        case "REMOVE_SELECTED":
+        case act.DELETE_TASKS:
             return {
                 ...state,
                 tasks: state.tasks.filter((task)=>{
                     return !action.selectedTasks.has(task._id)
                 })
             }
-        case "ADD_TASK":
+        case act.ADD_TASK:
             return {
                 ...state,
                 tasks: [...state.tasks, action.task],
                 saveTaskSuccess: false
             }
-        case "SAVING_TASK":
+        case act.PENDING:
             return {
                 ...state,
                 saveTaskSuccess: true
             }
-        case "EDIT_TASK":{
+        case act.EDIT_TASK:{
             const newList = state.tasks
             const editId = state.tasks.findIndex((el)=> el._id===action.editedTask._id)
             newList[editId] = action.editedTask
