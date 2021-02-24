@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import {Container, Col, Row, Button, Card, ButtonGroup} from "react-bootstrap"
 import {formatDate, stringTrimmer} from "../../../helpers/utils"
-import request from "../../../helpers/request"
 import Editor from "../../Editor/Editor"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux";
+import {getTasks, removeTask, removeSelected, addTask, editTask} from "../../../store/actions";
 
 
 class ToDo extends Component {
@@ -170,39 +170,11 @@ const mapStateToProps = (state) => {
         tasks: state.tasks
     }
 }
-const mapDispatchToProps = (dispatch) => {
-    return{
-        getTasks: () =>{
-            request("http://localhost:3001/task")
-                .then((res)=>{
-                    dispatch({type: "GET_TASKS", tasks: res})
-                })
-        },
-        removeTask: (taskId) => {
-            request(`http://localhost:3001/task/${taskId}`, "DELETE")
-                .then(()=>{
-                    dispatch({type: "REMOVE_TASK", taskId})
-                })
-        },
-        removeSelected: (selectedTasks) =>{
-            request(`http://localhost:3001/task/`,"PATCH", {tasks: Array.from(selectedTasks)})
-                .then( ()=>{
-                    dispatch({type: "REMOVE_SELECTED", selectedTasks})
-                })
-        },
-        addTask: (task) => {
-            request("http://localhost:3001/task", "POST", task)
-                .then((res)=>{
-                    dispatch({type: "ADD_TASK", task: res})
-                })
-        },
-        editTask: (editedTask)=>{
-            request(`http://localhost:3001/task/${editedTask._id}`, "PUT", editedTask)
-                .then((res)=>{
-                    dispatch({type: "EDIT_TASK", editedTask: res })
-                })
-
-        }
-    }
+const mapDispatchToProps =  {
+    getTasks,
+    removeTask ,
+    removeSelected ,
+    addTask,
+    editTask
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo)
