@@ -8,7 +8,7 @@ import {formatDate, stringTrimmer} from "../../../helpers/utils"
 import Editor from "../../Editor/Editor"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux";
-import {getTasks, removeTask, removeSelected} from "../../../store/actions";
+import {getTasks, deleteTask, deleteTasks} from "../../../store/actions";
 
 
 class ToDo extends Component {
@@ -38,10 +38,8 @@ class ToDo extends Component {
         this.setState({selectedTasks})
     }
 
-    removeTask = taskId => this.props.removeTask(taskId)
-
-    removeSelected = () => {
-        this.props.removeSelected(this.state.selectedTasks)
+    deleteTasks = () => {
+        this.props.deleteTasks(this.state.selectedTasks)
         this.setState({
             selectedTasks: new Set()
         })
@@ -76,7 +74,7 @@ class ToDo extends Component {
 
     render() {
         const {selectedTasks, editTask, show, mode} = this.state
-        const {tasks} = this.props
+        const {tasks, deleteTask} = this.props
         return (
             <>
                 {/*Here goes logo, "new task" "select/deselect" and "delete" buttons*/}
@@ -84,7 +82,7 @@ class ToDo extends Component {
                     <Actions
                         tasks={this.props.tasks}
                         selectedTasks={selectedTasks}
-                        removeSelected={this.removeSelected}
+                        deleteTasks={this.deleteTasks}
                         selectAllTasks={this.selectAllTasks}
                         deselect={this.deselect}
                         toggleShow={this.toggleShow}
@@ -130,7 +128,7 @@ class ToDo extends Component {
                                                     <Button
                                                         disabled={!!selectedTasks.size}
                                                         variant="danger"
-                                                        onClick={()=> this.removeTask(task._id)}>
+                                                        onClick={()=> deleteTask(task._id)}>
                                                         <FontAwesomeIcon icon={faTrash} />
                                                     </Button>
                                                 </ButtonGroup>
@@ -170,7 +168,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps =  {
     getTasks,
-    removeTask ,
-    removeSelected
+    deleteTask ,
+    deleteTasks
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo)

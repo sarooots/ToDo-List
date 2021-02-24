@@ -10,7 +10,7 @@ export function getTasks() {
     }
 }
 
-export function removeTask(taskId) {
+export function deleteTask(taskId) {
     return (dispatch) => {
         request(`http://localhost:3001/task/${taskId}`, "DELETE")
             .then(()=>{
@@ -19,7 +19,7 @@ export function removeTask(taskId) {
     }
 }
 
-export function removeSelected(selectedTasks) {
+export function deleteTasks(selectedTasks) {
     return (dispatch) =>{
         request(`http://localhost:3001/task/`,"PATCH", {tasks: Array.from(selectedTasks)})
             .then( ()=>{

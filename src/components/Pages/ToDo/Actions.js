@@ -1,14 +1,14 @@
 import React, {PureComponent} from "react"
 import {Button, Dropdown, ButtonGroup} from "react-bootstrap"
 import classes from "./Actions.module.sass"
-import DeleteSelected from "../../DeleteSelected/DeleteSelected"
+import DeleteTasks from "../../DeleteTasks/DeleteTasks"
 import PropTypes from "prop-types"
 
 class Actions extends PureComponent {
     static propTypes = {
         tasks: PropTypes.array.isRequired,
         selectedTasks: PropTypes.object.isRequired,
-        removeSelected: PropTypes.func.isRequired,
+        deleteTasks: PropTypes.func.isRequired,
         selectAllTasks: PropTypes.func.isRequired,
         deselect: PropTypes.func.isRequired,
         toggleShow: PropTypes.func.isRequired,
@@ -16,7 +16,7 @@ class Actions extends PureComponent {
     }
 
     render() {
-        const {tasks, selectedTasks, removeSelected, selectAllTasks, deselect, toggleShow, changeMode} = this.props
+        const {tasks, selectedTasks, deleteTasks, selectAllTasks, deselect, toggleShow, changeMode} = this.props
         return (
                 <div className={classes.items}>
                     <div className={`${classes.item} ${classes.checkbox}`}>
@@ -36,9 +36,9 @@ class Actions extends PureComponent {
                             </Dropdown.Menu>
                         </Dropdown>
                     </div>
-                    <DeleteSelected
+                    <DeleteTasks
                         className={`${classes.item} rounded-0`}
-                        removeSelected={removeSelected}
+                        deleteTasks={deleteTasks}
                         selectedTasks={selectedTasks}/>
                     <Button variant="success"
                             onClick={()=>{

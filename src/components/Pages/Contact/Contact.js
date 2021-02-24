@@ -42,12 +42,6 @@ export default function Contact(){
                 setAlert("Your message has been sent successfully!")
                 setTimeout(()=>setVariant(''), 7000)
             })
-            // .catch(error => {
-            //     console.log("catch error", error)
-            //     setAlert(error.status === 422 ? "Please fill form!": "Something went wrong!")
-            //     setVariant(error.status === 422 ?"warning": "danger")
-            //     setTimeout(()=>setVariant(''), 7000)
-            // })
         } else {
             setAlert("Please fill form!")
             setVariant("warning")

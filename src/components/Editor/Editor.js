@@ -30,7 +30,6 @@ class Editor extends Component {
     }
 
     static propTypes = {
-        action: PropTypes.func.isRequired,
         task: PropTypes.object,
         mode: PropTypes.string.isRequired,
         show: PropTypes.bool.isRequired,
@@ -64,10 +63,6 @@ class Editor extends Component {
         }
 
     }
-
-    // addTask = task => this.props.addTask(task)
-    // editTask = editedTask => this.props.editTask(editedTask)
-
 
     render() {
 
