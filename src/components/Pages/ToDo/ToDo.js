@@ -8,7 +8,7 @@ import {formatDate, stringTrimmer} from "../../../helpers/utils"
 import Editor from "../../Editor/Editor"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux";
-import {getTasks, deleteTask, deleteTasks} from "../../../store/actions";
+import {getTasks, deleteTask} from "../../../store/actions";
 
 
 class ToDo extends Component {
@@ -23,8 +23,14 @@ class ToDo extends Component {
         this.props.getTasks()
     }
     componentDidUpdate(prevpProps) {
-        if (!prevpProps.saveTaskSuccess===false && this.props.saveTaskSuccess) {
+        if (!prevpProps.addTaskSuccess && this.props.addTaskSuccess) {
             this.setState({show: false})
+        }
+        if (!prevpProps.deleteTaskSuccess && this.props.deleteTaskSuccess) {
+            this.setState({selectedTasks: new Set()})
+        }
+        if (!prevpProps.editTaskSuccess && this.props.editTaskSuccess) {
+            this.setState({editTask: null})
         }
     }
 
@@ -36,13 +42,6 @@ class ToDo extends Component {
             selectedTasks.add(taskId)
         }
         this.setState({selectedTasks})
-    }
-
-    deleteTasks = () => {
-        this.props.deleteTasks(this.state.selectedTasks)
-        this.setState({
-            selectedTasks: new Set()
-        })
     }
 
     selectAllTasks = () => {
@@ -82,7 +81,6 @@ class ToDo extends Component {
                     <Actions
                         tasks={this.props.tasks}
                         selectedTasks={selectedTasks}
-                        deleteTasks={this.deleteTasks}
                         selectAllTasks={this.selectAllTasks}
                         deselect={this.deselect}
                         toggleShow={this.toggleShow}
@@ -163,12 +161,12 @@ class ToDo extends Component {
 const mapStateToProps = (state) => {
     return{
         tasks: state.tasks,
-        saveTaskSuccess: state.saveTaskSuccess
+        addTaskSuccess: state.addTaskSuccess,
+        deleteTaskSuccess: state.deleteTaskSuccess,
     }
 }
 const mapDispatchToProps =  {
     getTasks,
-    deleteTask ,
-    deleteTasks
+    deleteTask
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo)

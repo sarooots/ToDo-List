@@ -1,10 +1,11 @@
 import React, {Component} from "react"
 import {Button, Modal} from "react-bootstrap"
 import PropTypes from "prop-types"
+import {deleteTasks} from "../../store/actions";
+import {connect} from "react-redux";
 
 class DeleteTasks extends Component {
     static propTypes = {
-        deleteTasks: PropTypes.func.isRequired,
         selectedTasks: PropTypes.object.isRequired,
     }
 
@@ -51,4 +52,8 @@ class DeleteTasks extends Component {
         )
     }
 }
-export default DeleteTasks
+
+const mapDispatchToProps =  {
+    deleteTasks
+}
+export default connect(null, mapDispatchToProps)(DeleteTasks)

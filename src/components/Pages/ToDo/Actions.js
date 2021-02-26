@@ -6,9 +6,7 @@ import PropTypes from "prop-types"
 
 class Actions extends PureComponent {
     static propTypes = {
-        tasks: PropTypes.array.isRequired,
         selectedTasks: PropTypes.object.isRequired,
-        deleteTasks: PropTypes.func.isRequired,
         selectAllTasks: PropTypes.func.isRequired,
         deselect: PropTypes.func.isRequired,
         toggleShow: PropTypes.func.isRequired,

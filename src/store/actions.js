@@ -3,6 +3,7 @@ import * as act from "./actTypes"
 
 export function getTasks() {
     return (dispatch) =>{
+        dispatch({type: act.PENDING})
         request("http://localhost:3001/task")
             .then((res)=>{
                 dispatch({type: act.GET_TASKS, tasks: res})
@@ -12,6 +13,7 @@ export function getTasks() {
 
 export function deleteTask(taskId) {
     return (dispatch) => {
+        dispatch({type: act.PENDING})
         request(`http://localhost:3001/task/${taskId}`, "DELETE")
             .then(()=>{
                 dispatch({type: act.DELETE_TASK, taskId})
@@ -21,8 +23,9 @@ export function deleteTask(taskId) {
 
 export function deleteTasks(selectedTasks) {
     return (dispatch) =>{
+        dispatch({type: act.PENDING})
         request(`http://localhost:3001/task/`,"PATCH", {tasks: Array.from(selectedTasks)})
-            .then( ()=>{
+            .then(()=>{
                 dispatch({type: act.DELETE_TASKS, selectedTasks})
             })
     }
@@ -38,12 +41,12 @@ export function addTask(task) {
     }
 }
 
-export function editTask(editedTask) {
+export function editTask(data) {
     return (dispatch)=>{
         dispatch({type: act.PENDING})
-        request(`http://localhost:3001/task/${editedTask._id}`, "PUT", editedTask)
-            .then((res)=>{
-                dispatch({type: act.EDIT_TASK, editedTask: res })
+        request(`http://localhost:3001/task/${data._id}`, "PUT", data)
+            .then((editedTask)=>{
+                dispatch({type: act.EDIT_TASK, editedTask })
             })
     }
 }

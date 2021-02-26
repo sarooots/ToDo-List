@@ -7,7 +7,9 @@ import NotFound from './components/Pages/NotFound/NotFound'
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom'
 import Navbar from './components/NavMenu/NavMenu'
 import './App.scss'
-function App() {
+import Spinner from "./components/Spinner/Spinner";
+import {connect} from "react-redux";
+function App({loading}) {
     return (
         <div className="App">
             <BrowserRouter>
@@ -46,8 +48,16 @@ function App() {
                     <Redirect to='not-found'/>
                 </Switch>
             </BrowserRouter>
+            { loading && <Spinner/> }
+
         </div>
     );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return{
+        loading: state.loading,
+    }
+}
+
+export default connect(mapStateToProps)(App);
