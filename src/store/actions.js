@@ -8,6 +8,22 @@ export function getTasks() {
             .then((res)=>{
                 dispatch({type: act.GET_TASKS, tasks: res})
             })
+            .catch((error) => {
+                dispatch({type: act.ERROR, errorMessage: error.message})
+            })
+    }
+}
+
+export function getTask(taskId) {
+    return (dispatch) =>{
+        dispatch({type: act.PENDING})
+        request(`http://localhost:3001/task/${taskId}`,)
+            .then((res)=>{
+                dispatch({type: act.GET_TASK, task: res})
+            })
+            .catch((error) => {
+                dispatch({type: act.ERROR, errorMessage: error.message})
+            })
     }
 }
 
@@ -17,6 +33,9 @@ export function deleteTask(taskId) {
         request(`http://localhost:3001/task/${taskId}`, "DELETE")
             .then(()=>{
                 dispatch({type: act.DELETE_TASK, taskId})
+            })
+            .catch((error) => {
+                dispatch({type: act.ERROR, errorMessage: error.message})
             })
     }
 }
@@ -28,6 +47,9 @@ export function deleteTasks(selectedTasks) {
             .then(()=>{
                 dispatch({type: act.DELETE_TASKS, selectedTasks})
             })
+            .catch((error) => {
+                dispatch({type: act.ERROR, errorMessage: error.message})
+            })
     }
 }
 
@@ -38,15 +60,21 @@ export function addTask(task) {
             .then((res)=>{
                 dispatch({type: "ADD_TASK", task: res})
             })
+            .catch((error) => {
+                dispatch({type: act.ERROR, errorMessage: error.message})
+            })
     }
 }
 
-export function editTask(data) {
+export function editTask(data, from) {
     return (dispatch)=>{
         dispatch({type: act.PENDING})
         request(`http://localhost:3001/task/${data._id}`, "PUT", data)
             .then((editedTask)=>{
-                dispatch({type: act.EDIT_TASK, editedTask })
+                dispatch({type: act.EDIT_TASK, editedTask, from })
+            })
+            .catch((error) => {
+                dispatch({type: act.ERROR, errorMessage: error.message})
             })
     }
 }

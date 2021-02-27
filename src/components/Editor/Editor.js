@@ -52,10 +52,10 @@ class Editor extends Component {
     acceptButton = () => {
         const newTask = {...this.state}
         newTask.date = formatDate(newTask.date.toISOString())
-        const {toggleShow, addTask, editTask, mode} = this.props
+        const {toggleShow, addTask, editTask, mode, from} = this.props
         const action = mode==="new"? addTask:editTask
         if (newTask.title.trim() !==  "") {
-            action(newTask)
+            from === "single" ? action(newTask, from): action(newTask)
             toggleShow()
             if (mode === "new") {
                 this.setState({title: "", description: ""})

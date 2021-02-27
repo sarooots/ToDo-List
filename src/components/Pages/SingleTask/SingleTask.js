@@ -6,50 +6,33 @@ import {formatDate} from "../../../helpers/utils"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import Editor from "../../Editor/Editor";
-import request from "../../../helpers/request";
 import {connect} from "react-redux";
+import {getTask, deleteTask} from "../../../store/actions";
 
 class SingleTask extends Component{
 
     state = {
-        task: null,
         show: false
     }
     componentDidMount() {
-        request(`http://localhost:3001/task/${this.props.match.params.taskId}`,)
-        .then( (res)=>{
-            this.setState({task: res})
-        })
-    }
+        this.props.getTask(this.props.match.params.taskId)
 
-    removeTask = taskId => {
-        request(`http://localhost:3001/task/${taskId}`,"DELETE")
-            .then( ()=>{
-                this.setState({task: null})
-                this.props.history.push('/')
-            })
-    }
-
-    editTask = (editedTask) => {
-        request(`http://localhost:3001/task/${editedTask._id}`,"PUT", editedTask)
-            .then(()=>{
-                this.setState({task: editedTask})
-            })
     }
 
     toggleShow = () => this.setState({show: !this.state.show})
 
-    handleEdit = editTask => this.setState({ editTask,  show: !this.state.show})
+    handleEdit = () => this.setState({show: !this.state.show})
 
     render() {
-        const {task, show} = this.state
+        const {show} = this.state
+        const {task} = this.props
 
         return (
             <>
-            <Container  fluid className={classes.toDoList}>
-                        <Row>
-                            <Col xs={12}>
-                                {task ?
+                <Container  fluid className={classes.toDoList}>
+                    <Row>
+                        <Col xs={12}>
+                            {task ?
                                 <Card className={`${classes.task}`}>
                                     <Card.Body className={classes.cBody}>
                                         <Link to={`/task/${task._id}`}>
@@ -62,30 +45,33 @@ class SingleTask extends Component{
                                         <ButtonGroup size="sm" className={classes.actions}>
                                             <Button variant="success"
                                                     onClick={() => {
-                                                        this.handleEdit(task)
+                                                        this.handleEdit()
                                                     }}
                                                     className="rounded-0 text-nowrap">
                                                 <FontAwesomeIcon icon={faEdit} />
                                             </Button>
                                             <Button
                                                 variant="danger"
-                                                onClick={()=> this.removeTask(task._id)}>
+                                                onClick={()=> {
+                                                    this.props.deleteTask(task._id)
+                                                    this.props.history.push('/')
+                                                }}>
                                                 <FontAwesomeIcon icon={faTrash} />
                                             </Button>
                                         </ButtonGroup>
                                     </Card.Body>
                                 </Card>
-                                    : <p>Task data not exists!</p>
-                                }
-                            </Col>
-                        </Row>
-                    </Container>
+                                : <p>Task data not exists!</p>
+                            }
+                        </Col>
+                    </Row>
+                </Container>
                 {
                     show &&
                     <Editor
                         mode='edit'
                         show={show}
-                        action={this.editTask}
+                        from="single"
                         toggleShow={this.toggleShow}
                         task={task}/>
                 }
@@ -94,4 +80,13 @@ class SingleTask extends Component{
     }
 }
 
-export default connect()(SingleTask)
+const mapStateToProps =  (state)=> {
+    return {task: state.task}
+}
+
+const mapDispatchToProps = {
+    getTask,
+    deleteTask
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleTask)
