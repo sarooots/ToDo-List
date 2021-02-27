@@ -4,13 +4,14 @@ import About from './components/Pages/About/About'
 import Contact from './components/Pages/Contact/Contact'
 import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
-import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom'
+import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Navbar from './components/NavMenu/NavMenu'
 import './App.scss'
 import Spinner from "./components/Spinner/Spinner"
 import {connect} from "react-redux"
 import { ToastContainer, toast, Flip} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import {history} from "./helpers/history"
 
 function App({loading, successMessage, errorMessage}) {
     useEffect(()=>{
@@ -34,9 +35,12 @@ function App({loading, successMessage, errorMessage}) {
         });
     }, [successMessage, errorMessage])
 
+
+
+
     return (
         <div className="App">
-            <BrowserRouter>
+            <Router history={history}>
                 <Navbar/>
                 <Switch>
                     <Route
@@ -71,7 +75,7 @@ function App({loading, successMessage, errorMessage}) {
                     />
                     <Redirect to='not-found'/>
                 </Switch>
-            </BrowserRouter>
+            </Router>
             { loading && <Spinner/> }
             <ToastContainer
                 position="bottom-right"

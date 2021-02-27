@@ -24,14 +24,15 @@ export default  function reducer(state=defaultState, action)  {
                 loading: false,
                 task: action.task
             }
-        case act.DELETE_TASK:
+        case act.DELETE_TASK:{
+            const tasks = action.from ==="single"? state.tasks.filter((task)=> action.taskId !== task._id): state.tasks
             return {
                 ...state,
-                tasks: state.tasks.filter((task)=> action.taskId !== task._id),
+                tasks,
                 deleteTaskSuccess: true,
                 loading: false,
                 successMessage: "Task deleted successfully!"
-            }
+            }}
         case act.DELETE_TASKS:
             return {
                 ...state,

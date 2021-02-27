@@ -3,6 +3,7 @@ import {Button, Dropdown, ButtonGroup} from "react-bootstrap"
 import classes from "./Actions.module.sass"
 import DeleteTasks from "../../DeleteTasks/DeleteTasks"
 import PropTypes from "prop-types"
+import Search from "../../Search/Search";
 
 class Actions extends PureComponent {
     static propTypes = {
@@ -48,6 +49,7 @@ class Actions extends PureComponent {
                     >
                         new task
                     </Button>
+                    <Search/>
                 </div>
         )
     }

@@ -52,10 +52,7 @@ class SingleTask extends Component{
                                             </Button>
                                             <Button
                                                 variant="danger"
-                                                onClick={()=> {
-                                                    this.props.deleteTask(task._id)
-                                                    this.props.history.push('/')
-                                                }}>
+                                                onClick={ ()=> this.props.deleteTask(task._id, "single") }>
                                                 <FontAwesomeIcon icon={faTrash} />
                                             </Button>
                                         </ButtonGroup>
