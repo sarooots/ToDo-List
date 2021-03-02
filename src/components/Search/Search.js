@@ -115,9 +115,9 @@ function Search() {
                     id="input-group-dropdown-1"
                 >
                     {
-                        statusOptions.map((option) => (
+                        statusOptions.map((option,index) => (
                             <Dropdown.Item
-                                key={option.value}
+                                key={index}
                                 active={status.value === option.value}
                                 onClick={()=> setStatus(option)}
                             >
@@ -134,9 +134,9 @@ function Search() {
                     id="input-group-dropdown-1"
                 >
                     {
-                        sortOptions.map((option) => (
+                        sortOptions.map((option, index) => (
                             <Dropdown.Item
-                                key={option.value}
+                                key={index}
                                 active={sort.value === option.value}
                                 onClick={()=> setSort(option)}
                             >
@@ -155,8 +155,8 @@ function Search() {
             </InputGroup>
 
             {
-                dateOptions.map((option)=> (
-                    <div>
+                dateOptions.map((option,index)=> (
+                    <div key={index}>
                         <span>{option.label}</span>
                         <DatePicker
                             selected={dates[option.value]}

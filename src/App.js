@@ -42,6 +42,10 @@ function App({loading, successMessage, errorMessage}) {
         <div className="App">
             <Router history={history}>
                 <Navbar/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
                 <Switch>
                     <Route
                         path='/'
