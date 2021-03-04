@@ -120,7 +120,7 @@ function Search({getTasks}) {
     useEffect(()=> {
         const queryString = require('query-string')
         const url = history.location.search
-        const filters = queryString.parse(url)
+        const filters = {...queryString.parse(url)}
 
         if (filters.sort) {
             const newSort = sortOptions.find((option)=>{
@@ -137,7 +137,19 @@ function Search({getTasks}) {
         }
 
         filters.search && setSearch(filters.search)
-    }, [])
+
+        const datesFromQuery = Object.keys(dates).filter((date)=>{
+            return filters.hasOwnProperty(date)
+        })
+
+        const newDates = {}
+        for (let [index, date] of datesFromQuery.entries()) {
+            if (dates[date] === null) {
+                newDates[date] = new Date(filters[date])
+                index===(datesFromQuery.length-1) && setDates(newDates)
+            }
+        }
+    },[dates])
 
 
     return (
