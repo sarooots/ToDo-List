@@ -151,6 +151,29 @@ function Search({getTasks}) {
         }
     },[dates])
 
+    const clearFilters = () => {
+
+
+        setStatus({
+            label: "Status",
+            value: ""
+        })
+        setSort({
+            label: "All",
+            value: ""
+        })
+        setSearch("")
+        setDates({
+            create_lte: null,
+            create_gte: null,
+            complete_lte: null,
+            complete_gte: null,
+        })
+
+        getTasks({})
+
+    }
+
 
     return (
         <div className="mb-3">
@@ -203,6 +226,12 @@ function Search({getTasks}) {
                     onClick={handleSubmit}
                 >
                     Search
+                </Button>
+                <Button
+                    variant="outline-primary"
+                    onClick={clearFilters}
+                >
+                    clear
                 </Button>
             </InputGroup>
 
