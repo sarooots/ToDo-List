@@ -1,8 +1,13 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react"
 import {connect} from "react-redux"
 import {InputGroup, FormControl, Button, DropdownButton, Dropdown, Form} from "react-bootstrap"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import {getTasks} from '../../store/actions'
+import {formatDate} from '../../helpers/utils'
+import {history} from "../../helpers/history"
+
+
 
 
 const statusOptions = [
@@ -70,7 +75,7 @@ const dateOptions = [
     }
 ]
 
-function Search() {
+function Search({getTasks}) {
     const [status, setStatus] = useState({
         label: "Status",
         value: ""
@@ -94,17 +99,52 @@ function Search() {
         })
     }
 
-    const handleSubmit = () => {
-        console.log(search)
-        console.log(dates)
-        console.log(sort)
+    const handleSubmit = ()=>{
+        const params = {}
+
+        search && (params.search = search)
+        sort.value && (params.sort = sort.value)
+        status.value && (params.status = status.value)
+
+        for(let key in dates){
+            const value = dates[key]
+            if(value){
+                params[key] = formatDate(value.toISOString())
+            }
+        }
+
+        getTasks(params)
     }
+
+
+    useEffect(()=> {
+        const queryString = require('query-string')
+        const url = history.location.search
+        const filters = queryString.parse(url)
+
+        if (filters.sort) {
+            const newSort = sortOptions.find((option)=>{
+                return option.value === filters.sort
+            })
+            setSort(newSort)
+        }
+
+        if (filters.status) {
+            const newStatus = statusOptions.find((option)=>{
+                return option.value === filters.status
+            })
+            setStatus(newStatus)
+        }
+
+        filters.search && setSearch(filters.search)
+    }, [])
 
 
     return (
         <div className="mb-3">
             <InputGroup >
                 <FormControl
+                    value={search && search}
                     placeholder="Search"
                     onChange={(e)=> setSearch(e.target.value)}
                 />
@@ -174,4 +214,8 @@ function Search() {
 
 }
 
-export default connect()(Search)
+const mapDispatchToProps = {
+    getTasks
+}
+
+export default connect(null, mapDispatchToProps)(Search)

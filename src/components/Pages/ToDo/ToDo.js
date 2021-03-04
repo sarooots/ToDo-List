@@ -8,7 +8,8 @@ import {formatDate, stringTrimmer} from "../../../helpers/utils"
 import Editor from "../../Editor/Editor"
 import {Link} from "react-router-dom"
 import {connect} from "react-redux";
-import {getTasks, deleteTask} from "../../../store/actions";
+import {getTasks, deleteTask} from "../../../store/actions"
+import {history} from "../../../helpers/history"
 
 
 class ToDo extends Component {
@@ -20,7 +21,7 @@ class ToDo extends Component {
     }
 
     componentDidMount() {
-        this.props.getTasks()
+        this.props.getTasks(history.location.search)
     }
     componentDidUpdate(prevpProps) {
         if (!prevpProps.addTaskSuccess && this.props.addTaskSuccess) {

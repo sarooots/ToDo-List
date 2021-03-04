@@ -2,10 +2,14 @@ import request from "../helpers/request";
 import * as act from "./actTypes"
 import {history} from "../helpers/history";
 
-export function getTasks() {
+export function getTasks(params) {
+
+    const query = typeof params === "string"? params: `?${Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&')}`
+    history.push(`/${query}`)
+
     return (dispatch) =>{
         dispatch({type: act.PENDING})
-        request("http://localhost:3001/task")
+        request(`http://localhost:3001/task${query}`)
             .then((res)=>{
                 dispatch({type: act.GET_TASKS, tasks: res})
             })
