@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useCallback} from "react"
 import {connect} from "react-redux"
 import {InputGroup, FormControl, Button, DropdownButton, Dropdown, Form} from "react-bootstrap"
 import DatePicker from "react-datepicker"
@@ -6,8 +6,7 @@ import "react-datepicker/dist/react-datepicker.css"
 import {getTasks} from '../../store/actions'
 import {formatDate} from '../../helpers/utils'
 import {history} from "../../helpers/history"
-
-
+import {withRouter} from "react-router-dom";
 
 
 const statusOptions = [
@@ -75,7 +74,7 @@ const dateOptions = [
     }
 ]
 
-function Search({getTasks}) {
+function Search({getTasks, location}) {
     const [status, setStatus] = useState({
         label: "Status",
         value: ""
@@ -151,9 +150,7 @@ function Search({getTasks}) {
         }
     },[dates])
 
-    const clearFilters = () => {
-
-
+    const clearFilters = useCallback(() => {
         setStatus({
             label: "Status",
             value: ""
@@ -172,8 +169,12 @@ function Search({getTasks}) {
 
         getTasks({})
 
-    }
+    }, [getTasks])
 
+    useEffect(()=>{
+        !location.search && clearFilters()
+
+    }, [location.search, clearFilters])
 
     return (
         <div className="mb-3">
@@ -258,5 +259,12 @@ function Search({getTasks}) {
 const mapDispatchToProps = {
     getTasks
 }
+// export default connect(null, mapDispatchToProps)(
+//     compose(
+//         withRouter,Search
+//     )
+// )
 
-export default connect(null, mapDispatchToProps)(Search)
+export default withRouter(
+    connect(null, mapDispatchToProps)(Search)
+)
