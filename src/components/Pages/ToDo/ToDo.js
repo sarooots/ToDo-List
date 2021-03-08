@@ -7,11 +7,13 @@ import {Container, Col, Row, Button, Card, ButtonGroup} from "react-bootstrap"
 import {formatDate, stringTrimmer} from "../../../helpers/utils"
 import Editor from "../../Editor/Editor"
 import {Link} from "react-router-dom"
+import {connect} from "react-redux";
+import {getTasks, deleteTask} from "../../../store/actions"
+import {history} from "../../../helpers/history"
 
 
 class ToDo extends Component {
     state = {
-        tasks: [],
         selectedTasks: new Set(),
         show: false,
         editTask: null,
@@ -19,23 +21,18 @@ class ToDo extends Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:3001/task", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
-
-                this.setState({tasks: res})
-            })
-            .catch(error => {
-                console.log(error)
-            })
+        this.props.getTasks(history.location.search)
+    }
+    componentDidUpdate(prevpProps) {
+        if (!prevpProps.addTaskSuccess && this.props.addTaskSuccess) {
+            this.setState({show: false})
+        }
+        if (!prevpProps.deleteTaskSuccess && this.props.deleteTaskSuccess) {
+            this.setState({selectedTasks: new Set()})
+        }
+        if (!prevpProps.editTaskSuccess && this.props.editTaskSuccess) {
+            this.setState({editTask: null})
+        }
     }
 
     selectTask = taskId => {
@@ -48,63 +45,8 @@ class ToDo extends Component {
         this.setState({selectedTasks})
     }
 
-    removeTask = taskId => {
-
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
-                const {tasks} = this.state
-                this.setState({tasks: tasks.filter((task)=> taskId !== task._id)})
-
-            })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-
-
-    }
-
-    removeSelected = () => {
-        fetch(`http://localhost:3001/task/`, {
-            method: "PATCH",
-            body: JSON.stringify({tasks: Array.from(this.state.selectedTasks)}),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
-
-                const {tasks} = this.state
-                const selectedTasks = new Set(this.state.selectedTasks)
-                const newTask = tasks.filter((task)=>{
-                    return !selectedTasks.has(task._id)
-                })
-                this.setState({
-                    tasks: newTask,
-                    selectedTasks: new Set()
-                })
-
-            })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-
-    }
-
     selectAllTasks = () => {
-        const {tasks} = this.state
+        const {tasks} = this.props
         const selectedTasks = new Set(this.state.selectedTasks)
         if (selectedTasks.size < tasks.length) {
             tasks.map((task)=>{
@@ -121,53 +63,8 @@ class ToDo extends Component {
         const selectedTasks = new Set(this.state.selectedTasks)
         selectedTasks.clear()
         this.setState({selectedTasks: selectedTasks})
-
     }
 
-    addTask = task => {
-        fetch("http://localhost:3001/task", {
-            method: "POST",
-            body: JSON.stringify(task),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                    if(response.status >=400 && response.status < 600){
-                        throw res.error ?res.error : new Error("Something went wrong!")
-                }
-                const {tasks} = this.state
-                this.setState({tasks: [...tasks, res]})
-            })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-    }
-
-    editTask = (editedTask) => {
-        fetch(`http://localhost:3001/task/${editedTask._id}`, {
-            method: "PUT",
-            body: JSON.stringify(editedTask),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
-                const {tasks} = this.state
-                const newList = tasks
-                const editId = tasks.findIndex((el)=> el._id===editedTask._id)
-                newList[editId] = res
-                this.setState({tasks: newList})
-            })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-    }
 
     toggleShow = () => this.setState({show: !this.state.show})
 
@@ -176,15 +73,15 @@ class ToDo extends Component {
     changeMode = newMode => this.setState({ mode: newMode})
 
     render() {
-        const {tasks, selectedTasks, editTask, show, mode} = this.state
+        const {selectedTasks, editTask, show, mode} = this.state
+        const {tasks, deleteTask} = this.props
         return (
             <>
                 {/*Here goes logo, "new task" "select/deselect" and "delete" buttons*/}
                 <Container  fluid className={classes.toDoList}>
                     <Actions
-                        tasks={this.state.tasks}
+                        tasks={this.props.tasks}
                         selectedTasks={selectedTasks}
-                        removeSelected={this.removeSelected}
                         selectAllTasks={this.selectAllTasks}
                         deselect={this.deselect}
                         toggleShow={this.toggleShow}
@@ -211,7 +108,7 @@ class ToDo extends Component {
                                             </label>
                                             <Card.Body className={classes.cBody}>
                                                 <Link to={`/task/${task._id}`}>
-                                                <Card.Title className={classes.title}>{task.title}</Card.Title>
+                                                    <Card.Title className={classes.title}>{task.title}</Card.Title>
                                                 </Link>
                                                 <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${formatDate(task.date)}`}</Card.Subtitle>
                                                 <Card.Text className={`${classes.desc} ${task.description ===""?classes.emptyDesc:""}`}>
@@ -230,7 +127,7 @@ class ToDo extends Component {
                                                     <Button
                                                         disabled={!!selectedTasks.size}
                                                         variant="danger"
-                                                        onClick={()=> this.removeTask(task._id)}>
+                                                        onClick={()=> deleteTask(task._id)}>
                                                         <FontAwesomeIcon icon={faTrash} />
                                                     </Button>
                                                 </ButtonGroup>
@@ -247,7 +144,6 @@ class ToDo extends Component {
                     <Editor
                         mode={mode}
                         show={show}
-                        action={this.editTask}
                         toggleShow={this.toggleShow}
                         task={editTask}/>
                 }
@@ -256,12 +152,22 @@ class ToDo extends Component {
                     <Editor
                         mode={mode}
                         show={show}
-                        action={this.addTask}
                         toggleShow={this.toggleShow}/>
                 }
             </>
         )
     }
-
 }
-export default ToDo
+
+const mapStateToProps = (state) => {
+    return{
+        tasks: state.tasks,
+        addTaskSuccess: state.addTaskSuccess,
+        deleteTaskSuccess: state.deleteTaskSuccess,
+    }
+}
+const mapDispatchToProps =  {
+    getTasks,
+    deleteTask
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ToDo)

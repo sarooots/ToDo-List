@@ -6,87 +6,33 @@ import {formatDate} from "../../../helpers/utils"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import Editor from "../../Editor/Editor";
+import {connect} from "react-redux";
+import {getTask, deleteTask} from "../../../store/actions";
 
-export default class SingleTask extends Component{
+class SingleTask extends Component{
 
     state = {
-        task: null,
         show: false
     }
     componentDidMount() {
-        fetch(`http://localhost:3001/task/${this.props.match.params.taskId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(async (response)=>{
-            const res = await response.json()
-            if (response.status >= 400 && response.status <600) {
-                throw res.error ?res.error : new Error("Something went wrong!")
-            }
-            this.setState({task: res})
-        })
-            .catch(error => {
-                console.log(error)
-            })
-    }
-    removeTask = taskId => {
-
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
-                this.setState({task: null})
-                this.props.history.push('/')
-
-            })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-
+        this.props.getTask(this.props.match.params.taskId)
 
     }
 
-
-    editTask = (editedTask) => {
-        fetch(`http://localhost:3001/task/${editedTask._id}`, {
-            method: "PUT",
-            body: JSON.stringify(editedTask),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-            .then(async (response)=>{
-                const res = await response.json()
-                if (response.status >= 400 && response.status <600) {
-                    throw res.error ?res.error : new Error("Something went wrong!")
-                }
-                this.setState({task: editedTask})
-            })
-            .catch(error => {
-                console.log("catch error", error)
-            })
-    }
     toggleShow = () => this.setState({show: !this.state.show})
 
-    handleEdit = editTask => this.setState({ editTask,  show: !this.state.show})
+    handleEdit = () => this.setState({show: !this.state.show})
 
     render() {
-        const {task, show} = this.state
+        const {show} = this.state
+        const {task} = this.props
 
         return (
             <>
-            <Container  fluid className={classes.toDoList}>
-                        <Row>
-                            <Col xs={12}>
-                                {task ?
+                <Container  fluid className={classes.toDoList}>
+                    <Row>
+                        <Col xs={12}>
+                            {task ?
                                 <Card className={`${classes.task}`}>
                                     <Card.Body className={classes.cBody}>
                                         <Link to={`/task/${task._id}`}>
@@ -99,38 +45,45 @@ export default class SingleTask extends Component{
                                         <ButtonGroup size="sm" className={classes.actions}>
                                             <Button variant="success"
                                                     onClick={() => {
-                                                        this.handleEdit(task)
+                                                        this.handleEdit()
                                                     }}
                                                     className="rounded-0 text-nowrap">
                                                 <FontAwesomeIcon icon={faEdit} />
                                             </Button>
                                             <Button
                                                 variant="danger"
-                                                onClick={()=> this.removeTask(task._id)}>
+                                                onClick={ ()=> this.props.deleteTask(task._id, "single") }>
                                                 <FontAwesomeIcon icon={faTrash} />
                                             </Button>
                                         </ButtonGroup>
                                     </Card.Body>
                                 </Card>
-                                    : <p>Task data not exists!</p>
-                                }
-                            </Col>
-                        </Row>
-                    </Container>
+                                : <p>Task data not exists!</p>
+                            }
+                        </Col>
+                    </Row>
+                </Container>
                 {
                     show &&
                     <Editor
                         mode='edit'
                         show={show}
-                        action={this.editTask}
+                        from="single"
                         toggleShow={this.toggleShow}
                         task={task}/>
                 }
-
             </>
         )
-
     }
-
-
 }
+
+const mapStateToProps =  (state)=> {
+    return {task: state.task}
+}
+
+const mapDispatchToProps = {
+    getTask,
+    deleteTask
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleTask)
