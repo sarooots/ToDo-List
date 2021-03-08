@@ -25,7 +25,7 @@ export default  function reducer(state=defaultState, action)  {
                 task: action.task
             }
         case act.DELETE_TASK:{
-            const tasks = action.from ==="single"? state.tasks.filter((task)=> action.taskId !== task._id): state.tasks
+            const tasks = state.tasks.filter((task)=> action.taskId !== task._id)
             return {
                 ...state,
                 tasks,
