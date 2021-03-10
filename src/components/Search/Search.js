@@ -243,7 +243,7 @@ function Search({getTasks, location}) {
                         <DatePicker
                             selected={dates[option.value]}
                             onChange={(value) => handleChangeDates(value, option.value)}
-                            customInput={<Form.Control type="date"/>}
+                            customInput={<Form.Control type="text"/>}
                         />
 
                     </div>

@@ -2,8 +2,7 @@ import request from "../helpers/request";
 import * as act from "./actTypes"
 import {history} from "../helpers/history";
 
-console.log(process.env)
-const apiHost = process.env.REACT_APP_API_HOST
+    const apiHost = process.env.REACT_APP_API_HOST
 export function getTasks(params) {
 
     const query = typeof params === "string"? params: `?${Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&')}`
