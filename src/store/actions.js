@@ -2,6 +2,8 @@ import request from "../helpers/request";
 import * as act from "./actTypes"
 import {history} from "../helpers/history";
 
+console.log(process.env)
+const apiHost = process.env.REACT_APP_API_HOST
 export function getTasks(params) {
 
     const query = typeof params === "string"? params: `?${Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&')}`
@@ -9,7 +11,7 @@ export function getTasks(params) {
 
     return (dispatch) =>{
         dispatch({type: act.PENDING})
-        request(`http://localhost:3001/task${query}`)
+        request(`${apiHost}/task${query}`)
             .then((res)=>{
                 dispatch({type: act.GET_TASKS, tasks: res})
             })
@@ -22,7 +24,7 @@ export function getTasks(params) {
 export function getTask(taskId) {
     return (dispatch) =>{
         dispatch({type: act.PENDING})
-        request(`http://localhost:3001/task/${taskId}`,)
+        request(`${apiHost}/task/${taskId}`,)
             .then((res)=>{
                 dispatch({type: act.GET_TASK, task: res})
             })
@@ -35,7 +37,7 @@ export function getTask(taskId) {
 export function deleteTask(taskId, from) {
     return (dispatch) => {
         dispatch({type: act.PENDING})
-        request(`http://localhost:3001/task/${taskId}`, "DELETE")
+        request(`${apiHost}/task/${taskId}`, "DELETE")
             .then(()=>{
                 dispatch({type: act.DELETE_TASK, taskId, from})
                 history.push("/")
@@ -49,7 +51,7 @@ export function deleteTask(taskId, from) {
 export function deleteTasks(selectedTasks) {
     return (dispatch) =>{
         dispatch({type: act.PENDING})
-        request(`http://localhost:3001/task/`,"PATCH", {tasks: Array.from(selectedTasks)})
+        request(`${apiHost}/task/`,"PATCH", {tasks: Array.from(selectedTasks)})
             .then(()=>{
                 dispatch({type: act.DELETE_TASKS, selectedTasks})
             })
@@ -62,7 +64,7 @@ export function deleteTasks(selectedTasks) {
 export function addTask(task) {
     return (dispatch) => {
         dispatch({type: act.PENDING})
-        request("http://localhost:3001/task", "POST", task)
+        request(`${apiHost}/task`, "POST", task)
             .then((res)=>{
                 dispatch({type: "ADD_TASK", task: res})
             })
@@ -75,7 +77,7 @@ export function addTask(task) {
 export function editTask(data, from) {
     return (dispatch)=>{
         dispatch({type: act.PENDING})
-        request(`http://localhost:3001/task/${data._id}`, "PUT", data)
+        request(`${apiHost}/task/${data._id}`, "PUT", data)
             .then((editedTask)=>{
                 dispatch({type: act.EDIT_TASK, editedTask, from })
             })
@@ -83,4 +85,4 @@ export function editTask(data, from) {
                 dispatch({type: act.ERROR, errorMessage: error.message})
             })
     }
-}
+ }
