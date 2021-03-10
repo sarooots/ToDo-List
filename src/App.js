@@ -35,11 +35,14 @@ function App({loading, successMessage, errorMessage}) {
         });
     }, [successMessage, errorMessage])
 
-
+    useEffect(()=> {
+        document.title = 'Todo'
+    },[])
 
 
     return (
         <div className="App">
+
             <Router history={history}>
                 <Navbar/>
                 <br/>

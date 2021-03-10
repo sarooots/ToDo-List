@@ -33,12 +33,12 @@ export function getTask(taskId) {
     }
 }
 
-export function deleteTask(taskId, from) {
+export function deleteTask(taskId) {
     return (dispatch) => {
         dispatch({type: act.PENDING})
         request(`${apiHost}/task/${taskId}`, "DELETE")
             .then(()=>{
-                dispatch({type: act.DELETE_TASK, taskId, from})
+                dispatch({type: act.DELETE_TASK, taskId})
                 history.push("/")
             })
             .catch((error) => {
