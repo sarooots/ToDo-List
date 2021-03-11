@@ -1,15 +1,12 @@
 import React, {Component} from "react"
 import Actions from "./Actions"
 import classes from "./ToDo.module.sass"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
-import {Container, Col, Row, Button, Card, ButtonGroup} from "react-bootstrap"
-import {formatDate, stringTrimmer} from "../../../helpers/utils"
+import {Container, Row} from "react-bootstrap"
 import Editor from "../../Editor/Editor"
-import {Link} from "react-router-dom"
 import {connect} from "react-redux";
 import {getTasks, deleteTask} from "../../../store/actions"
 import {history} from "../../../helpers/history"
+import Task from "./Task"
 
 
 class ToDo extends Component {
@@ -89,51 +86,17 @@ class ToDo extends Component {
 
                     <Row>
                         {
-                            tasks.map((task)=>{
+                            tasks.map((task, index)=>{
                                 return (
-                                    <Col key={task._id}
-                                         lg={3}
-                                         md={4}
-                                         sm={6}
-                                         xs={12}>
-                                        <Card className={`${classes.task} ${selectedTasks.has(task._id)? classes.selected: ""}`}>
-                                            <label  className={classes.select}>
-                                                <input type="checkbox"
-                                                       className={`${classes.select} rounded-0`}
-                                                       onChange={()=> this.selectTask(task._id)}
-                                                       checked={selectedTasks.has(task._id)}/>
-                                                <span className={classes.checkmark}/>
-                                                <div className={classes.fillWidth}/>
-
-                                            </label>
-                                            <Card.Body className={classes.cBody}>
-                                                <Link to={`/task/${task._id}`}>
-                                                    <Card.Title className={classes.title}>{task.title}</Card.Title>
-                                                </Link>
-                                                <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${formatDate(task.date)}`}</Card.Subtitle>
-                                                <Card.Text className={`${classes.desc} ${task.description ===""?classes.emptyDesc:""}`}>
-                                                    {task.description === "" ? "this task has no description": stringTrimmer(task.description, 55)}
-                                                </Card.Text>
-                                                <ButtonGroup size="sm" className={classes.actions}>
-                                                    <Button variant="success"
-                                                            onClick={() => {
-                                                                this.handleEdit(task)
-                                                                this.changeMode("edit")
-                                                            }}
-                                                            className="rounded-0 text-nowrap"
-                                                            disabled={!!selectedTasks.size}>
-                                                        <FontAwesomeIcon icon={faEdit} />
-                                                    </Button>
-                                                    <Button
-                                                        disabled={!!selectedTasks.size}
-                                                        variant="danger"
-                                                        onClick={()=> deleteTask(task._id)}>
-                                                        <FontAwesomeIcon icon={faTrash} />
-                                                    </Button>
-                                                </ButtonGroup>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
+                                    <Task
+                                        key={index}
+                                        task={task}
+                                        selectTask={this.selectTask}
+                                        selectedTasks={selectedTasks}
+                                        handleEdit={this.handleEdit}
+                                        changeMode={this.changeMode}
+                                        deleteTask={deleteTask}
+                                    />
                                 )
                             })
                         }
