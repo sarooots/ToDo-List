@@ -68,14 +68,16 @@ export default  function reducer(state=defaultState, action)  {
             const tasks = [...state.tasks]
             const editId = tasks.findIndex((el)=> el._id===action.editedTask._id)
             tasks[editId] = action.editedTask
-            return {
+            const newState = {
                 ...state,
                 tasks,
                 task: action.from==="single"? action.editedTask: null,
                 editTaskSuccess: true,
                 loading: false,
-                successMessage: `Task edited successfully!`
-            }}
+            }
+            newState.successMessage = !action.statusChanged && `Task edited successfully!`
+
+            return newState }
         case act.ERROR:{
             return {
                 ...state,

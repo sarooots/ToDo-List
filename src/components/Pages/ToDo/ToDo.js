@@ -67,6 +67,8 @@ class ToDo extends Component {
 
     handleEdit = editTask => this.setState({ editTask,  show: !this.state.show})
 
+    changeStatus = editTask => this.setState({ editTask,  show: !this.state.show})
+
     changeMode = newMode => this.setState({ mode: newMode})
 
     render() {

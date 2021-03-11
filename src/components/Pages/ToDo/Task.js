@@ -1,12 +1,14 @@
 import React from "react"
 import cls from "./Task.module.sass"
-import {formatDate2, stringTrimmer} from "../../../helpers/utils"
+import {formatDate, formatDate2, stringTrimmer} from "../../../helpers/utils"
 import {Link} from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
+import {faEdit, faTrash, faCheck} from "@fortawesome/free-solid-svg-icons"
+import {editTask} from "../../../store/actions"
+import {connect} from "react-redux"
 
 
-export default function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteTask}) {
+function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteTask, editTask}) {
     return (
         <div className={cls.task}>
             <label>
@@ -55,9 +57,26 @@ export default function Task ({task, selectTask, selectedTasks, handleEdit, chan
             >
                 <FontAwesomeIcon icon={faTrash} />
             </div>
+            <div
+                onClick={() => {
+                    task.status = task.status === "active"? "done": "active"
+                    task.date= formatDate(new Date(task.date).toISOString())
+                    editTask(task, null, true)
+                }}
+            >
+                <FontAwesomeIcon icon={faCheck} />
+            </div>
         </div>
 
 
 
     )
 }
+
+
+
+const mapDispatchToProps =  {
+    editTask
+}
+
+export default connect(null, mapDispatchToProps)(Task)
