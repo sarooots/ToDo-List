@@ -20,7 +20,7 @@ const links = [
     },
     {
         title: "Sign up",
-        address: "login"
+        address: "signup"
     },
 ]
 

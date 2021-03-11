@@ -11,6 +11,7 @@ import {connect} from "react-redux"
 function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteTask, editTask}) {
     return (
         <div className={cls.task}>
+            {/*select tusk checkbox*/}
             <label>
                 <input type="checkbox"
                        onChange={()=> selectTask(task._id)}
@@ -44,6 +45,8 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
                 </div>
             </Link>
 
+
+            {/*task action buttons*/}
             <div
                 onClick={() => {
                     handleEdit(task)
