@@ -10,14 +10,21 @@ import {connect} from "react-redux"
 
 function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteTask, editTask}) {
     return (
-        <div className={cls.task}>
+        <div className={`${cls.task}
+         ${selectedTasks.has(task._id) && cls.selected}
+         ${task.status === "done" && cls.done}
+         `}>
             {/*select tusk checkbox*/}
             <label>
+                <div
+                    className={`${cls.action} ${cls.select}`}
+                >
                 <input type="checkbox"
                        onChange={()=> selectTask(task._id)}
                        checked={selectedTasks.has(task._id)}
                 />
-                <span/>
+                <span className={`${cls.checkmark}`}/>
+                </div>
             </label>
 
             {/*task details*/}
@@ -48,6 +55,7 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
 
             {/*task action buttons*/}
             <div
+                className={`${cls.action} ${cls.edit}`}
                 onClick={() => {
                     handleEdit(task)
                     changeMode("edit")
@@ -56,11 +64,13 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
                 <FontAwesomeIcon icon={faEdit} />
             </div>
             <div
+                className={`${cls.action} ${cls.delete}`}
                 onClick={() => deleteTask(task._id)}
             >
                 <FontAwesomeIcon icon={faTrash} />
             </div>
             <div
+                className={`${cls.action} ${cls.changeStatus}`}
                 onClick={() => {
                     task.status = task.status === "active"? "done": "active"
                     task.date= formatDate(new Date(task.date).toISOString())
@@ -69,6 +79,7 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
             >
                 <FontAwesomeIcon icon={faCheck} />
             </div>
+
         </div>
 
 

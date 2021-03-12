@@ -1,6 +1,14 @@
 $white: white
 $dark: #2F2E41
 $grey: #747474
+$grey2: #F3F3F3
+$grey3: #CCCCCC
+$green: #01CE3F
+$blue: #0086FB
+$red: #EC3333
+$red2: #FF675C
+
+
 .task
   width: 100%
   height: 8.75rem
@@ -27,6 +35,116 @@ $grey: #747474
     .details
       font-weight: 600
       font-size: 1rem
-      //.detail
-      //.date
-      //.status
+      .detail
+        margin-right: 0.625rem
+      .date
+        color: $red2
+      .status
+        color: $blue
+        text-transform: capitalize
+
+
+  .action
+    min-width: 4.0625rem
+    min-height: 4.0625rem
+    border-radius: 2.0625rem
+    background: white
+    margin-right: 0.3125rem
+    cursor: pointer
+    font-size: 1.8rem
+    display: flex
+    align-items: center
+    justify-content: center
+    &:last-child
+      margin-right: 0
+    &:first-child
+      margin-right: 0.3125rem
+    &.active
+      color: white
+    &.changeStatus
+      color: $green
+      &.active
+        background: $green
+        color: $white
+    &.edit
+      color: $blue
+      padding-left: 0.3125rem
+      &.active
+        display: none
+    &.delete
+      color: $red
+      &.active
+        display: none
+    &:hover
+      background: $grey2
+
+  &:hover
+    border-color: $grey3
+    box-shadow: 0 0.125rem 0.375rem rgba(116, 116, 116, 0.40)
+    .content
+      .title
+        text-decoration: underline
+
+  &.selected
+    border-color: $blue
+    .content
+      opacity: 50%
+    .action
+      display: none
+      &.select
+        display: flex
+
+  &.done
+    .status
+      color: $green !important
+
+    .content, .select
+      opacity: 50%
+    .action
+      display: none
+      &.select
+        display: flex
+      &.changeStatus
+        display: flex
+        opacity: 50%
+        background: $green
+        color: $white
+    &.selected
+      .select
+        opacity: 100%
+      .action.changeStatus
+        display: none
+
+
+
+
+
+
+
+.select
+  .checkmark
+    border: 0.125rem solid $red2
+    height: 1.875rem
+    width:  1.875rem
+    border-radius: 0.375rem
+    background-color: $white
+    z-index: 1
+    display: flex
+    justify-content: center
+    align-items: center
+    padding-bottom: 0.25rem
+    &:after
+      content: ""
+      width: 0.5625rem
+      height: 0.875rem
+      display: none
+      border: solid $white
+      border-width: 0 0.27rem 0.27rem 0
+      transform: rotate(45deg)
+  input
+    display: none
+    &:checked + .checkmark
+      background: $blue
+      border-color: $blue
+      &:after
+        display: block
