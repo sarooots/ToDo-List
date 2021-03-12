@@ -4,7 +4,7 @@ import {formatDate, formatDate2, stringTrimmer} from "../../../helpers/utils"
 import {Link} from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faEdit, faTrash, faCheck} from "@fortawesome/free-solid-svg-icons"
-import {editTask} from "../../../store/actions"
+import {deleteTask, editTask} from "../../../store/actions"
 import {connect} from "react-redux"
 
 
@@ -79,8 +79,12 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
             <div
                 className={`${cls.action} ${cls.changeStatus}`}
                 onClick={() => {
+                    //toggle task status
                     task.status = task.status === "active"? "done": "active"
+                    //creates Date object from string, then creates new string in required format from that Date object
                     task.date= formatDate(new Date(task.date).toISOString())
+
+                    //the last argument is for specifying the action is called to change only task status
                     editTask(task, null, true)
                 }}
             >
@@ -91,9 +95,10 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
 }
 
 
-
+// editTask and deleteTask action given to this component as props
 const mapDispatchToProps =  {
-    editTask
+    editTask,
+    deleteTask
 }
 
 export default connect(null, mapDispatchToProps)(Task)

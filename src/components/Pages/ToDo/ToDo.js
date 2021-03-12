@@ -1,12 +1,12 @@
 import React, {Component} from "react"
 import Actions from "./Actions"
-import classes from "./ToDo.module.sass"
-import {Container, Row} from "react-bootstrap"
+import cls from "./ToDo.module.sass"
 import Editor from "../../Editor/Editor"
 import {connect} from "react-redux";
 import {getTasks, deleteTask} from "../../../store/actions"
 import {history} from "../../../helpers/history"
 import Task from "./Task"
+import illustration from "../../Style assets/Tasks page illustration.svg"
 
 
 class ToDo extends Component {
@@ -76,8 +76,32 @@ class ToDo extends Component {
         const {tasks, deleteTask} = this.props
         return (
             <>
-                {/*Here goes logo, "new task" "select/deselect" and "delete" buttons*/}
-                <Container  fluid className={classes.toDoList}>
+                {/*whole page content*/}
+                <section className={cls.wrapper}>
+                    {/*first section of page, intro*/}
+                    <article className={`${cls.intro} ${cls.article}`}>
+                        <div className={`${cls.introItem}`}>
+                            <img src={illustration} alt=""
+                                 className={`${cls.illustration}`}
+                            />
+                        </div>
+
+                        <div className={`${cls.introItem} ${cls.introInfo}`}>
+                            <h1 className={`${cls.introTitle}`}>Manage your tasks</h1>
+
+                            <ul className={`${cls.list}`}>
+                                <li>add task</li>
+                                <li>edit task</li>
+                                <li>delete single or multiple tasks</li>
+                                <li>search and filter tasks</li>
+                                <li>sort tasks</li>
+                                <li>change task status</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article className={`${cls.article}`}>
+
                     <Actions
                         tasks={this.props.tasks}
                         selectedTasks={selectedTasks}
@@ -86,7 +110,6 @@ class ToDo extends Component {
                         toggleShow={this.toggleShow}
                         changeMode={this.changeMode}/>
 
-                    <Row>
                         {
                             tasks.map((task, index)=>{
                                 return (
@@ -102,8 +125,9 @@ class ToDo extends Component {
                                 )
                             })
                         }
-                    </Row>
-                </Container>
+                    </article>
+
+                </section>
                 {
                     mode === "edit" && show &&
                     <Editor

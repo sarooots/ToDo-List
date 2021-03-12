@@ -22,3 +22,6 @@ code {
   src: local('BebasNeue-Regular'), url(./fonts/BebasNeue-Regular.ttf) format('woff');
 }
 
+* {
+  transition: 0.2s linear;
+}
