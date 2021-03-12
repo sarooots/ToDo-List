@@ -6,7 +6,7 @@ import Login from './components/Pages/Signup/Signup'
 import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
-import Navbar from './components/NavMenu/NavMenu'
+import Header from './components/NavMenu/Header'
 import './App.scss'
 import Spinner from "./components/Spinner/Spinner"
 import {connect} from "react-redux"
@@ -40,7 +40,7 @@ function App({loading, successMessage, errorMessage}) {
         <div className="App">
 
             <Router history={history}>
-                <Navbar/>
+                <Header/>
                 <Switch>
                     <Route
                         path='/'
