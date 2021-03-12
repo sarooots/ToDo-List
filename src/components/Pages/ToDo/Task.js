@@ -10,11 +10,15 @@ import {connect} from "react-redux"
 
 function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteTask, editTask}) {
     return (
+
+        // please check "Task.module.sass" file to understand each element of the code
+        // there are elements which is necessary for styling
+
         <div className={`${cls.task}
          ${selectedTasks.has(task._id) && cls.selected}
          ${task.status === "done" && cls.done}
          `}>
-            {/*select tusk checkbox*/}
+            {/*select task checkbox*/}
             <label>
                 <div
                     className={`${cls.action} ${cls.select}`}
@@ -23,15 +27,18 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
                        onChange={()=> selectTask(task._id)}
                        checked={selectedTasks.has(task._id)}
                 />
-                <span className={`${cls.checkmark}`}/>
+                <span className={`${cls.checkbox}`}/>
                 </div>
             </label>
 
-            {/*task details*/}
+
+            {/*task info
+            all information placed in Link element to make whole task info clickable
+            */}
 
             <Link to={`/task/${task._id}`} className={cls.link}>
                 <div className={cls.content}>
-                    <h2 className={cls.title}>  {stringTrimmer(task.title, 150)}</h2>
+                    <h2 className={cls.title}>  {stringTrimmer(task.title, 115)}</h2>
                     <h6 className={cls.details}>
                         <span className={cls.detail}>
                             Deadline:
@@ -79,11 +86,7 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
             >
                 <FontAwesomeIcon icon={faCheck} />
             </div>
-
         </div>
-
-
-
     )
 }
 

@@ -5,10 +5,11 @@ $grey2: #F3F3F3
 $grey3: #CCCCCC
 $green: #01CE3F
 $blue: #0086FB
-$red: #EC3333
+$red: #ec3333
 $red2: #FF675C
 
 
+// task element main object
 .task
   width: 100%
   height: 8.75rem
@@ -23,15 +24,22 @@ $red2: #FF675C
     bottom: 0.625rem
   background: $white
   box-shadow: 0 0.125rem 0.375rem rgba(116, 116, 116, 0.30)
+
+  // remove initial style from Link (react-router-dom) component
   .link
     color: inherit
     text-decoration: inherit
     width: 100%
 
+  // container for task information
   .content
+
+    // task title
     .title
       font-size: 1.6875rem
       font-weight: 600
+
+    // container for task Date Status
     .details
       font-weight: 600
       font-size: 1rem
@@ -43,7 +51,7 @@ $red2: #FF675C
         color: $blue
         text-transform: capitalize
 
-
+  // container for all clickable elements, checkbox and delete, edit, change status buttons
   .action
     min-width: 4.0625rem
     min-height: 4.0625rem
@@ -59,6 +67,8 @@ $red2: #FF675C
       margin-right: 0
     &:first-child
       margin-right: 0.3125rem
+
+    //styling each individual action
     &.active
       color: white
     &.changeStatus
@@ -66,25 +76,65 @@ $red2: #FF675C
       &.active
         background: $green
         color: $white
+
     &.edit
       color: $blue
       padding-left: 0.3125rem
-      &.active
-        display: none
+      &:active
+        color: $white
+        background: $blue
+
     &.delete
       color: $red
-      &.active
+      &:active
+        color: $white
+        background: $red
+
+    &.select
+      // custom checkbox style
+      .checkbox
+        border: 0.125rem solid $red2
+        height: 1.875rem
+        width:  1.875rem
+        border-radius: 0.375rem
+        background-color: $white
+        z-index: 1
+        display: flex
+        justify-content: center
+        align-items: center
+        padding-bottom: 0.25rem
+        // checkmark
+        &:after
+          content: ""
+          width: 0.5625rem
+          height: 0.875rem
+          display: none
+          border: solid $white
+          border-width: 0 0.27rem 0.27rem 0
+          transform: rotate(45deg)
+          
+      // hide initial checkbox
+      input
         display: none
+        // change custom checkbox color, make it look like checked
+        &:checked + .checkbox
+          background: $blue
+          border-color: $blue
+          &:after
+            display: block
+    
+    // action hover
     &:hover
       background: $grey2
-
+  // task hover
   &:hover
     border-color: $grey3
     box-shadow: 0 0.125rem 0.375rem rgba(116, 116, 116, 0.40)
     .content
       .title
         text-decoration: underline
-
+        
+  // task selected state
   &.selected
     border-color: $blue
     .content
@@ -94,6 +144,7 @@ $red2: #FF675C
       &.select
         display: flex
 
+  // task done state, when task status is done
   &.done
     .status
       color: $green !important
@@ -109,42 +160,12 @@ $red2: #FF675C
         opacity: 50%
         background: $green
         color: $white
+
+    // when selected the task whth done status
     &.selected
       .select
         opacity: 100%
+      .checkmark
+        opacity: 100%
       .action.changeStatus
         display: none
-
-
-
-
-
-
-
-.select
-  .checkmark
-    border: 0.125rem solid $red2
-    height: 1.875rem
-    width:  1.875rem
-    border-radius: 0.375rem
-    background-color: $white
-    z-index: 1
-    display: flex
-    justify-content: center
-    align-items: center
-    padding-bottom: 0.25rem
-    &:after
-      content: ""
-      width: 0.5625rem
-      height: 0.875rem
-      display: none
-      border: solid $white
-      border-width: 0 0.27rem 0.27rem 0
-      transform: rotate(45deg)
-  input
-    display: none
-    &:checked + .checkmark
-      background: $blue
-      border-color: $blue
-      &:after
-        display: block

@@ -7,5 +7,5 @@ export function formatDate2(date) {
 }
 
 export function stringTrimmer(string, length) {
-    return `${string.slice(0, length)}...`
+    return `${string.slice(0, length)} ${string.length > length && "..."}`
 }
