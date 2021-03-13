@@ -100,15 +100,17 @@ class ToDo extends Component {
                         </div>
                     </article>
 
-                    <article className={`${cls.article}`}>
+                    <article className={`${cls.article} ${cls.actions}`}>
+                        <Actions
+                            tasks={this.props.tasks}
+                            selectedTasks={selectedTasks}
+                            selectAllTasks={this.selectAllTasks}
+                            deselect={this.deselect}
+                            toggleShow={this.toggleShow}
+                            changeMode={this.changeMode}/>
+                    </article>
 
-                    <Actions
-                        tasks={this.props.tasks}
-                        selectedTasks={selectedTasks}
-                        selectAllTasks={this.selectAllTasks}
-                        deselect={this.deselect}
-                        toggleShow={this.toggleShow}
-                        changeMode={this.changeMode}/>
+                    <article className={`${cls.article} ${cls.tasks}`}>
 
                         {
                             tasks.map((task, index)=>{
