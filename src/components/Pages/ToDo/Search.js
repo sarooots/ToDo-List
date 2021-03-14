@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback} from "react"
 import {connect} from "react-redux"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import {getTasks} from '../../../store/actions'
+import {deleteTasks, getTasks} from '../../../store/actions'
 import {formatDate} from '../../../helpers/utils'
 import {history} from "../../../helpers/history"
 import {withRouter} from "react-router-dom"
@@ -311,15 +311,15 @@ Search.propTypes = {
   changeMode: PropTypes.func.isRequired,
 }
 
-
-
-const mapDispatchToProps = {
-  getTasks,
-}
 const mapStateToProps = (state) => {
   return{
     tasks: state.tasks
   }
+}
+
+const mapDispatchToProps = {
+  getTasks,
+  deleteTasks
 }
 
 export default withRouter(

@@ -1,8 +1,6 @@
 import React, {Component} from "react"
 import {Button, Modal} from "react-bootstrap"
 import PropTypes from "prop-types"
-import {deleteTasks} from "../../store/actions";
-import {connect} from "react-redux";
 
 class Confirm extends Component {
     static propTypes = {
@@ -30,6 +28,8 @@ class Confirm extends Component {
                         }}}>
                   {buttonContent}
                 </button>
+
+
                 <Modal show={show} onHide={handleClose} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Selected</Modal.Title>
@@ -38,7 +38,7 @@ class Confirm extends Component {
                     <Modal.Footer>
                         <Button variant="danger" onClick={() => {
                             handleClose()
-                            deleteTasks(selectedTasks)}}>
+                            action(selectedTasks)}}>
                             Delete {selectedTasks.size} task{selectedTasks.size>1?"s":""}
                         </Button>
                         <Button variant="secondary"
@@ -52,7 +52,4 @@ class Confirm extends Component {
     }
 }
 
-const mapDispatchToProps =  {
-    deleteTasks
-}
-export default connect(null, mapDispatchToProps)(Confirm)
+export default Confirm

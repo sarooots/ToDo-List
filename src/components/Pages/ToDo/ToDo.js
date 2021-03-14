@@ -114,7 +114,6 @@ class ToDo extends Component {
               toggleShow={this.toggleShow}
               changeMode={this.changeMode}
               inverseSelection={this.inverseSelection}
-              deleteTasks={deleteTasks}
             />
           </article>
 
