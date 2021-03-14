@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import Search from "./Search"
+import Filters from "./Filters"
 import cls from "./ToDo.module.sass"
 import Editor from "../../Editor/Editor"
 import {connect} from "react-redux";
@@ -61,12 +61,15 @@ class ToDo extends Component {
   inverseSelection = () => {
     const selectedTasks = new Set(this.state.selectedTasks)
     const invertedTasks = new Set()
-    this.props.tasks.forEach((task)=>{
+    const {tasks} = this.props
+    tasks.forEach((task)=>{
       for (const [key, value] of Object.entries(task)) {
         key === "_id" && selectedTasks.size && !selectedTasks.has(value) && invertedTasks.add(value)
       }
     })
-    this.setState({selectedTasks:invertedTasks})
+    console.log()
+
+    selectedTasks.size < tasks.length && this.setState({selectedTasks:invertedTasks})
   }
 
 
@@ -106,8 +109,7 @@ class ToDo extends Component {
           </article>
 
           <article className={`${cls.article} ${cls.actions}`}>
-            <Search
-              tasks={this.props.tasks}
+            <Filters
               selectedTasks={selectedTasks}
               selectAllTasks={this.selectAllTasks}
               deselect={this.deselect}

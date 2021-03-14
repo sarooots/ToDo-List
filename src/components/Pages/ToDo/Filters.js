@@ -7,7 +7,15 @@ import {formatDate} from '../../../helpers/utils'
 import {history} from "../../../helpers/history"
 import {withRouter} from "react-router-dom"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faSearch, faTrash, faCaretDown, faSortAlphaUpAlt, faSortAlphaUp, faSortAmountUp, faSortAmountUpAlt} from "@fortawesome/free-solid-svg-icons"
+import {
+  faSearch,
+  faTrash,
+  faCaretDown,
+  faSortAlphaUpAlt,
+  faSortAlphaUp,
+  faSortAmountUp,
+  faSortAmountUpAlt,
+} from "@fortawesome/free-solid-svg-icons"
 import cls from "./Filters.module.sass"
 import PropTypes from "prop-types"
 import Confirm from "../../../components/Confirm/Confirm"
@@ -17,7 +25,7 @@ import Confirm from "../../../components/Confirm/Confirm"
 
 const statusOptions = [
   {
-    label: "Unset",
+    label: "All",
     value: ""
   },
   {
@@ -72,7 +80,7 @@ const dateOptions = [
   }
 ]
 
-function Search({
+function Filters({
                   getTasks,
                   location,
                   deselect,
@@ -83,7 +91,7 @@ function Search({
                   tasks,
                   toggleShow,
                   changeMode
-}) {
+                }) {
   const [status, setStatus] = useState({
     label: "Status",
     value: ""
@@ -110,12 +118,12 @@ function Search({
     })
   }
 
-  const handleSubmit = (innerSort=sort, innerSortIndex= sortIndex)=>{
+  const handleSubmit = (innerSort=sort, innerSortIndex= sortIndex, innerStatus = status)=>{
     const params = {}
 
     search && (params.search = search)
     innerSort.value[innerSortIndex] && (params.sort = innerSort.value[innerSortIndex])
-    status.value && (params.status = status.value)
+    innerStatus.value && (params.status = innerStatus.value)
 
     for(let key in dates){
       const value = dates[key]
@@ -161,8 +169,8 @@ function Search({
       }
     }
 
-    handleSubmit()
-  },[dates])
+    getTasks(filters)
+  },[])
 
   const clearFilters = useCallback(() => {
     setSort({
@@ -247,7 +255,10 @@ function Search({
                     customInput={
                       <label>
                         <span>{option.label}</span>
-                        <input type="text"/>
+                        {console.log(dates[option.value])}
+                        <input type="search"
+                               defaultValue={dates[option.value] ? formatDate(dates[option.value].toISOString()):""}
+                        />
                       </label>
                     }
                   />
@@ -276,26 +287,44 @@ function Search({
             <FontAwesomeIcon icon={faCaretDown}/>
           </div>
           <ul>
-                <li onClick={deselect}>
-                  deselect
-                </li>
-                <li onClick={inverseSelection}>
-                  inverse selection
-                </li>
+            <li onClick={deselect}>
+              deselect
+            </li>
+            <li onClick={inverseSelection}>
+              inverse selection
+            </li>
           </ul>
         </div>
+
+        <Confirm action={deleteTasks}
+                 selectedTasks={selectedTasks}
+                 buttonContent={<FontAwesomeIcon icon={faTrash}/>}/>
+
+        <button disabled={!!selectedTasks.size}
+                onClick={()=>{
+                  toggleShow()
+                  changeMode("new")
+                }}
+        >
+          new task
+        </button>
+        <p>{selectedTasks.size ? `selected ${selectedTasks.size} of ${tasks.length} tasks`: `${tasks.length} tasks were found` }</p>
       </div>
-      <Confirm action={deleteTasks}
-               selectedTasks={selectedTasks}
-               buttonContent={"դելետե"}/>
-      <button onClick={()=>{
-        toggleShow()
-        changeMode("new")
-      }}
-              disabled={!!selectedTasks.size}
-      >
-        new task
-      </button>
+
+      <div className={cls.statuses}>
+        {
+          statusOptions.map((option)=> (
+            <div className={option.label === status.label && cls.activeStatus}
+                 onClick={() => {
+                   setStatus(option)
+                   handleSubmit(undefined, undefined, option)
+                 }}
+            >
+              <span>{option.label}</span>
+            </div>
+          ))
+        }
+      </div>
     </div>
 
   )
@@ -303,7 +332,7 @@ function Search({
 
 }
 
-Search.propTypes = {
+Filters.propTypes = {
   selectedTasks: PropTypes.object.isRequired,
   selectAllTasks: PropTypes.func.isRequired,
   deselect: PropTypes.func.isRequired,
@@ -319,9 +348,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   getTasks,
-  deleteTasks
+  deleteTasks,
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Search)
+  connect(mapStateToProps, mapDispatchToProps)(Filters)
 )
