@@ -5,7 +5,7 @@ import {history} from "../helpers/history";
     const apiHost = process.env.REACT_APP_API_HOST
 export function getTasks(params) {
 
-    const query = typeof params === "string"? params: `?${Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&')}`
+    const query = `?${Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&')}`
     history.push(`/${query}`)
 
     return (dispatch) =>{
