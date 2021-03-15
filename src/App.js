@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import ToDo from './components/Pages/ToDo/ToDo'
 import About from './components/Pages/About/About'
 import Contact from './components/Pages/Contact/Contact'
-import Login from './components/Pages/Signup/Signup'
+import LogInOut from './components/Pages/Signup/Signup'
 import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
@@ -64,12 +64,12 @@ function App({loading, successMessage, errorMessage}) {
                     />
                     <Route
                         path='/signup'
-                        component = {Login}
+                        component = {LogInOut}
                         exact
                     />
                     <Route
                         path='/signin'
-                        component = {Login}
+                        component = {LogInOut}
                         exact
                     />
                     <Route

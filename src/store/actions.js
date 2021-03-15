@@ -85,3 +85,17 @@ export function editTask(data, from, statusChanged) {
             })
     }
  }
+
+export function register(data) {
+    return (dispatch)=>{
+        dispatch({type: act.PENDING})
+        request(`${apiHost}/user}`, "POST", data)
+          .then((result )=>{
+              console.log(result)
+              // dispatch({type: act.EDIT_TASK, editedTask, from, statusChanged })
+          })
+          .catch((error) => {
+              dispatch({type: act.ERROR, errorMessage: error.message})
+          })
+    }
+}
