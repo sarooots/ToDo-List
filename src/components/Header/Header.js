@@ -48,17 +48,16 @@ class Header extends Component {
   }
 
   handleHideMenu = () => {
-    this.setState({show: true})
+    this.setState({show: false})
   }
   // add handleScroll function on window.scroll event
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll)
-    window.addEventListener("click", this.handleHideMenu)
+    document.getElementById("mainWrapper").onmousedown = this.handleHideMenu
   }
   // remove handleScroll function from window.scroll event
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll)
-    window.addEventListener("click", this.handleHideMenu)
 
   }
 
@@ -68,7 +67,11 @@ class Header extends Component {
 
       // please check "Header.module.sass" file to understand the code
 
-      <header className={`${classes.header} ${ offset && classes.offset}`}>
+      <header className={`${classes.header} ${ offset && classes.offset}`}
+        onMouseOver={() => {
+
+        }}
+      >
         <NavLink to="/" className={`${classes.logo}`}>
           <div>Todo</div>
         </NavLink>

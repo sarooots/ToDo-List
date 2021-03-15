@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {deleteTask} from "../../../store/actions"
 import Task from "./Task"
 import illustration from "../../Style assets/Tasks page illustration.svg"
+import Wrapper from "../../HOC Wrapper/Wrapper"
 
 
 class ToDo extends Component {
@@ -169,4 +170,4 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps =  {
   deleteTask
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ToDo)
+export default Wrapper()(connect(mapStateToProps, mapDispatchToProps)(ToDo))
