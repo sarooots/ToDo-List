@@ -45,16 +45,21 @@ class Header extends Component {
     if (this.state.offset && scrollTop< 40) {
       this.setState({offset: false})
     }
+  }
 
-
+  handleHideMenu = () => {
+    this.setState({show: true})
   }
   // add handleScroll function on window.scroll event
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll)
+    window.addEventListener("click", this.handleHideMenu)
   }
   // remove handleScroll function from window.scroll event
   componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll)
+    window.addEventListener("click", this.handleHideMenu)
+
   }
 
   render() {

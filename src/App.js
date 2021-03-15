@@ -6,7 +6,7 @@ import LogInOut from './components/Pages/Signup/Signup'
 import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
-import Header from './components/NavMenu/Header'
+import Header from './components/Header/Header'
 import './App.scss'
 import Spinner from "./components/Spinner/Spinner"
 import {connect} from "react-redux"

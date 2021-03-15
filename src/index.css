@@ -17,11 +17,6 @@ code {
     monospace;
 }
 
-@font-face {
-  font-family: 'BebasNeue';
-  src: local('BebasNeue-Regular'), url(./fonts/BebasNeue-Regular.ttf) format('woff');
-}
-
 * {
   transition: 0.2s linear;
 }
