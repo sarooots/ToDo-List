@@ -75,7 +75,7 @@ export function addTask(task) {
 
 export function editTask(data, from, statusChanged) {
     return (dispatch)=>{
-        !statusChanged && dispatch({type: act.PENDING})
+        dispatch({type: act.PENDING})
         request(`${apiHost}/task/${data._id}`, "PUT", data)
             .then((editedTask)=>{
                 dispatch({type: act.EDIT_TASK, editedTask, from, statusChanged })

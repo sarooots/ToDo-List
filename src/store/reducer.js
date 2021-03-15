@@ -65,9 +65,14 @@ export default  function reducer(state=defaultState, action)  {
 
             }
         case act.EDIT_TASK:{
+            let succcessMessage = `Task edited successfully!`
+            if (action.statusChanged) {
+                succcessMessage = action.editedTask.status === "done"?  `Congrats you have completed the task!`: `Task is active now !`
+            }
             const tasks = [...state.tasks]
             const editId = tasks.findIndex((el)=> el._id===action.editedTask._id)
             tasks[editId] = action.editedTask
+
             const newState = {
                 ...state,
                 tasks,
@@ -75,7 +80,7 @@ export default  function reducer(state=defaultState, action)  {
                 editTaskSuccess: true,
                 loading: false,
             }
-            newState.successMessage = !action.statusChanged && `Task edited successfully!`
+            newState.successMessage = succcessMessage
 
             return newState }
         case act.ERROR:{

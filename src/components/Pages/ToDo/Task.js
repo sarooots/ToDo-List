@@ -3,7 +3,7 @@ import cls from "./Task.module.sass"
 import {formatDate, formatDate2, stringTrimmer} from "../../../helpers/utils"
 import {Link} from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {faEdit, faTrash, faCheck} from "@fortawesome/free-solid-svg-icons"
+import {faEdit, faTrash, faCheck, faRedo} from "@fortawesome/free-solid-svg-icons"
 import {deleteTask, editTask} from "../../../store/actions"
 import {connect} from "react-redux"
 
@@ -88,7 +88,7 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
           editTask(task, null, true)
         }}
       >
-        <FontAwesomeIcon icon={faCheck} />
+        <FontAwesomeIcon icon={ task.status === "done" ? faRedo: faCheck} />
       </div>
     </div>
   )
