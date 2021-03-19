@@ -342,10 +342,16 @@ function Filters({
             <FontAwesomeIcon icon={faCaretDown}/>
           </div>
           <ul className={`${cls.dropDownMenu} ${showSelectMenu ? cls.showSelectMenu: ""}`}>
-            <li onClick={deselect}>
+            <li onClick={() => {
+              setShowSelectMenu(!showSelectMenu)
+              deselect()
+            }}>
               deselect
             </li>
-            <li onClick={inverseSelection}>
+            <li onClick={()=> {
+              setShowSelectMenu(!showSelectMenu)
+              inverseSelection()
+            }}>
               inverse selection
             </li>
           </ul>
