@@ -8,11 +8,24 @@ $blue: #0086FB
 $red: #ec3333
 $red2: #FF675C
 
+//media query sizes
+$size1: 120rem  //1920 "16/9"
+$size2: 84.375rem  //1350 "5/4"
+$size3: 60rem  //960 "8/9"
+$size4: 39rem  //720 "2/3"
+$size5: 20rem  //360 "1/3"
+$size6: 1rem  //360 "1/3"
+
+// media query creator function
+@mixin aspect-ratio($max, $min)
+  @media (min-width: $min) and (max-width: $max)
+    @content
+
+
 
 // task element main object
 .task
   width: 100%
-  height: 8.75rem
   display: flex
   align-items: center
   color: $dark
@@ -24,6 +37,7 @@ $red2: #FF675C
     bottom: 0.625rem
   background: $white
   box-shadow: 0 0.125rem 0.375rem rgba(116, 116, 116, 0.30)
+  overflow: hidden
 
   // remove initial style from Link (react-router-dom) component
   .link
@@ -33,11 +47,15 @@ $red2: #FF675C
 
   // container for task information
   .content
-
     // task title
     .title
+      max-width: 100%
       font-size: 1.6875rem
       font-weight: 600
+      height: 2.1875rem
+      overflow: hidden
+      text-wrap: avoid
+
 
     // container for task Date Status
     .details
@@ -51,6 +69,24 @@ $red2: #FF675C
         color: $blue
         text-transform: capitalize
 
+    // task descreption
+    .description
+      font-size: 1.1875rem
+      font-weight: 400
+      color: $grey
+      height: 1.875rem
+      margin-bottom: 0
+      overflow: hidden
+      width: 100%
+      &.empty
+        font-style: italic
+        opacity: 50%
+
+  .item
+    display: flex
+    align-items: center
+    &:first-child
+      flex-basis: 100%
   // container for all clickable elements, checkbox and delete, edit, change status buttons
   .action
     min-width: 4.0625rem
@@ -78,6 +114,7 @@ $red2: #FF675C
         color: $white
 
     &.edit
+      display: none
       color: $blue
       padding-left: 0.3125rem
       &:active
@@ -85,6 +122,7 @@ $red2: #FF675C
         background: $blue
 
     &.delete
+      display: none
       color: $red
       &:active
         color: $white
@@ -133,6 +171,8 @@ $red2: #FF675C
     .content
       .title
         text-decoration: underline
+    .delete, .edit
+      display: flex
         
   // task selected state
   &.selected
@@ -169,3 +209,26 @@ $red2: #FF675C
         opacity: 100%
       .action.changeStatus
         display: none
+
+  @include aspect-ratio($size4, $size6)
+    flex-wrap: wrap
+    .content
+      .title
+        height: 4.25rem
+
+    .item:last-child
+      flex-basis: 100%
+      justify-content: space-around
+      margin: 0
+      .action
+        display: flex
+    &.done
+      .delete, .edit
+        opacity: 50%
+
+    &.selected
+      .item:last-child
+        height: 4.0625rem
+
+      .delete, .edit, .changeStatus
+        display: none !important

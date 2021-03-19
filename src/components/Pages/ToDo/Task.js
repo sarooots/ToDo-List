@@ -18,79 +18,87 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
          ${selectedTasks.has(task._id) && cls.selected}
          ${task.status === "done" && cls.done}
          `}>
-      {/*select task checkbox*/}
-      <label>
-        <div
-          className={`${cls.action} ${cls.select}`}
-        >
-          <input type="checkbox"
-                 onChange={()=> selectTask(task._id)}
-                 checked={selectedTasks.has(task._id)}
-          />
-          <span className={`${cls.checkbox}`}/>
-        </div>
-      </label>
+
+      <div className={cls.item}>
+        {/*select task checkbox*/}
+        <label>
+          <div
+            className={`${cls.action} ${cls.select}`}
+          >
+            <input type="checkbox"
+                   onChange={()=> selectTask(task._id)}
+                   checked={selectedTasks.has(task._id)}
+            />
+            <span className={`${cls.checkbox}`}/>
+          </div>
+        </label>
 
 
-      {/*task info
+        {/*task info
             all information placed in Link element to make whole task info clickable
             */}
 
-      <Link to={`/task/${task._id}`} className={cls.link}>
-        <div className={cls.content}>
-          <h2 className={cls.title}>  {stringTrimmer(task.title, 115)}</h2>
-          <h6 className={cls.details}>
+        <Link to={`/task/${task._id}`} className={cls.link}>
+          <div className={cls.content}>
+            <h2 className={cls.title}>  {stringTrimmer(task.title, 115)}</h2>
+            <h6 className={cls.details}>
                         <span className={cls.detail}>
                             Deadline:
                             <span className={cls.date}>
                                 {` ${formatDate2(task.date)}`}
                             </span>
                         </span>
-            <span className={cls.detail}>
+              <span className={cls.detail}>
                             Status:
                             <span className={cls.status}>
                                 {` ${task.status}`}
                             </span>
                         </span>
-          </h6>
-          <p>
-            {task.description === "" ? "this task has no description": stringTrimmer(task.description, 300)}
-          </p>
-        </div>
-      </Link>
-
+            </h6>
+            <p
+              className={`${cls.description} ${task.description === ""? cls.empty: ""}`}
+            >
+              {task.description === "" ? "this task has no description": stringTrimmer(task.description, 300)}
+            </p>
+          </div>
+        </Link>
+      </div>
 
       {/*task action buttons*/}
-      <div
-        className={`${cls.action} ${cls.edit}`}
-        onClick={() => {
-          handleEdit(task)
-          changeMode("edit")
-        }}
-      >
-        <FontAwesomeIcon icon={faEdit} />
-      </div>
-      <div
-        className={`${cls.action} ${cls.delete}`}
-        onClick={() => deleteTask(task._id)}
-      >
-        <FontAwesomeIcon icon={faTrash} />
-      </div>
-      <div
-        className={`${cls.action} ${cls.changeStatus}`}
-        onClick={() => {
-          //toggle task status
-          task.status = task.status === "active"? "done": "active"
-          //creates Date object from string, then creates new string in required format from that Date object
-          task.date= formatDate(new Date(task.date).toISOString())
+      <div className={cls.item}>
+        <div
+          className={`${cls.action} ${cls.edit}`}
+          onClick={() => {
+            handleEdit(task)
+            changeMode("edit")
+          }}
+        >
+          <FontAwesomeIcon icon={faEdit} />
+        </div>
+        <div
+          className={`${cls.action} ${cls.delete}`}
+          onClick={() => deleteTask(task._id)}
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </div>
+        <div
+          className={`${cls.action} ${cls.changeStatus}`}
+          onClick={() => {
+            //toggle task status
+            task.status = task.status === "active"? "done": "active"
+            //creates Date object from string, then creates new string in required format from that Date object
+            task.date= formatDate(new Date(task.date).toISOString())
 
-          //the last argument is for specifying the action is called to change only task status
-          editTask(task, null, true)
-        }}
-      >
-        <FontAwesomeIcon icon={ task.status === "done" ? faRedo: faCheck} />
+            //the last argument is for specifying the action is called to change only task status
+            editTask(task, null, true)
+          }}
+        >
+          <FontAwesomeIcon icon={ task.status === "done" ? faRedo: faCheck} />
+        </div>
+
       </div>
     </div>
+
   )
 }
 
