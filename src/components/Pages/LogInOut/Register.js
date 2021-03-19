@@ -197,7 +197,7 @@ export default connect(null, mapDispatchToProps)(Register)
 //     pathname = pathname.substr(1)
 //     return(
 //         <>
-//             {pathname === "signup" && <Signup/>}
+//             {pathname === "signup" && <LogInOut/>}
 //             {pathname === "signin" && <Signin/>}
 //         </>
 //     )

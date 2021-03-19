@@ -73,7 +73,7 @@ function Login(){
       }
     }
     if (name==="password" && value) {
-      const pswReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+      const pswReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
       if(!pswReg.test(value)){
         setErrors({
           ...errors,

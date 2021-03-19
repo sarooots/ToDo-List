@@ -66,7 +66,6 @@ class Header extends Component {
     return (
 
       // please check "Header.module.sass" file to understand the code
-
       <header className={`${classes.header} ${ offset && classes.offset}`}
         onMouseOver={() => {
 
