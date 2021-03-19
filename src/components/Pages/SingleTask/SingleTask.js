@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {Button, ButtonGroup, Card, Col, Container, Row} from "react-bootstrap"
-import classes from "../ToDo/ToDo.module.sass"
+import classes from "../Tasks/Tasks.module.sass"
 import {Link} from "react-router-dom"
 import {formatDate} from "../../../helpers/utils"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"

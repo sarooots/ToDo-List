@@ -10,13 +10,20 @@ body {
 }
 html, body {
   font-size: 11px;
-  /*background: #EC3333;*/
+  /*position: fixed;*/
 }
+
+/*body::-webkit-scrollbar {*/
+/*  position: absolute;*/
+/*  left: 0;*/
+
+/*  !*display: none;*!*/
+/*}*/
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-* {
-  transition: 0.2s linear;
-}
+/** {*/
+/*  transition: 0.2s linear;*/
+/*}*/

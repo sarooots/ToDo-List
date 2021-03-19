@@ -1,10 +1,10 @@
 import React from "react"
 import cls from "./Task.module.sass"
-import {formatDate, formatDate2, stringTrimmer} from "../../../helpers/utils"
+import {formatDate, formatDate2, stringTrimmer} from "../../../../helpers/utils"
 import {Link} from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faEdit, faTrash, faCheck, faRedo} from "@fortawesome/free-solid-svg-icons"
-import {deleteTask, editTask} from "../../../store/actions"
+import {deleteTask, editTask} from "../../../../store/actions"
 import {connect} from "react-redux"
 
 

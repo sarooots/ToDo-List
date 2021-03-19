@@ -2,9 +2,9 @@ import React, {useState, useEffect, useCallback} from "react"
 import {connect} from "react-redux"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import {deleteTasks, getTasks} from '../../../store/actions'
-import {formatDate} from '../../../helpers/utils'
-import {history} from "../../../helpers/history"
+import {deleteTasks, getTasks} from '../../../../store/actions'
+import {formatDate} from '../../../../helpers/utils'
+import {history} from "../../../../helpers/history"
 import {withRouter} from "react-router-dom"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {
@@ -18,7 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import cls from "./Filters.module.sass"
 import PropTypes from "prop-types"
-import Confirm from "../../../components/Confirm/Confirm"
+import Confirm from "../../../Confirm/Confirm"
 
 
 
@@ -150,17 +150,26 @@ function Filters({
 
     filters.search && setSearch(filters.search)
 
-    const datesFromQuery = Object.keys(dates).filter((date)=>{
+
+    const dateList = [
+      "create_lte",
+      "create_gte",
+      "complete_lte",
+      "complete_gte",
+    ]
+    const datesFromQuery = dateList.filter((date)=>{
       return filters.hasOwnProperty(date)
     })
 
     const newDates = {}
-    for (let [index, date] of datesFromQuery.entries()) {
-      if (dates[date] === null) {
-        newDates[date] = new Date(filters[date])
-        index===(datesFromQuery.length-1) && setDates(newDates)
-      }
+    for (let date in datesFromQuery) {
+      const dateName =datesFromQuery[date]
+      newDates[dateName] = new Date(filters[dateName])
     }
+    setDates(newDates)
+
+    // set "setShowAllFilters" true when date filter received from query
+    Object.keys(newDates).length && setShowAllFilters(true)
 
     // again call "getTasks" actions with filters, this time filters come from URL query
     getTasks(filters)
@@ -221,8 +230,6 @@ function Filters({
   // this code will reset all filters values when we query URL is changed
   useEffect(()=>{!location.search && clearFilters()},
     [location.search, clearFilters])
-
-
 
   return (
 
@@ -288,30 +295,32 @@ function Filters({
         </div>
         <div className={`${cls.filtersGroup} ${showAllFilters? cls.showAllFilters:""}`}>
           {
-            dateOptions.map((option,index)=> (
-              <div key={index}
-                   className={`${cls.filter} ${cls.date}`}
-              >
+            dateOptions.map((option,index) => (
+                <div key={index}
+                     className={`${cls.filter} ${cls.date}`}
+                >
 
-                <DatePicker
-                  selected={dates[option.value]}
-                  onChange={(value) => handleChangeDates(value, option.value)}
-                  customInput={
-                    <div>
-                      <input type="search"
-                             className={cls.input}
-                             placeholder={option.label}
-                             defaultValue={dates[option.value] ? formatDate(dates[option.value].toISOString()):null}
-                      />
-                      <span className={`${cls.title}`}>{option.label}</span>
+                  <DatePicker
+                    selected={dates[option.value]}
+                    onChange={(value) => handleChangeDates(value, option.value)}
+                    customInput={
+                      <div>
+                        <input type="search"
+                               className={cls.input}
+                               placeholder={option.label}
+                               defaultValue={dates[option.value] ? formatDate(dates[option.value].toISOString()) : ""}
+                        />
+                        <span className={`${cls.title}`}>{option.label}</span>
 
-                    </div>
+                      </div>
+
                     }
-                />
+                  />
 
-              </div>
+                </div>
             ))
           }
+
         </div>
       </div>
 
@@ -329,12 +338,12 @@ function Filters({
           <label
             className={`${cls.actionItem} ${cls.select}  ${selectedTasks.size? cls.selected : ""}`}
           >
-              <input type="checkbox"
-                     disabled={!tasks.length}
-                     onChange={selectAllTasks}
-                     checked={selectedTasks.size === tasks.length && tasks.length > 0 }
-              />
-              <span className={`${cls.checkbox}`}/>
+            <input type="checkbox"
+                   disabled={!tasks.length}
+                   onChange={selectAllTasks}
+                   checked={selectedTasks.size === tasks.length && tasks.length > 0 }
+            />
+            <span className={`${cls.checkbox}`}/>
           </label>
           <div onClick={()=> setShowSelectMenu(!showSelectMenu)}
                className={`${cls.selectDropDown}`}

@@ -1,15 +1,15 @@
 import React, {Component} from "react"
-import Filters from "./Filters"
-import cls from "./ToDo.module.sass"
+import Filters from "./Filters/Filters"
+import cls from "./Tasks.module.sass"
 import Editor from "../../Editor/Editor"
 import {connect} from "react-redux";
 import {deleteTask} from "../../../store/actions"
-import Task from "./Task"
+import Task from "./Task/Task"
 import illustration from "../../Style assets/Tasks page illustration.svg"
 import Wrapper from "../../HOC Wrapper/Wrapper"
 
 
-class ToDo extends Component {
+class Tasks extends Component {
   state = {
     selectedTasks: new Set(),
     show: false,
@@ -170,4 +170,4 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps =  {
   deleteTask
 }
-export default Wrapper()(connect(mapStateToProps, mapDispatchToProps)(ToDo))
+export default Wrapper()(connect(mapStateToProps, mapDispatchToProps)(Tasks))

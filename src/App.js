@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import ToDo from './components/Pages/ToDo/ToDo'
+import Task from './components/Pages/Tasks/Tasks'
 import About from './components/Pages/About/About'
 import Contact from './components/Pages/Contact/Contact'
 import LogInOut from './components/Pages/LogInOut/LogInOut'
@@ -7,6 +7,7 @@ import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
 import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
 import './App.scss'
 import Spinner from "./components/Spinner/Spinner"
 import {connect} from "react-redux"
@@ -44,12 +45,12 @@ function App({loading, successMessage, errorMessage}) {
                 <Switch>
                     <Route
                         path='/'
-                        component = {ToDo}
+                        component = {Task}
                         exact
                     />
                     <Route
                         path='/home'
-                        component = {ToDo}
+                        component = {Task}
                         exact
                     />
                     <Route
@@ -84,6 +85,7 @@ function App({loading, successMessage, errorMessage}) {
                     />
                     <Redirect to='not-found'/>
                 </Switch>
+                <Footer/>
             </Router>
             { loading && <Spinner/> }
             <ToastContainer
@@ -97,6 +99,7 @@ function App({loading, successMessage, errorMessage}) {
                 pauseOnHover
                 transition={Flip}
             />
+
 
         </div>
     );
