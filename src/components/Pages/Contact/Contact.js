@@ -1,63 +1,61 @@
 import React, {useState, useRef, useEffect} from "react"
-import {Container, Row, Form, Button, Alert} from "react-bootstrap";
-import classes from "./Contact.module.sass"
+import cls from "./Contact.module.sass"
 import request from "../../../helpers/request"
+import illustration from "../../Style assets/Contact page illustration.png";
+import Wrapper from "../../HOC Wrapper/Wrapper"
 
-export function ShowAlert(props) {
-    return(
-        <Alert variant={props.variant}>
-            {props.alert}
-        </Alert>
-    )
-}
-
-export default function Contact(){
+function Contact() {
     const focusedRef = useRef();
     const [values, setValues] = useState({
         name: "",
         email: "",
         message: "",
     })
-    const [errors, setErrors] = useState({
+    const [err, setErr] = useState({
         name: null,
         email: null,
         message: null,
     })
-    const [variant, setVariant] = useState("")
-    const [alert, setAlert] = useState("")
     useEffect(()=>focusedRef.current.focus(), [])
 
+
+    const changeerr = () => {
+        let newErr = {}
+
+        newErr.name = !values.name ? `name is required`: null
+        newErr.email = !values.email ? `email is required`: null
+        newErr.message = !values.message ? `message is required`: null
+
+        setErr({...err, ...newErr})
+    }
+
     const submit = () => {
-        const errorsArr = Object.values(errors);
-        const errorsExist = !errorsArr.every(el => el===null);
+        changeerr()
+        const errArr = Object.values(err);
+        const errExist = !errArr.every(el => el===null);
 
         const valuesArr = Object.values(values);
         const valuesExist = !valuesArr.some(el => el==='');
 
-        if(valuesExist && !errorsExist){
+        if(valuesExist && !errExist){
             request(`http://localhost:3001/form`,"POST", values)
-            .then( ()=>{
-                setValues({name: "", email: "", message: ""})
-                setVariant("success")
-                setAlert("Your message has been sent successfully!")
-                setTimeout(()=>setVariant(''), 7000)
-            })
+              .then( ()=>{
+                  setValues({name: "", email: "", message: ""})
+              })
         } else {
-            setAlert("Please fill form!")
-            setVariant("warning")
 
         }
     }
 
     const changeValues = ({target: {name, value}}) => {
         if (!value) {
-            setErrors({
-                ...errors,
+            setErr({
+                ...err,
                 [name]: `Please fill ${name} field`
             })
         } else {
-            setErrors({
-                ...errors,
+            setErr({
+                ...err,
                 [name]: null
             })
         }
@@ -65,8 +63,8 @@ export default function Contact(){
         if (name==="email" && value) {
             const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
             if(!emailReg.test(value)){
-                setErrors({
-                    ...errors,
+                setErr({
+                    ...err,
                     email: 'Invalid email'
                 })
             }
@@ -74,57 +72,64 @@ export default function Contact(){
         }
         setValues({...values, [name]: value})
     }
-return (
-    <Container fluid>
-        <Row>
-            <Form>
-                <Form.Group controlId="name">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control type="text"
-                                  placeholder="Enter full name"
-                                  name="name"
-                                  value={values.name}
-                                  className={errors.name? classes.required: ""}
-                                  onChange={(e) => changeValues(e)}
-                                  ref={focusedRef}
-                    />
-                </Form.Group>
-                <Form.Group controlId="email">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email"
-                                  name="email"
-                                  value={values.email}
-                                  className={errors.email? classes.required: ""}
-                                  placeholder="Enter email"
-                                  onChange={(e) => changeValues(e)}
-                    />
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
-                </Form.Group>
-                <Form.Group controlId="message">
-                    <Form.Label>Message</Form.Label>
-                    <Form.Control as="textarea"
-                                  name="message"
-                                  value={values.message}
-                                  className={errors.message? classes.required: ""}
-                                  onChange={(e) => changeValues(e)}
-                    />
-                </Form.Group>
-                <Button variant="primary"
-                        onClick={submit}
-                >
-                    send
-                </Button>
-            </Form>
-        </Row>
-        <br/>
-        {variant !=="" &&
-        <ShowAlert
-            variant={variant}
-            alert={alert}
-        />
-        }
-    </Container>
-)
+    return (
+      <>
+          {/*whole page content*/}
+          <section className={cls.wrapper}>
+              {/*first section of page, intro*/}
+              <article className={`${cls.intro} ${cls.article}`}>
+                  <div className={`${cls.introItem}`}>
+                      <img src={illustration} alt=""
+                           className={`${cls.illustration}`}
+                      />
+                  </div>
+
+                  <div className={`${cls.introItem} ${cls.introInfo}`}>
+                      <h1 className={`${cls.introTitle}`}>Contact us</h1>
+                      <div className={cls.form}>
+                          <div className={`${cls.filed} ${err.name? cls.required: ""}`}>
+                              <input type="text"
+                                     name="name"
+                                     value={values.name}
+                                     onChange={(e) => changeValues(e)}
+                                     ref={focusedRef}
+                              />
+                              <span>Name:</span>
+                              <p>{err.name}</p>
+                          </div>
+                          <div className={`${cls.filed} ${err.name? cls.required: ""}`}>
+                              <input type="email"
+                                     name="email"
+                                     value={values.email}
+                                     className={err.email? cls.required: ""}
+                                     onChange={(e) => changeValues(e)}
+                              />
+                              <span>Email:</span>
+                              <p>
+                                  {err.email}
+                              </p>
+                          </div>
+                          <div className={`${cls.filed} ${err.name? cls.required: ""} ${cls.textarea}`}>
+                              <textarea
+                                name="message"
+                                value={values.message}
+                                className={err.message? cls.required: ""}
+                                onChange={(e) => changeValues(e)}
+                              />
+                              <span>Message:</span>
+                              <p>{err.message}</p>
+                          </div>
+                          <button onClick={submit}
+                                  className={`${cls.submit}`}
+                          >
+                              Send message
+                          </button>
+                      </div>
+                  </div>
+              </article>
+          </section>
+      </>
+    )
 }
+
+export default Wrapper()(Contact)

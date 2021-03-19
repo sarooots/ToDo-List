@@ -28,6 +28,7 @@ $size6: 1rem  //360 "1/3"
   width: 100%
   display: flex
   align-items: center
+  order: 1
   color: $dark
   border: 0.125rem solid $white
   border-radius: 0.9375rem
@@ -186,6 +187,7 @@ $size6: 1rem  //360 "1/3"
 
   // task done state, when task status is done
   &.done
+    order: 2
     .status
       color: $green !important
 
@@ -228,7 +230,4 @@ $size6: 1rem  //360 "1/3"
 
     &.selected
       .item:last-child
-        height: 4.0625rem
-
-      .delete, .edit, .changeStatus
-        display: none !important
+        visibility: hidden
