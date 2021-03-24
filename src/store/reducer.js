@@ -112,6 +112,12 @@ export default  function reducer(state=defaultState, action)  {
                 isAuthenticated: false,
                 loading: false
             }}
+        case act.CONTACT_SECCESS:{
+            return {
+                ...state,
+                successMessage:  "Message sent successfully",
+                loading: false
+            }}
         default : return state
     }
 }

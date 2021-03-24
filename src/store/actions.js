@@ -86,7 +86,7 @@ export function editTask(data, from, statusChanged) {
         requestWithToken(`${apiHost}/task/${data._id}`, "PUT", data)
             .then((editedTask)=>{
               if (!editedTask) {return}
-              dispatch({type: act.EDIT_TASK, editedTask, from, statusChanged })
+              dispatch({type: act.EDIT_TASK, editedTask, from, statusChanged})
             })
             .catch((error) => {
                 dispatch({type: act.ERROR, errorMessage: error.message})

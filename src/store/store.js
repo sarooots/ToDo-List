@@ -8,6 +8,5 @@ if (process.env.NODE_ENV==="development"){
     params.push(logger)
 }
 
-
 const middleware =  applyMiddleware(...params)
 export const store =  createStore(reducer, middleware)

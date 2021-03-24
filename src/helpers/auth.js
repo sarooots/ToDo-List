@@ -56,6 +56,7 @@ export const getToken = () =>{
         })
         .then(token => {
           saveToken(token)
+          console.log(token.jwt)
           return token.jwt
         })
         .catch(()=>{

@@ -1,8 +1,12 @@
 import React, {useState, useRef, useEffect} from "react"
 import cls from "./Contact.module.sass"
-import requestWithToken from "../../../helpers/requestWithToken"
+import request from "../../../helpers/auth"
 import illustration from "../../Style assets/Contact page illustration.png";
 import Wrapper from "../../HOC Wrapper/Wrapper"
+import {CONTACT_SECCESS, PENDING} from "../../../store/actTypes";
+import {store} from "../../../store/store"
+
+const apiHost = process.env.REACT_APP_API_HOST
 
 function Contact() {
     const focusedRef = useRef();
@@ -38,9 +42,11 @@ function Contact() {
         const valuesExist = !valuesArr.some(el => el==='');
 
         if(valuesExist && !errExist){
-            requestWithToken(`http://localhost:3001/form`,"POST", values)
+            store.dispatch({type: PENDING})
+            request(`${apiHost}/form`,"POST", values)
               .then( ()=>{
                   setValues({name: "", email: "", message: ""})
+                  store.dispatch({type: CONTACT_SECCESS})
               })
         } else {
 
