@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from "react"
 import cls from "./Contact.module.sass"
-import request from "../../../helpers/request"
+import requestWithToken from "../../../helpers/requestWithToken"
 import illustration from "../../Style assets/Contact page illustration.png";
 import Wrapper from "../../HOC Wrapper/Wrapper"
 
@@ -19,7 +19,7 @@ function Contact() {
     useEffect(()=>focusedRef.current.focus(), [])
 
 
-    const changeerr = () => {
+    const changeErr = () => {
         let newErr = {}
 
         newErr.name = !values.name ? `name is required`: null
@@ -30,7 +30,7 @@ function Contact() {
     }
 
     const submit = () => {
-        changeerr()
+        changeErr()
         const errArr = Object.values(err);
         const errExist = !errArr.every(el => el===null);
 
@@ -38,7 +38,7 @@ function Contact() {
         const valuesExist = !valuesArr.some(el => el==='');
 
         if(valuesExist && !errExist){
-            request(`http://localhost:3001/form`,"POST", values)
+            requestWithToken(`http://localhost:3001/form`,"POST", values)
               .then( ()=>{
                   setValues({name: "", email: "", message: ""})
               })
@@ -132,4 +132,4 @@ function Contact() {
     )
 }
 
-export default Wrapper()(Contact)
+export default Wrapper(Contact)

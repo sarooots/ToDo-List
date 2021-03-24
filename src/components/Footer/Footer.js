@@ -9,6 +9,10 @@ const author = [
     address: "https://github.com/sarooots"
   },
   {
+    title: "Linkedin",
+    address: "https://www.linkedin.com/in/sarooots"
+  },
+  {
     title: "Behance",
     address: "https://www.behance.net/sarooots"
   },
@@ -46,6 +50,10 @@ const trainer = [
     address: "https://github.com/MASISKAR"
   },
   {
+    title: "Linkedin",
+    address: "https://www.linkedin.com/in/masiskar"
+  },
+  {
     title: "Facebook",
     address: "https://www.facebook.com/masiskar"
   },
@@ -54,6 +62,10 @@ const bitschool = [
   {
     title: "Website",
     address: "https://bitschool.am/"
+  },
+  {
+    title: "Linkedin",
+    address: "https://www.linkedin.com/school/bitschool-it-and-business-school/"
   },
   {
     title: "Facebook",

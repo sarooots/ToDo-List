@@ -170,4 +170,4 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps =  {
   deleteTask
 }
-export default Wrapper()(connect(mapStateToProps, mapDispatchToProps)(Tasks))
+export default Wrapper(connect(mapStateToProps, mapDispatchToProps)(Tasks))

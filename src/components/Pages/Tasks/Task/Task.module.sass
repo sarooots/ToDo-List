@@ -7,7 +7,7 @@
   width: 100%
   display: flex
   align-items: center
-  order: 1
+  order: 3
   color: $dark
   border: 0.125rem solid $white
   border-radius: 0.9375rem
@@ -166,7 +166,7 @@
 
   // task done state, when task status is done
   &.done
-    order: 2
+    order: 1
     .status
       color: $green !important
 
@@ -179,7 +179,7 @@
       &.changeStatus
         display: flex
         opacity: 50%
-        background: $green
+        background: $green !important
         color: $white
 
     // when selected the task with done status
@@ -190,6 +190,43 @@
         opacity: 100%
       .action.changeStatus
         display: none
+
+
+
+  &.expires
+    order: 4
+    border-color: $red2
+    &:hover
+      border-color: $grey3
+
+  &.expired
+    order: 2
+    border-color: $red2
+    background: $grey2
+    &.done
+      order: 0
+      border-color: $white
+      background: $white
+
+    .action
+      background: $grey2
+      &:hover
+        background: $white
+
+
+    // when selected the task with done status
+    &.selected
+      .select
+        opacity: 100%
+      .checkmark
+        opacity: 100%
+      .action.changeStatus
+        display: none
+
+
+
+
+
 
   @include aspect-ratio($size4, $size6)
     flex-wrap: wrap

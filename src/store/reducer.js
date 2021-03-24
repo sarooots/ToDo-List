@@ -1,4 +1,6 @@
 import * as act from "./actTypes"
+import {checkLoginStatus} from "../helpers/auth"
+
 const defaultState = {
     tasks: [],
     addTaskSuccess: false,
@@ -7,7 +9,8 @@ const defaultState = {
     loading: false,
     successMessage: null,
     errorMessage: null,
-    task: null
+    task: null,
+    isAuthenticated: checkLoginStatus()
 }
 export default  function reducer(state=defaultState, action)  {
     switch (action.type) {
@@ -87,6 +90,26 @@ export default  function reducer(state=defaultState, action)  {
             return {
                 ...state,
                 errorMessage:  action.errorMessage,
+                loading: false
+            }}
+        case act.REGISRTER_SECCESS:{
+            return {
+                ...state,
+                successMessage:  "Registered successfully, welcome to our site",
+                loading: false
+            }}
+        case act.LOGIN_SECCESS:{
+            return {
+                ...state,
+                successMessage:  "Welcome back!",
+                isAuthenticated: true,
+                loading: false
+            }}
+        case act.LOGOUT_SECCESS:{
+            return {
+                ...state,
+                successMessage:  "Please come back as soon as possible, we are waiting for you!",
+                isAuthenticated: false,
                 loading: false
             }}
         default : return state

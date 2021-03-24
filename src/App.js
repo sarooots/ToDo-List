@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
-import Task from './components/Pages/Tasks/Tasks'
+import Tasks from "./components/Pages/Tasks/Tasks"
+import Welcome from './components/Pages/Welcome/Welcome'
 import About from './components/Pages/About/About'
 import Contact from './components/Pages/Contact/Contact'
 import LogInOut from './components/Pages/LogInOut/LogInOut'
@@ -14,8 +15,13 @@ import {connect} from "react-redux"
 import { ToastContainer, toast, Flip} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {history} from "./helpers/history"
+import AuthRoute from "./components/AuthRoute"
+
+
 
 function App({loading, successMessage, errorMessage}) {
+    // checks if there is notification message then shows it
+    // we have two types of notification, success and error, each type has different style
     useEffect(()=>{
         successMessage && toast.success(successMessage, {
             position: "bottom-right",
@@ -45,12 +51,18 @@ function App({loading, successMessage, errorMessage}) {
                 <Switch>
                     <Route
                         path='/'
-                        component = {Task}
+                        component = {Welcome}
                         exact
                     />
                     <Route
-                        path='/home'
-                        component = {Task}
+                        path='/welcome'
+                        component = {Welcome}
+                        exact
+                    />
+                    <AuthRoute
+                        path='/tasks'
+                        component = {Tasks}
+                        type="private"
                         exact
                     />
                     <Route
@@ -63,19 +75,22 @@ function App({loading, successMessage, errorMessage}) {
                         component = {Contact}
                         exact
                     />
-                    <Route
+                    <AuthRoute
                         path='/signup'
                         component = {LogInOut}
+                        type="public"
                         exact
                     />
-                    <Route
+                    <AuthRoute
                         path='/signin'
                         component = {LogInOut}
+                        type="public"
                         exact
                     />
-                    <Route
+                    <AuthRoute
                         path='/task/:taskId'
                         component = {SingleTask}
+                        type="private"
                         exact
                     />
                     <Route
