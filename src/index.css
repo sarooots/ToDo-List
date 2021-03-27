@@ -5,18 +5,25 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #F7F7F7 !important;
+
 }
 html, body {
   font-size: 11px;
-  /*background: #EC3333;*/
+  /*position: fixed;*/
 }
+
+/*body::-webkit-scrollbar {*/
+/*  position: absolute;*/
+/*  left: 0;*/
+
+/*  !*display: none;*!*/
+/*}*/
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-@font-face {
-  font-family: 'BebasNeue';
-  src: local('BebasNeue-Regular'), url(./fonts/BebasNeue-Regular.ttf) format('woff');
-}
-
+/** {*/
+/*  transition: 0.2s linear;*/
+/*}*/

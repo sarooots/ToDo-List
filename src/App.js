@@ -1,19 +1,27 @@
 import React, {useEffect} from 'react'
-import ToDo from './components/Pages/ToDo/ToDo'
+import Tasks from "./components/Pages/Tasks/Tasks"
+import Welcome from './components/Pages/Welcome/Welcome'
 import About from './components/Pages/About/About'
 import Contact from './components/Pages/Contact/Contact'
+import LogInOut from './components/Pages/LogInOut/LogInOut'
 import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
-import Navbar from './components/NavMenu/NavMenu'
+import Header from './components/Header/Header'
+import Footer from './components/Footer/Footer'
 import './App.scss'
 import Spinner from "./components/Spinner/Spinner"
 import {connect} from "react-redux"
 import { ToastContainer, toast, Flip} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {history} from "./helpers/history"
+import AuthRoute from "./components/AuthRoute"
+
+
 
 function App({loading, successMessage, errorMessage}) {
+    // checks if there is notification message then shows it
+    // we have two types of notification, success and error, each type has different style
     useEffect(()=>{
         successMessage && toast.success(successMessage, {
             position: "bottom-right",
@@ -35,29 +43,26 @@ function App({loading, successMessage, errorMessage}) {
         });
     }, [successMessage, errorMessage])
 
-    useEffect(()=> {
-        document.title = 'Todo'
-    },[])
-
-
     return (
         <div className="App">
 
             <Router history={history}>
-                <Navbar/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                <Header/>
                 <Switch>
                     <Route
                         path='/'
-                        component = {ToDo}
+                        component = {Welcome}
                         exact
                     />
                     <Route
-                        path='/home'
-                        component = {ToDo}
+                        path='/welcome'
+                        component = {Welcome}
+                        exact
+                    />
+                    <AuthRoute
+                        path='/tasks'
+                        component = {Tasks}
+                        type="private"
                         exact
                     />
                     <Route
@@ -70,9 +75,22 @@ function App({loading, successMessage, errorMessage}) {
                         component = {Contact}
                         exact
                     />
-                    <Route
+                    <AuthRoute
+                        path='/signup'
+                        component = {LogInOut}
+                        type="public"
+                        exact
+                    />
+                    <AuthRoute
+                        path='/signin'
+                        component = {LogInOut}
+                        type="public"
+                        exact
+                    />
+                    <AuthRoute
                         path='/task/:taskId'
                         component = {SingleTask}
+                        type="private"
                         exact
                     />
                     <Route
@@ -82,6 +100,7 @@ function App({loading, successMessage, errorMessage}) {
                     />
                     <Redirect to='not-found'/>
                 </Switch>
+                <Footer/>
             </Router>
             { loading && <Spinner/> }
             <ToastContainer
@@ -96,12 +115,13 @@ function App({loading, successMessage, errorMessage}) {
                 transition={Flip}
             />
 
+
         </div>
     );
 }
 
 const mapStateToProps = (state) => {
-    return{
+    return {
         loading: state.loading,
         successMessage: state.successMessage,
         errorMessage: state.errorMessage

@@ -1,10 +1,8 @@
 import React, {Component} from "react"
 import {Button, Modal} from "react-bootstrap"
 import PropTypes from "prop-types"
-import {deleteTasks} from "../../store/actions";
-import {connect} from "react-redux";
 
-class DeleteTasks extends Component {
+class Confirm extends Component {
     static propTypes = {
         selectedTasks: PropTypes.object.isRequired,
     }
@@ -17,20 +15,21 @@ class DeleteTasks extends Component {
         const {show} = this.state
         const handleClose = () => this.setState({show: false})
         const handleShow = () => this.setState({show: true})
-        const {selectedTasks, deleteTasks, className} = this.props
+        const {selectedTasks, action, className, buttonContent} = this.props
         return (
             <>
-                <Button variant="outline-danger"
-                        className={className}
+                <button className={className}
                         disabled={!selectedTasks.size}
                         onClick={()=> {if(selectedTasks.size === 1) {
                             handleClose()
-                            deleteTasks(selectedTasks)
+                            action(selectedTasks)
                             } else {
                             handleShow()
                         }}}>
-                    delete
-                </Button>
+                  {buttonContent}
+                </button>
+
+
                 <Modal show={show} onHide={handleClose} centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Delete Selected</Modal.Title>
@@ -39,7 +38,7 @@ class DeleteTasks extends Component {
                     <Modal.Footer>
                         <Button variant="danger" onClick={() => {
                             handleClose()
-                            deleteTasks(selectedTasks)}}>
+                            action(selectedTasks)}}>
                             Delete {selectedTasks.size} task{selectedTasks.size>1?"s":""}
                         </Button>
                         <Button variant="secondary"
@@ -53,7 +52,4 @@ class DeleteTasks extends Component {
     }
 }
 
-const mapDispatchToProps =  {
-    deleteTasks
-}
-export default connect(null, mapDispatchToProps)(DeleteTasks)
+export default Confirm

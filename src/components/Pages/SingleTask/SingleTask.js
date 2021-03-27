@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {Button, ButtonGroup, Card, Col, Container, Row} from "react-bootstrap"
-import classes from "../ToDo/ToDo.module.sass"
+import classes from "../Tasks/Tasks.module.sass"
 import {Link} from "react-router-dom"
 import {formatDate} from "../../../helpers/utils"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
@@ -8,6 +8,7 @@ import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import Editor from "../../Editor/Editor";
 import {connect} from "react-redux";
 import {getTask, deleteTask} from "../../../store/actions";
+import Wrapper from "../../HOC Wrapper/Wrapper";
 
 class SingleTask extends Component{
 
@@ -16,6 +17,7 @@ class SingleTask extends Component{
     }
     componentDidMount() {
         this.props.getTask(this.props.match.params.taskId)
+
 
     }
 
@@ -86,4 +88,4 @@ const mapDispatchToProps = {
     deleteTask
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleTask)
+export default Wrapper(connect(mapStateToProps, mapDispatchToProps)(SingleTask))
