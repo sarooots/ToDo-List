@@ -76,11 +76,11 @@ function Register({register}){
       }
     }
     if (name==="password" && value) {
-      const pswReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[-_])(?=.{8,})/;
+      const pswReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
       if(!pswReg.test(value)){
         setErr({
           ...err,
-          password: 'use UPPERCASE, lowercase, numbers and symbols'
+          password: 'use UPPERCASE, lowercase and numbers'
         })
       }
     }
