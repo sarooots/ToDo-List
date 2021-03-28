@@ -5,8 +5,7 @@ import classes from "./Header.module.sass"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 import {connect} from "react-redux";
-import {logout} from "../../helpers/auth"
-import {getToken} from "../../helpers/auth";
+import {logout} from "../../store/actions"
 
 // creating array of menu links
 // "title" is shown in link element
@@ -69,7 +68,7 @@ class Header extends Component {
 
   render() {
     const {offset, show} = this.state
-    const {isAuthenticated} = this.props
+    const {isAuthenticated, logout} = this.props
     return (
 
       // please check "Header.module.sass" file to understand the code
@@ -99,9 +98,9 @@ class Header extends Component {
                                 onClick={()=> {
                                   this.setState({show: !show})
                                   if (link.address === "welcome" && isAuthenticated) {
-                                    logout(getToken())
+                                    const token = JSON.parse(localStorage.getItem("token"))
+                                      logout(token.jwt)
                                   }
-
                                 }}
                 >
                   <div className={`${classes.link}`}>{link.title}</div>
@@ -128,8 +127,8 @@ const mapStateToProps = (state) => {
     isAuthenticated: state.isAuthenticated,
   }
 }
-// const mapDispatchToProps = {
-//   logout,
-// }
+const mapDispatchToProps = {
+  logout,
+}
 
-export default connect(mapStateToProps)(Header)
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

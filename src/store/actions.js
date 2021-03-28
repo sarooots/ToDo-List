@@ -123,13 +123,16 @@ export function login(data) {
     }
 }
 
-export function logout(data) {
+export function logout(jwt) {
+  console.log({jwt})
     return (dispatch)=>{
         dispatch({type: act.PENDING})
-        requestWithToken(`${apiHost}/user/sign-out`, "POST", data)
+        request(`${apiHost}/user/sign-out`, "POST", {jwt})
           .then(()=>{
+            console.log("ggg")
               localStorage.removeItem("token")
               dispatch({type: act.LOGOUT_SECCESS})
+              history.push("/")
           })
           .catch((error) => {
               dispatch({type: act.ERROR, errorMessage: error.message})

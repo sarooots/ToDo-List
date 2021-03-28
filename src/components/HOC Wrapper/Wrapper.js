@@ -22,7 +22,7 @@ function Wrapper(WrappedComponent) {
     if (pageAddress === "signup") {
       document.title = "Todo - Register"
     }
-    if (pageAddress.substr(0,4) === "task") {
+    if (pageAddress.substr(0,5) === "task/") {
       document.title = "Todo - View task"
     }
     if (pageAddress === "") {
