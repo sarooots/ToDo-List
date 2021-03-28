@@ -1,6 +1,6 @@
-import decode from "jwt-decode";
+import decode from "jwt-decode"
 import {store} from "../store/store"
-import {LOGOUT_SECCESS} from "../store/actTypes";
+import {LOGOUT_SECCESS} from "../store/actTypes"
 import {history} from "./history"
 
 export default function request(url, method = "GET", body) {
@@ -11,7 +11,7 @@ export default function request(url, method = "GET", body) {
     }
   }
   if(body) {
-    config.body = JSON.stringify(body);
+    config.body = JSON.stringify(body)
   }
 
   return fetch(url, config)

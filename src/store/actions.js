@@ -8,7 +8,7 @@ import {saveToken} from "../helpers/auth"
 export function getTasks(params) {
 
     const query = `?${Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&')}`
-    history.push(`/${query}`)
+    history.push(`/tasks/${query}`)
 
     return (dispatch) =>{
         dispatch({type: act.PENDING})
@@ -97,7 +97,7 @@ export function editTask(data, from, statusChanged) {
 export function register(data) {
     return (dispatch)=>{
         dispatch({type: act.PENDING})
-        requestWithToken(`${apiHost}/user`, "POST", data)
+        request(`${apiHost}/user`, "POST", data)
           .then(()=>{
             dispatch({type: act.REGISRTER_SECCESS})
               history.push("/signin")
