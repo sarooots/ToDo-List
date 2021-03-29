@@ -1,6 +1,7 @@
 import React from "react"
 import {history} from "../../helpers/history"
 import {withRouter} from "react-router-dom"
+import cls from "./Wrapper.module.sass"
 
 function Wrapper(WrappedComponent) {
 
@@ -29,9 +30,11 @@ function Wrapper(WrappedComponent) {
       document.title = "Todo"
     }
 
-
-    return <div id="mainWrapper">
-      <WrappedComponent {...props} />
+    return <div id="mainWrapper" className="wrapper">
+      <WrappedComponent  {...props}
+                         article={cls.article}
+                         intro={cls.intro}
+      />
     </div>
   })
 }

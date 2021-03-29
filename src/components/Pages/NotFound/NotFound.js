@@ -1,7 +1,29 @@
 import React from "react"
+import cls from "../Tasks/Tasks.module.sass";
+import illustration from "../../Style assets/Tasks page illustration.svg";
+import Wrapper from "../../HOC Wrapper/Wrapper";
 
-export default function NotFound(props){
+function NotFound(){
 return (
-    <h1>404</h1>
+  <>
+    {/*whole page content*/}
+    <section className={cls.wrapper}>
+      {/*first section of page, intro*/}
+      <article className={`intro ${cls.article}`}>
+        <div className={`${cls.introItem}`}>
+          <img src={illustration} alt=""
+               className={`${cls.illustration}`}
+          />
+        </div>
+
+        <div className={`${cls.introItem} ${cls.introInfo}`}>
+
+        </div>
+      </article>
+
+    </section>
+  </>
 )
 }
+
+export default Wrapper(NotFound)

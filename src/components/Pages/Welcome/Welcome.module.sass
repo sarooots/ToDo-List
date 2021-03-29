@@ -1,0 +1,45 @@
+@import "../../Style assets/main"
+
+//page main content
+.wrapper
+  width: 100%
+  // first section of page
+  .article
+    @include aspect-ratio($size3, $size6)
+      .introItem:first-child
+        display: none
+      .introItem:last-child
+        width: 100%
+        padding-left: 2rem !important
+
+    // elements in the first section
+    .introItem
+      width: 50%
+      .illustration
+        width: 33.75rem
+      &.introInfo
+        text-align: left
+        padding-left: 8rem
+        color: $white
+        .introTitle
+          font-size: 3.5rem
+          font-weight: 400
+
+
+.submit
+  all: unset
+  padding: 0 1.25rem
+  height: 3.125rem
+  width: max-content
+  border: 0.125rem solid $white
+  border-radius: 0.625rem
+  text-transform: uppercase
+  color: $white
+  cursor: pointer
+  font-size: 1.375rem
+  font-weight: 600
+  &:hover
+    background: $red
+  &:active
+    background: $red
+    border-color: $red

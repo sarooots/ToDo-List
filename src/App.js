@@ -3,7 +3,8 @@ import Tasks from "./components/Pages/Tasks/Tasks"
 import Welcome from './components/Pages/Welcome/Welcome'
 import About from './components/Pages/About/About'
 import Contact from './components/Pages/Contact/Contact'
-import LogInOut from './components/Pages/LogInOut/LogInOut'
+import Register from './components/Pages/LoginRegister/Register'
+import Login from './components/Pages/LoginRegister/Login'
 import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
@@ -16,7 +17,6 @@ import { ToastContainer, toast, Flip} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {history} from "./helpers/history"
 import AuthRoute from "./components/AuthRoute"
-
 
 
 function App({loading, successMessage, errorMessage}) {
@@ -77,13 +77,13 @@ function App({loading, successMessage, errorMessage}) {
                     />
                     <AuthRoute
                         path='/signup'
-                        component = {LogInOut}
+                        component = {Register}
                         type="public"
                         exact
                     />
                     <AuthRoute
                         path='/signin'
-                        component = {LogInOut}
+                        component = {Login}
                         type="public"
                         exact
                     />

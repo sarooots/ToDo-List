@@ -6,7 +6,7 @@ import cls from "./Register.module.sass";
 import illustration from "../../Style assets/Contact page illustration.png";
 import Wrapper from "../../HOC Wrapper/Wrapper";
 
-function Login({login}){
+function Login({login, intro, article}){
   const focusedRef = useRef();
   const [values, setValues] = useState({
     email: "",
@@ -71,7 +71,7 @@ function Login({login}){
       {/*whole page content*/}
       <section className={cls.wrapper}>
         {/*first section of page, intro*/}
-        <article className={`${cls.intro} ${cls.article}`}>
+        <article className={`${intro} ${article} ${cls.article}`}>
           <div className={`${cls.introItem}`}>
             <img src={illustration} alt=""
                  className={`${cls.illustration}`}

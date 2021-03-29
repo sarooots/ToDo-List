@@ -8,7 +8,7 @@ import {store} from "../../../store/store"
 
 const apiHost = process.env.REACT_APP_API_HOST
 
-function Contact() {
+function Contact(props) {
     const focusedRef = useRef();
     const [values, setValues] = useState({
         name: "",
@@ -78,12 +78,13 @@ function Contact() {
         }
         setValues({...values, [name]: value})
     }
+    const {intro, article} = props
     return (
       <>
           {/*whole page content*/}
           <section className={cls.wrapper}>
               {/*first section of page, intro*/}
-              <article className={`${cls.intro} ${cls.article}`}>
+              <article className={`${intro} ${article} ${cls.article}`}>
                   <div className={`${cls.introItem}`}>
                       <img src={illustration} alt=""
                            className={`${cls.illustration}`}

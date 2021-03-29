@@ -5,7 +5,6 @@ import Editor from "../../Editor/Editor"
 import {connect} from "react-redux";
 import {deleteTask} from "../../../store/actions"
 import Task from "./Task/Task"
-import illustration from "../../Style assets/Tasks page illustration.svg"
 import Wrapper from "../../HOC Wrapper/Wrapper"
 
 
@@ -82,34 +81,13 @@ class Tasks extends Component {
 
   render() {
     const {selectedTasks, editTask, show, mode} = this.state
-    const {tasks} = this.props
+    const {tasks, article} = this.props
     return (
       <>
         {/*whole page content*/}
         <section className={cls.wrapper}>
           {/*first section of page, intro*/}
-          <article className={`${cls.intro} ${cls.article}`}>
-            <div className={`${cls.introItem}`}>
-              <img src={illustration} alt=""
-                   className={`${cls.illustration}`}
-              />
-            </div>
-
-            <div className={`${cls.introItem} ${cls.introInfo}`}>
-              <h1 className={`${cls.introTitle}`}>Manage your tasks</h1>
-
-              <ul className={`${cls.list}`}>
-                <li>add task</li>
-                <li>edit task</li>
-                <li>delete single or multiple tasks</li>
-                <li>search and filter tasks</li>
-                <li>sort tasks</li>
-                <li>change task status</li>
-              </ul>
-            </div>
-          </article>
-
-          <article className={`${cls.article} ${cls.actions}`}>
+          <article className={`${article} ${cls.actions}`}>
             <Filters
               selectedTasks={selectedTasks}
               selectAllTasks={this.selectAllTasks}
@@ -120,7 +98,7 @@ class Tasks extends Component {
             />
           </article>
 
-          <article className={`${cls.article} ${cls.tasks}`}>
+          <article className={`${article} ${cls.tasks}`}>
 
             {
               tasks.map((task, index)=>{

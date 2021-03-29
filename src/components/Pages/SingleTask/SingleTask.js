@@ -1,14 +1,9 @@
 import React, {Component} from "react"
-import {Button, ButtonGroup, Card, Col, Container, Row} from "react-bootstrap"
-import classes from "../Tasks/Tasks.module.sass"
-import {Link} from "react-router-dom"
-import {formatDate} from "../../../helpers/utils"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faEdit, faTrash} from "@fortawesome/free-solid-svg-icons"
 import Editor from "../../Editor/Editor";
 import {connect} from "react-redux";
 import {getTask, deleteTask} from "../../../store/actions";
 import Wrapper from "../../HOC Wrapper/Wrapper";
+import cls from "../LoginRegister/Register.module.sass";
 
 class SingleTask extends Component{
 
@@ -27,44 +22,17 @@ class SingleTask extends Component{
 
     render() {
         const {show} = this.state
-        const {task} = this.props
+        const {task, article} = this.props
 
         return (
             <>
-                <Container  fluid className={classes.toDoList}>
-                    <Row>
-                        <Col xs={12}>
-                            {task ?
-                                <Card className={`${classes.task}`}>
-                                    <Card.Body className={classes.cBody}>
-                                        <Link to={`/task/${task._id}`}>
-                                            <Card.Title className={classes.title}>{task.title}</Card.Title>
-                                        </Link>
-                                        <Card.Subtitle className={`mb-2 text-muted ${classes.date}`}>{`date: ${formatDate(task.date)}`}</Card.Subtitle>
-                                        <Card.Text className={`${classes.desc} ${task.description ===""?classes.emptyDesc:""}`}>
-                                            {task.description === "" ? "this task has no description": task.description}
-                                        </Card.Text>
-                                        <ButtonGroup size="sm" className={classes.actions}>
-                                            <Button variant="success"
-                                                    onClick={() => {
-                                                        this.handleEdit()
-                                                    }}
-                                                    className="rounded-0 text-nowrap">
-                                                <FontAwesomeIcon icon={faEdit} />
-                                            </Button>
-                                            <Button
-                                                variant="danger"
-                                                onClick={ ()=> this.props.deleteTask(task._id, "single") }>
-                                                <FontAwesomeIcon icon={faTrash} />
-                                            </Button>
-                                        </ButtonGroup>
-                                    </Card.Body>
-                                </Card>
-                                : <p>Task data not exists!</p>
-                            }
-                        </Col>
-                    </Row>
-                </Container>
+                <section className={cls.wrapper}>
+                    {/*first section of page, intro*/}
+                    <article className={`${article} ${cls.article}`}>
+
+                    </article>
+                </section>
+
                 {
                     show &&
                     <Editor
