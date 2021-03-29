@@ -1,9 +1,9 @@
-@import "../Style assets/Vars"
+@import "../Style assets/main"
 
 .header
+  @include content-padding(1.875rem, 1.875rem)
   height: 7.5rem
   background: rgba(255, 255, 255, 0)
-  padding: 1.875rem  8.75rem
   font-family: Segoe UI, sans-serif
   display: flex
   position: fixed
@@ -11,28 +11,28 @@
   width: 100%
   z-index: 1000
 
-  //changing background color and padding of left and right side of header
+  //changing background color
   @include aspect-ratio($size3, $size6)
     background: rgba(255, 255, 255, 1)
-  @include aspect-ratio($size2, $size3)
-    padding: 1.875rem  6.25rem
-  @include aspect-ratio($size3, $size4)
-    padding: 1.875rem 4.375rem
-  @include aspect-ratio($size4, $size5)
-    padding: 1.875rem  3.125rem
-  @include aspect-ratio($size5, $size6)
-    padding: 1.875rem
+
+  // this class is active when user scrolled down
+  &.offset
+    background: rgb(255, 255, 255)
+
+
+
   .logo
-    font-size: 2.313rem
-    font-weight: 900 // black
     color:  #EC3333
     width: max-content
+    display: flex
+    align-items: center
     height: 100%
-    padding: 0 0.938rem
+    padding: 0.1875rem 0.938rem 0.4375rem 0.938rem
     margin:
       right: 0.313rem
-    &:hover
-      text-decoration: none
+    img
+      width: 5.875rem
+
 
   // links
   .menu
@@ -40,7 +40,6 @@
     .label
       margin:
         right: 0.313rem
-
       .link
         display: flex
         font-size: 1.688rem
@@ -49,25 +48,54 @@
         padding: 0.625rem 0.938rem
         height: 3.625rem
         background: rgba(236, 51, 51, 0)
-        border-radius: 0.625rem
         line-height: 2.4rem
+        border-radius: 0.625rem
       &:hover > .link
         text-decoration: underline
       &.active > .link
         text-decoration: underline
         font-weight: 700 //bold
 
-      &:last-child
-        margin:
-          right: 0
-          left: auto
-        .link
-          color: white
-          align-content: flex-start
+      &.logedOut
+        &:nth-last-child(2)
+          margin:
+            right: 0.313rem
+            left: auto
+          &.offset
+            .link
+              background: $red
+        &:last-child
+          &.offset .link
+            color: $red
+        &:nth-child(n+3)
+          .link
+            color: $white
 
-          @include aspect-ratio($size3, $size6)
-            color:  white
-            background: rgba(236, 51, 51, 1)
+      &.logedIn
+        &:last-child
+          margin:
+            right: 0
+            left: auto
+          .link
+            color: $white
+          &.offset .link
+            background: $red
+
+
+
+    //on smaller screen menu design is changing
+    @include aspect-ratio($size3, $size6)
+      .logedOut
+        &:nth-last-child(2) .link
+            background: $red
+        &:last-child
+          .link
+            color: $red !important
+      .logedIn
+        &:last-child .link
+            background: $red
+
+
 
     //on smaller screen menu design is changing
     @include aspect-ratio($size4, $size6)
@@ -80,9 +108,8 @@
       .label
         width: 100%
         background: white
-        margin-right: 0
+        margin-right: 0 !important
         padding-bottom: 0.3125rem
-
         border:
           left: 0.313rem white solid
           right: 0.313rem white solid
@@ -94,19 +121,16 @@
           border-top: 0.063rem #EC3333 solid
         &:last-child
           padding-bottom: 0.625rem
-
         .link
           justify-content: center
           margin: auto
           width: max-content
 
 
-
-
   // menu icon for smaller screen, initially is hidden
   .bars
-    display: none !important
     all: unset
+    display: none !important
     color: #EC3333
     padding: 1rem 0.938rem
     font-size: 1.813rem
@@ -123,12 +147,4 @@
     @include aspect-ratio($size4, $size6)
       display: flex !important
       margin-left: auto
-
-  // this class is active when user scrolled down
-  &.offset
-    background: rgb(255, 255, 255)
-    .label:last-child .link
-      background: rgba(236, 51, 51, 1)
-
-
 

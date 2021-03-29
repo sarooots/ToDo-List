@@ -1,11 +1,12 @@
 import React, {Component} from "react"
 import {Nav} from "react-bootstrap"
 import {NavLink} from "react-router-dom"
-import classes from "./Header.module.sass"
+import cls from "./Header.module.sass"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 import {connect} from "react-redux";
 import {logout} from "../../store/actions"
+import Logo from "../Style assets/Todo.svg"
 
 // creating array of menu links
 // "title" is shown in link element
@@ -25,6 +26,10 @@ const links = [
     title: "Contact",
     address: "contact",
 
+  },
+  {
+    title: "Sign up",
+    address: "signup"
   },
   {
     title: "Sign in",
@@ -72,12 +77,12 @@ class Header extends Component {
     return (
 
       // please check "Header.module.sass" file to understand the code
-      <header className={`${classes.header} ${ offset && classes.offset}`}
+      <header className={`${cls.header} ${ offset && cls.offset}`}
       >
-        <NavLink to="/" className={`${classes.logo}`}>
-          <div>Todo</div>
+        <NavLink to="/" className={`${cls.logo}`}>
+          <img src={Logo} alt=""/>
         </NavLink>
-        <Nav className={`${classes.menu} ${show && classes.show}`}>
+        <Nav className={`${cls.menu} ${show && cls.show}`}>
           {
 
             links.map((link, index)=>{
@@ -88,12 +93,17 @@ class Header extends Component {
                   address: "welcome"
                 }
               }
+              if (isAuthenticated && link.title === "Sign up") {
+                return null
+              }
               if (!isAuthenticated && link.title === "Tasks") {
                 return null
               } else{
                 return <NavLink to={`/${link.address}`} key={index}
-                                activeClassName={classes.active}
-                                className={`${classes.label}`}
+                                activeClassName={cls.active}
+                                className={`${cls.label}  
+                                ${isAuthenticated ? cls.logedIn: cls.logedOut}
+                                ${ offset && cls.offset}`}
                   // change "show" value to hide menu after clicking one of links
                                 onClick={()=> {
                                   this.setState({show: !show})
@@ -103,14 +113,14 @@ class Header extends Component {
                                   }
                                 }}
                 >
-                  <div className={`${classes.link}`}>{link.title}</div>
+                  <div className={`${cls.link}`}>{link.title}</div>
                 </NavLink>
               }
             })
 
           }
         </Nav>
-        <button className={`${classes.bars} ${show && classes.show}`}
+        <button className={`${cls.bars} ${show && cls.show}`}
           // change "show" value to hide or show menu
                 onClick={()=> this.setState({show: !show})}
         >
