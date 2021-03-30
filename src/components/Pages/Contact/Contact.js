@@ -34,7 +34,6 @@ function Contact(props) {
     }
 
     const submit = () => {
-        changeErr()
         const errArr = Object.values(err);
         const errExist = !errArr.every(el => el===null);
 
@@ -48,9 +47,8 @@ function Contact(props) {
                   setValues({name: "", email: "", message: ""})
                   store.dispatch({type: CONTACT_SECCESS})
               })
-        } else {
-
         }
+        changeErr()
     }
 
     const changeValues = ({target: {name, value}}) => {
@@ -99,6 +97,7 @@ function Contact(props) {
                                      name="name"
                                      value={values.name}
                                      onChange={(e) => changeValues(e)}
+                                     onKeyUp={(e) => e.key === "Enter" && submit()}
                                      ref={focusedRef}
                               />
                               <span>Name:</span>
@@ -110,6 +109,7 @@ function Contact(props) {
                                      value={values.email}
                                      className={err.email? cls.required: ""}
                                      onChange={(e) => changeValues(e)}
+                                     onKeyUp={(e) => e.key === "Enter" && submit()}
                               />
                               <span>Email:</span>
                               <p>

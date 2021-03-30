@@ -7,6 +7,7 @@ import {faBars} from "@fortawesome/free-solid-svg-icons";
 import {connect} from "react-redux";
 import {logout} from "../../store/actions"
 import Logo from "../Style assets/Todo.svg"
+import {history} from "../../helpers/history";
 
 // creating array of menu links
 // "title" is shown in link element
@@ -15,7 +16,6 @@ const links = [
   {
     title: "Tasks",
     address: "tasks",
-    auth: true
   },
   {
     title: "About",
@@ -35,6 +35,10 @@ const links = [
     title: "Sign in",
     address: "signin"
   },
+  {
+    title: "Logout",
+    address: "welcome"
+  },
 ]
 
 
@@ -42,7 +46,6 @@ class Header extends Component {
   state = {
     offset: false, // used for conditional css class adding to header component
     show: false, // used for conditional css class adding to menu
-
   }
 
   //function to check if user scrolled down then change value of state "show" from "false" to "true"
@@ -74,10 +77,11 @@ class Header extends Component {
   render() {
     const {offset, show} = this.state
     const {isAuthenticated, logout} = this.props
+    const {pathname} = history.location
     return (
 
       // please check "Header.module.sass" file to understand the code
-      <header className={`${cls.header} ${ offset && cls.offset}`}
+      <header className={`${cls.header} ${ offset && cls.withBG}`}
       >
         <NavLink to="/" className={`${cls.logo}`}>
           <img src={Logo} alt=""/>
@@ -86,41 +90,44 @@ class Header extends Component {
           {
 
             links.map((link, index)=>{
-
-              if (isAuthenticated && link.title === "Sign in") {
-                link = {
-                  title: "Log out",
-                  address: "welcome"
+              // checks if user is authenticated then hides "signin" and "signup" links
+              // either if user isn't authenticated then hides "tasks" link instead of "signin" and "signup" links
+              if (isAuthenticated) {
+                if (link.title === "Sign up" || link.title === "Sign in") {
+                  return null
                 }
               }
-              if (isAuthenticated && link.title === "Sign up") {
-                return null
+              else {
+                if (link.title === "Tasks" || link.title === "Logout") {
+                  return null
+                }
               }
-              if (!isAuthenticated && link.title === "Tasks") {
-                return null
-              } else{
-                return <NavLink to={`/${link.address}`} key={index}
-                                activeClassName={cls.active}
-                                className={`${cls.label}  
+
+              // checks if current page is one of these "Tasks", "SingleTask"
+              // then adds ".offset" class to "Navlink" element
+              const showButton = pathname.substr(0,5) === "/task"
+              return <NavLink to={`/${link.address}`} key={index}
+                              activeClassName={cls.active}
+                              className={`${cls.label}  
                                 ${isAuthenticated ? cls.logedIn: cls.logedOut}
-                                ${ offset && cls.offset}`}
-                  // change "show" value to hide menu after clicking one of links
-                                onClick={()=> {
-                                  this.setState({show: !show})
-                                  if (link.address === "welcome" && isAuthenticated) {
-                                    const token = JSON.parse(localStorage.getItem("token"))
-                                      logout(token.jwt)
-                                  }
-                                }}
-                >
-                  <div className={`${cls.link}`}>{link.title}</div>
-                </NavLink>
-              }
+                                ${ offset || showButton ? cls.linkWithBG:""}
+                                `}
+                // change "show" value to hide menu after clicking one of links
+                              onClick={()=> {
+                                this.setState({show: !show})
+                                if (link.address === "welcome" && isAuthenticated) {
+                                  const token = JSON.parse(localStorage.getItem("token"))
+                                  logout(token.jwt)
+                                }
+                              }}
+              >
+                <div className={`${cls.link}`}>{link.title}</div>
+              </NavLink>
             })
 
           }
         </Nav>
-        <button className={`${cls.bars} ${show && cls.show}`}
+        <button className={`${cls.bars} ${show ? cls.show:''}`}
           // change "show" value to hide or show menu
                 onClick={()=> this.setState({show: !show})}
         >

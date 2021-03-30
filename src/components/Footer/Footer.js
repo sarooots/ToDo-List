@@ -1,6 +1,7 @@
 import React from "react"
 import cls from "./Footer.module.sass"
 import {Link} from "react-router-dom";
+import {connect} from "react-redux"
 
 // the following 4 arrays includes links addresses and link text
 const author = [
@@ -27,6 +28,10 @@ const author = [
 ]
 const pages = [
   {
+    title: "Home",
+    address: "/"
+  },
+  {
     title: "Tasks",
     address: "/tasks"
   },
@@ -41,6 +46,10 @@ const pages = [
   {
     title: "Signup",
     address: "/signup"
+  },
+  {
+    title: "Signin",
+    address: "/signin"
   },
 ]
 
@@ -73,7 +82,8 @@ const bitschool = [
   },
 ]
 
-function Footer () {
+function Footer ({isAuthenticated}) {
+
   return (
 
     <footer className={cls.footer}>
@@ -84,14 +94,27 @@ function Footer () {
           <div className={cls.linkGroup}>
             <h4 className={cls.title}>Pages</h4>
             {
-              pages.map((link, index)=>(
-                <Link to={link.address}
-                      className={cls.link}
-                      key={index}
-                >
-                  {link.title}
-                </Link>
-              ))
+              pages.map((link, index)=> {
+                // checks if user is authenticated then hides "signin" and "signup" links
+                // either if user isn't authenticated then hides "tasks" link instead of "signin" and "signup" links
+                if (isAuthenticated) {
+                  if(link.address === "/signup" || link.address === "/signin") {
+                    return null
+                  }
+                }
+                else {
+                  if(link.address === "/tasks") {
+                    return null
+                  }
+                }
+
+                  return <Link to={link.address}
+                                        className={cls.link}
+                                        key={index}
+                  >
+                    {link.title}
+                  </Link>
+              })
             }
           </div>
 
@@ -160,4 +183,11 @@ function Footer () {
   )
 }
 
-export default Footer
+
+const mapStateToProps = (state) => {
+  return{
+    isAuthenticated: state.isAuthenticated,
+  }
+}
+
+export default connect(mapStateToProps)(Footer)

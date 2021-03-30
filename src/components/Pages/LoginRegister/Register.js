@@ -2,8 +2,8 @@ import React, {useState, useRef, useEffect} from "react"
 import {Link} from "react-router-dom"
 import {connect} from 'react-redux'
 import {register} from "../../../store/actions"
-import cls from "./Register.module.sass";
-import illustration from "../../Style assets/Contact page illustration.png";
+import cls from "./LoginRegister.module.sass";
+import illustration from "../../Style assets/Register page illustration.png";
 import Wrapper from "../../HOC Wrapper/Wrapper";
 
 function Register({register, intro, article}){
@@ -38,7 +38,6 @@ function Register({register, intro, article}){
   }
 
   const submit = () => {
-    changeErr()
     const errArr = Object.values(err);
     const errExist = !errArr.every(el => el===null);
 
@@ -46,11 +45,9 @@ function Register({register, intro, article}){
     const valuesExist = !valuesArr.some(el => el==='');
 
     if(valuesExist && !errExist && values.password===values.confirmPassword){
-
       register(values)
-    } else {
-
     }
+    changeErr()
   }
 
   const changeValues = ({target: {name, value}}) => {
@@ -118,6 +115,7 @@ function Register({register, intro, article}){
                        name="name"
                        value={values.name}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                        ref={focusedRef}
                 />
                 <span>Name:</span>
@@ -129,6 +127,7 @@ function Register({register, intro, article}){
                        value={values.surname}
                        className={err.surname? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Surname:</span>
                 <p>
@@ -141,6 +140,7 @@ function Register({register, intro, article}){
                        value={values.email}
                        className={err.email? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Email:</span>
                 <p>
@@ -153,6 +153,7 @@ function Register({register, intro, article}){
                        value={values.password}
                        className={err.password? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Password:</span>
                 <p>
@@ -165,6 +166,7 @@ function Register({register, intro, article}){
                        value={values.confirmPassword}
                        className={err.confirmPassword? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Confirm:</span>
                 <p>

@@ -7,8 +7,8 @@ import {saveToken} from "../helpers/auth"
     const apiHost = process.env.REACT_APP_API_HOST
 export function getTasks(params) {
 
-    const query = `?${Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&')}`
-    history.push(`/tasks/${query}`)
+    const query = `/?${Object.entries(params).map(([key, value])=>`${key}=${value}`).join('&')}`
+    history.push(`/tasks${query}`)
 
     return (dispatch) =>{
         dispatch({type: act.PENDING})
@@ -44,7 +44,6 @@ export function deleteTask(taskId) {
             .then((res)=>{
               if (!res) {return}
               dispatch({type: act.DELETE_TASK, taskId})
-                history.push("/")
             })
             .catch((error) => {
                 dispatch({type: act.ERROR, errorMessage: error.message})
@@ -124,12 +123,10 @@ export function login(data) {
 }
 
 export function logout(jwt) {
-  console.log({jwt})
     return (dispatch)=>{
         dispatch({type: act.PENDING})
         request(`${apiHost}/user/sign-out`, "POST", {jwt})
           .then(()=>{
-            console.log("ggg")
               localStorage.removeItem("token")
               dispatch({type: act.LOGOUT_SECCESS})
               history.push("/")

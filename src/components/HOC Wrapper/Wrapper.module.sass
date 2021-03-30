@@ -12,9 +12,9 @@
   display: flex
   align-items: center
   background:
-    image: url("../Style assets/Background full width.png")
+    image: url("../Style assets/Background full width.png"), linear-gradient($mainLight, $main)
     size: 100% 100vh
     repeat: no-repeat
   @include aspect-ratio($size3, $size6)
     background:
-      image: url("../Style assets/Background small width.png") !important
+      image: linear-gradient($mainLight, $main) !important

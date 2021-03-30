@@ -3,7 +3,7 @@ import Editor from "../../Editor/Editor";
 import {connect} from "react-redux";
 import {getTask, deleteTask} from "../../../store/actions";
 import Wrapper from "../../HOC Wrapper/Wrapper";
-import cls from "../LoginRegister/Register.module.sass";
+import cls from "../LoginRegister/LoginRegister.module.sass";
 
 class SingleTask extends Component{
 

@@ -4,6 +4,7 @@
   @include content-padding(1.875rem, 1.875rem)
   height: 7.5rem
   background: rgba(255, 255, 255, 0)
+  transition: background-color 0.3s
   font-family: Segoe UI, sans-serif
   display: flex
   position: fixed
@@ -16,7 +17,7 @@
     background: rgba(255, 255, 255, 1)
 
   // this class is active when user scrolled down
-  &.offset
+  &.withBG
     background: rgb(255, 255, 255)
 
 
@@ -44,10 +45,12 @@
         display: flex
         font-size: 1.688rem
         font-weight: 600 // semibold
-        color:  #EC3333
+        color:  $main
         padding: 0.625rem 0.938rem
         height: 3.625rem
         background: rgba(236, 51, 51, 0)
+        transition: background-color, color 0.3s
+
         line-height: 2.4rem
         border-radius: 0.625rem
       &:hover > .link
@@ -61,12 +64,12 @@
           margin:
             right: 0.313rem
             left: auto
-          &.offset
+          &.linkWithBG
             .link
-              background: $red
+              background: $main
         &:last-child
-          &.offset .link
-            color: $red
+          &.linkWithBG .link
+            color: $main
         &:nth-child(n+3)
           .link
             color: $white
@@ -78,22 +81,22 @@
             left: auto
           .link
             color: $white
-          &.offset .link
-            background: $red
-
+          &.linkWithBG
+            .link
+              background: $main
 
 
     //on smaller screen menu design is changing
     @include aspect-ratio($size3, $size6)
       .logedOut
         &:nth-last-child(2) .link
-            background: $red
+            background: $main
         &:last-child
           .link
-            color: $red !important
+            color: $main !important
       .logedIn
         &:last-child .link
-            background: $red
+            background: $main
 
 
 
@@ -114,11 +117,11 @@
           left: 0.313rem white solid
           right: 0.313rem white solid
         &:hover, &.active
-          border-color: #EC3333
+          border-color: $main
           .link
             text-decoration: underline
         &:first-child
-          border-top: 0.063rem #EC3333 solid
+          border-top: 0.063rem $main solid
         &:last-child
           padding-bottom: 0.625rem
         .link
@@ -131,7 +134,7 @@
   .bars
     all: unset
     display: none !important
-    color: #EC3333
+    color: $main
     padding: 1rem 0.938rem
     font-size: 1.813rem
     cursor: pointer
@@ -140,7 +143,7 @@
     transition: all 0.1s
 
     &.show
-      background: rgba(236, 51, 51, 1)
+      background: $main
       color: white
 
     // show menu icon on smaller screen

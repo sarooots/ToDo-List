@@ -67,7 +67,6 @@ class Tasks extends Component {
         key === "_id" && selectedTasks.size && !selectedTasks.has(value) && invertedTasks.add(value)
       }
     })
-    console.log()
 
     selectedTasks.size < tasks.length && this.setState({selectedTasks:invertedTasks})
   }
@@ -96,9 +95,6 @@ class Tasks extends Component {
               changeMode={this.changeMode}
               inverseSelection={this.inverseSelection}
             />
-          </article>
-
-          <article className={`${article} ${cls.tasks}`}>
 
             {
               tasks.map((task, index)=>{

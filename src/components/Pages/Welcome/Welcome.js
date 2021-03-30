@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import illustration from "../../Style assets/Tasks page illustration.svg"
+import illustration from "../../Style assets/Welcome page illustration.png"
 import Wrapper from "../../HOC Wrapper/Wrapper"
 import cls from "./Welcome.module.sass"
 
