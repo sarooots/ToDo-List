@@ -95,7 +95,7 @@ class Tasks extends Component {
               changeMode={this.changeMode}
               inverseSelection={this.inverseSelection}
             />
-
+            <div className={cls.tasks}>
             {
               tasks.map((task, index)=>{
                 return (
@@ -111,6 +111,7 @@ class Tasks extends Component {
                 )
               })
             }
+            </div>
           </article>
 
         </section>

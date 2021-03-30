@@ -105,7 +105,7 @@ function App({loading, successMessage, errorMessage}) {
             { loading && <Spinner/> }
             <ToastContainer
                 position="bottom-right"
-                autoClose={7000}
+                autoClose={5000}
                 hideProgressBar
                 newestOnTop
                 closeOnClick

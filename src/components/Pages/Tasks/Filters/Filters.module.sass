@@ -1,11 +1,24 @@
 @import "../../../Style assets/main"
 
 
+
+
 // the 1st block of component
 .filters
   width: 100%
   background: $white
   border-radius: 0.625rem
+  position: relative
+
+// overlay layer to make filters disabled
+.overlay
+  border-radius: 0.625rem
+  position: absolute
+  z-index: 3
+  background-color: $lightGrey
+  opacity: 50%
+  width: 100%
+  height: 100%
 
 //there are 2 filter group first one is displayed and the second is hidden by default
 .filtersGroup
@@ -55,10 +68,10 @@
       height: 100%
       padding: 0 0.3125rem 0 0.625rem
       border:
-        right: 0.0625rem solid $grey3
+        right: 0.0625rem solid $grey
       border-radius:   0.625rem 0 0 0.625rem
       &:focus, &:focus ~ .button
-        border-color: $grey
+        border-color: $darkGrey
 
 
 
@@ -82,7 +95,7 @@
     font-size: 1.375rem
     font-weight: 600
     &:hover
-      background: $grey2
+      background: $lightGrey
     &:active
       background: $red
       color: $white
@@ -101,13 +114,13 @@
   height: 100%
   cursor: pointer
   border-radius:  0.625rem 0 0 0.625rem
-  border: 0.125rem  solid $grey3
+  border: 0.125rem  solid $grey
   color: $dark
   padding: 0 0.625rem
   &:focus, &:focus + .button
-    border-color: $grey
+    border-color: $darkGrey
   &:hover
-    background: $grey2
+    background: $lightGrey
 
 
 // there are 2 dropdown menus, 1st for sort and 2nd for select menu
@@ -132,14 +145,14 @@
     cursor: pointer
     padding: 0 0.625rem
     border:
-      top: 0.125rem solid $grey3
-      left: 0.125rem solid $grey3
-      right: 0.125rem solid $grey3
+      top: 0.125rem solid $grey
+      left: 0.125rem solid $grey
+      right: 0.125rem solid $grey
     &:last-child
       border:
-        bottom: 0.125rem solid $grey3
+        bottom: 0.125rem solid $grey
     &:hover
-      background: $grey2
+      background: $lightGrey
 
 
 // all input elements used in the filters
@@ -149,17 +162,17 @@
   flex: 1
   height: 3.125rem
   border-radius:   0.625rem
-  color: $grey
-  border: 0.125rem  solid $grey3
+  color: $darkGrey
+  border: 0.125rem  solid $grey
   &::placeholder
-    color: $grey3
-  &:hover
-    background: $grey2
     color: $grey
+  &:hover
+    background: $lightGrey
+    color: $darkGrey
   &:not([value=""]) ~ .title, &:focus ~ .title
     opacity: 100%
   &:focus
-    border-color: $grey
+    border-color: $darkGrey
     &::placeholder
       opacity: 0
 
@@ -187,13 +200,13 @@
   font-size: 1.5rem
   cursor: pointer
   border-radius:  0 0.625rem 0.625rem 0
-  border: 0.125rem solid $grey3
+  border: 0.125rem solid $grey
   border:
     left: 0
   &:focus
     outline: unset
   &:hover
-    background: $grey2
+    background: $lightGrey
 
 
 // link to open all filters
@@ -225,7 +238,7 @@
   border-radius: 0.625rem
   min-width: 3.125rem
   height: 3.125rem
-  border: 0.125rem  solid $grey3
+  border: 0.125rem  solid $grey
   align-items: center
   justify-content: center
   cursor: pointer
@@ -240,7 +253,7 @@
     cursor: unset
     background: $white
     &:active
-      border-color: $grey !important
+      border-color: $darkGrey !important
       background: $white !important
       color: $red !important
     &:hover
@@ -251,7 +264,7 @@
     border-color: $red
     color: $red
     &:hover
-      background: $grey2
+      background: $lightGrey
 
     &:active
       border-color: $red
@@ -271,7 +284,7 @@
     background: $white
 
     &:hover
-      background: $grey2
+      background: $lightGrey
 
     &:active
       background: $green
@@ -280,7 +293,7 @@
 
 // element inside the grouped element which has "action" class
 .actionItem
-  border-right: 0.125rem  solid $grey3
+  border-right: 0.125rem  solid $grey
   display: flex
   height: 100%
   align-items: center
@@ -291,7 +304,7 @@
     padding: 0 0.625rem 0 1.125rem
     border-radius: 0.625rem 0 0 0.625rem
     &:hover
-      background: $grey2
+      background: $lightGrey
     input
       display: none
       &:checked ~ .checkbox
@@ -314,7 +327,7 @@
   font-size: 1.6875rem
   border-radius: 0 0.625rem 0.625rem 0
   &:hover
-    background: $grey2
+    background: $lightGrey
 
 
 // custom checkbox design
@@ -324,7 +337,7 @@
   display: flex
   justify-content: center
   align-items: center
-  border:  0.125rem  solid $grey3
+  border:  0.125rem  solid $grey
   border-radius: 0.375rem
   background-color: $white
   &:after
@@ -350,7 +363,7 @@
 .tasksCount
   font-size: 1.1875rem
   font-weight: 400
-  color: $grey
+  color: $darkGrey
   text-align: left
   padding-left: 0.625rem
 
@@ -373,9 +386,9 @@
     cursor: pointer
     padding: 0 1.25rem
     span
-      border-bottom: 3px $grey2 solid
+      border-bottom: 3px $lightGrey solid
     &:hover span
-      border-bottom: 3px $grey solid
+      border-bottom: 3px $darkGrey solid
     &.activeStatus
       span
         border-bottom: 3px $main solid
