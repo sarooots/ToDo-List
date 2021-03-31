@@ -42,7 +42,6 @@ function App({loading, successMessage, errorMessage}) {
         });
     }, [successMessage, errorMessage])
 
-    console.log(window.customScroll)
     return (
           <div className="App">
 
@@ -114,8 +113,6 @@ function App({loading, successMessage, errorMessage}) {
                 pauseOnHover
                 transition={Flip}
               />
-
-
           </div>
     )
 }

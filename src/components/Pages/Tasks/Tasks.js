@@ -119,7 +119,6 @@ class Tasks extends Component {
           mode === "edit" && show &&
           <Editor
             mode={mode}
-            show={show}
             toggleShow={this.toggleShow}
             task={editTask}/>
         }
@@ -127,7 +126,6 @@ class Tasks extends Component {
           mode === "new" && show &&
           <Editor
             mode={mode}
-            show={show}
             toggleShow={this.toggleShow}/>
         }
       </>

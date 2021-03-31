@@ -181,6 +181,8 @@ function Filters({
 
   // change dates state value, this method is called on "onChange" event of each datepicker element
   const handleChangeDates = (value, name) => {
+    console.log(value)
+    console.log(name)
     setDates({
       ...dates,
       [name]: value
@@ -249,7 +251,7 @@ function Filters({
               className={cls.input}
               type="search"
               placeholder="search"
-              value={search && search}
+              value={search ? search:""}
               onChange={(e)=> setSearch(e.target.value)}
             />
             <span className={`${cls.title}`}>
@@ -315,7 +317,8 @@ function Filters({
                         <input type="search"
                                className={cls.input}
                                placeholder={option.label}
-                               value={dates[option.value] && formatDate(dates[option.value].toISOString())}
+                               value={dates[option.value] ? formatDate(dates[option.value].toISOString()):""}
+                               readOnly
                         />
                         <span className={`${cls.title}`}>{option.label}</span>
 
