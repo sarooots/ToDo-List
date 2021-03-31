@@ -14,7 +14,6 @@ import moment from "moment";
 function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteTask, editTask}) {
   let expires = moment(task.date) < moment()
   let expired = moment(task.date) < moment().subtract( 1, "day")
-
   return (
 
     // please check "Task.module.sass" file to understand each element of the code
@@ -50,18 +49,24 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
           <div className={cls.content}>
             <h2 className={cls.title}>  {stringTrimmer(task.title, 115)}</h2>
             <h6 className={cls.details}>
-                        <span className={cls.detail}>
-                            {expired ? "Expired: ": "Deadline: " }
-                            <span className={cls.date}>
-                                {expired ? formatDate2(task.date): (expires? "Today" : formatDate2(task.date))}
-                            </span>
-                        </span>
               <span className={cls.detail}>
-                            Status:
-                            <span className={cls.status}>
-                                {` ${task.status}`}
-                            </span>
-                        </span>
+                {expired ? "Expired: ": "Deadline: " }
+                <span className={cls.date}>
+                  {expired ? formatDate2(task.date): (expires? "Today" : formatDate2(task.date))}
+                </span>
+              </span>
+              <span className={cls.detail}>
+                Created:
+                <span>
+                  {` ${formatDate2(task.created_at)}`}
+                </span>
+              </span>
+              <span className={cls.detail}>
+                Status:
+                <span className={cls.status}>
+                  {` ${task.status}`}
+                </span>
+              </span>
             </h6>
             <p
               className={`${cls.description} ${task.description === ""? cls.empty: ""}`}
