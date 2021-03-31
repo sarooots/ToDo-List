@@ -4,7 +4,8 @@ import cls from "../Tasks/Tasks.module.sass";
 import illustration from "../../Style assets/Tasks page illustration.svg";
 
  function About({intro, article}){
-return (
+
+   return (
   <>
     {/*whole page content*/}
     <section className={cls.wrapper}>

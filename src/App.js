@@ -18,7 +18,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import {history} from "./helpers/history"
 import AuthRoute from "./components/AuthRoute"
 
-
 function App({loading, successMessage, errorMessage}) {
     // checks if there is notification message then shows it
     // we have two types of notification, success and error, each type has different style
@@ -43,67 +42,68 @@ function App({loading, successMessage, errorMessage}) {
         });
     }, [successMessage, errorMessage])
 
+    console.log(window.customScroll)
     return (
-        <div className="App">
+          <div className="App">
 
-            <Router history={history}>
-                <Header/>
-                <Switch>
-                    <Route
+              <Router history={history}>
+                  <Header/>
+                  <Switch>
+                      <Route
                         path='/'
                         component = {Welcome}
                         exact
-                    />
-                    <Route
+                      />
+                      <Route
                         path='/welcome'
                         component = {Welcome}
                         exact
-                    />
-                    <AuthRoute
+                      />
+                      <AuthRoute
                         path='/tasks'
                         component = {Tasks}
                         type="private"
                         exact
-                    />
-                    <Route
+                      />
+                      <Route
                         path='/about'
                         component = {About}
                         exact
-                    />
-                    <Route
+                      />
+                      <Route
                         path='/contact'
                         component = {Contact}
                         exact
-                    />
-                    <AuthRoute
+                      />
+                      <AuthRoute
                         path='/signup'
                         component = {Register}
                         type="public"
                         exact
-                    />
-                    <AuthRoute
+                      />
+                      <AuthRoute
                         path='/signin'
                         component = {Login}
                         type="public"
                         exact
-                    />
-                    <AuthRoute
+                      />
+                      <AuthRoute
                         path='/task/:taskId'
                         component = {SingleTask}
                         type="private"
                         exact
-                    />
-                    <Route
+                      />
+                      <Route
                         path='/not-found'
                         component = {NotFound}
                         exact
-                    />
-                    <Redirect to='not-found'/>
-                </Switch>
-                <Footer/>
-            </Router>
-            { loading && <Spinner/> }
-            <ToastContainer
+                      />
+                      <Redirect to='not-found'/>
+                  </Switch>
+                  <Footer/>
+              </Router>
+              { loading && <Spinner/> }
+              <ToastContainer
                 position="bottom-right"
                 autoClose={5000}
                 hideProgressBar
@@ -113,11 +113,11 @@ function App({loading, successMessage, errorMessage}) {
                 draggable
                 pauseOnHover
                 transition={Flip}
-            />
+              />
 
 
-        </div>
-    );
+          </div>
+    )
 }
 
 const mapStateToProps = (state) => {

@@ -8,6 +8,9 @@ import {connect} from "react-redux";
 import {logout} from "../../store/actions"
 import Logo from "../Style assets/Todo.svg"
 import {history} from "../../helpers/history";
+import 'overlayscrollbars/css/OverlayScrollbars.css';
+import OverlayScrollbars from 'overlayscrollbars';
+
 
 // creating array of menu links
 // "title" is shown in link element
@@ -48,31 +51,37 @@ class Header extends Component {
     show: false, // used for conditional css class adding to menu
   }
 
-  //function to check if user scrolled down then change value of state "show" from "false" to "true"
-  handleScroll =() => {
-    let DOMPosition = document.body.getBoundingClientRect()
-    let scrollTop = Math.abs(DOMPosition.y)
-    if (!this.state.offset && scrollTop> 40) {
-      this.setState({offset: true})
-    }
-    if (this.state.offset && scrollTop< 40) {
-      this.setState({offset: false})
-    }
-  }
+
+
 
   handleHideMenu = () => {
     this.state.show && this.setState({show: false})
   }
   // add handleScroll function on window.scroll event
   componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll)
+    //function to check if user scrolled down then change value of state "show" from "false" to "true"
+
+    let customScroll = OverlayScrollbars(document.querySelectorAll('body'), {})
+
+      document.addEventListener("DOMContentLoaded", function() {
+      //The first argument are the elements to which the plugin shall be initialized
+      //The second argument has to be at least a empty object or a object with your desired options
+      OverlayScrollbars(document.querySelectorAll('body'), {
+        scrollbars: {clickScrolling: true},
+        callbacks: {
+          onScroll: () => {
+            let scrollTop = customScroll.scroll().position.y
+            let newOffset = scrollTop> 40
+            this.state.offset !== newOffset && this.setState({offset: newOffset})
+          }
+        }
+      });
+    }.bind(this));
+
     document.getElementById("mainWrapper").onmousedown = this.handleHideMenu
   }
-  // remove handleScroll function from window.scroll event
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll)
 
-  }
+
 
   render() {
     const {offset, show} = this.state

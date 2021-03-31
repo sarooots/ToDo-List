@@ -29,7 +29,6 @@ function Wrapper(WrappedComponent) {
     if (pageAddress === "") {
       document.title = "Todo"
     }
-
     return <div id="mainWrapper" className="wrapper">
       <WrappedComponent  {...props}
                          article={cls.article}

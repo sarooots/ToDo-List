@@ -23,7 +23,7 @@ function Register({register, intro, article}){
     confirmPassword: null
   })
   useEffect(()=>focusedRef.current.focus(), [])
-
+  console.log(focusedRef)
 
   const changeErr = () => {
     let newErr = {}

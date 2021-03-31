@@ -232,7 +232,6 @@ function Filters({
     if (hasFilter) {
       getTasks("")
     }
-
   },  [getTasks])
 
   // this code will reset all filters values when we query URL is changed
