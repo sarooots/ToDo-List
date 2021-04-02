@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import {formatDate} from "../../helpers/utils"
 import cls from "./Editor.module.sass"
-import {addTask, editTask} from "../../store/actions";
+import {addTask, editTask, editFailed} from "../../store/actions";
 import {connect} from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faTimes} from "@fortawesome/free-solid-svg-icons"
@@ -52,7 +52,7 @@ class Editor extends Component {
   acceptButton = () => {
     const newTask = {...this.state}
     newTask.date = formatDate(newTask.date.toISOString())
-    const {toggleShow, addTask, editTask, mode, from} = this.props
+    const {toggleShow, addTask, editTask, mode, from, editFailed} = this.props
     const action = mode==="new"? addTask:editTask
     if (newTask.title.trim() !==  "") {
       from === "single" ? action(newTask, from): action(newTask)
@@ -60,6 +60,9 @@ class Editor extends Component {
       if (mode === "new") {
         this.setState({title: "", description: ""})
       }
+    }
+    else {
+      editFailed()
     }
 
   }
@@ -128,5 +131,6 @@ class Editor extends Component {
 const mapDispatchToProps =  {
   addTask,
   editTask ,
+  editFailed
 }
 export default connect(null, mapDispatchToProps)(Editor)
