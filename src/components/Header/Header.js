@@ -76,8 +76,7 @@ function Header ({isAuthenticated, logout, user, getUserInfo, offset}) {
   useEffect(() => {
     getUserInfo()
   }, [isAuthenticated, getUserInfo])
-
-  const {pathname} = history.location
+  const {pathname} = history.location, showButton = pathname.substr(0, 5) === "/task"
   return (
 
     // please check "Header.module.sass" file to understand the code
@@ -105,7 +104,6 @@ function Header ({isAuthenticated, logout, user, getUserInfo, offset}) {
 
             // checks if current page is one of these "Tasks", "SingleTask"
             // then adds ".offset" class to "Link" element
-            const showButton = pathname.substr(0,5) === "/task"
             return (
 
               <>
@@ -137,7 +135,11 @@ function Header ({isAuthenticated, logout, user, getUserInfo, offset}) {
       </Nav>
       {
         user &&
-        <span className={cls.user}>{`${user.name} ${user.surname}`} </span>
+        <span className={`
+        ${cls.user}         
+        ${offset || showButton ? cls.withBG:""}
+        `}
+        >{`${user.name} ${user.surname}`} </span>
       }
 
 
