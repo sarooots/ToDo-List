@@ -69,9 +69,9 @@ class Editor extends Component {
 
   render() {
 
-    const {mode, toggleShow} = this.props
+    const {mode, toggleShow, show} = this.props
     return (
-      <div className={cls.overlay}>
+      <div className={`${cls.overlay} ${show? cls.show: cls.hide}`}>
         <div className={cls.modal}>
           <div className={cls.header}>
             <h4 className={cls.title}>{mode==="new"? "New task": "Edit task"}</h4>

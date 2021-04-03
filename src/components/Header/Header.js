@@ -78,7 +78,7 @@ class Header extends Component {
       });
     }.bind(this));
 
-    document.getElementById("mainWrapper").onmousedown = this.handleHideMenu
+    // setTimeout(()=>document.getElementById("mainWrapper").onmousedown = this.handleHideMenu, 2000)
   }
 
 
@@ -113,7 +113,7 @@ class Header extends Component {
               }
 
               // checks if current page is one of these "Tasks", "SingleTask"
-              // then adds ".offset" class to "Navlink" element
+              // then adds ".offset" class to "Link" element
               const showButton = pathname.substr(0,5) === "/task"
               return <NavLink to={`/${link.address}`} key={index}
                               activeClassName={cls.active}

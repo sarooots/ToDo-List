@@ -1,55 +1,58 @@
-import React, {Component} from "react"
-import {Button, Modal} from "react-bootstrap"
-import PropTypes from "prop-types"
+import React, {useState} from "react"
+import cls from "../Editor/Editor.module.sass";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimes} from "@fortawesome/free-solid-svg-icons";
 
-class Confirm extends Component {
-    static propTypes = {
-        selectedTasks: PropTypes.object.isRequired,
-    }
+function Confirm ({selectedTasks, action, className, buttonContent}) {
 
-    state = {
-        show: false
-    }
+  const [show, setShow] = useState(false)
 
-    render() {
-        const {show} = this.state
-        const handleClose = () => this.setState({show: false})
-        const handleShow = () => this.setState({show: true})
-        const {selectedTasks, action, className, buttonContent} = this.props
-        return (
-            <>
-                <button className={className}
-                        disabled={!selectedTasks.size}
-                        onClick={()=> {if(selectedTasks.size === 1) {
-                            handleClose()
-                            action(selectedTasks)
-                            } else {
-                            handleShow()
-                        }}}>
-                  {buttonContent}
-                </button>
+  const toggleShow = () => setShow(!show)
+  return (
+    <>
+      <button className={className}
+              disabled={!selectedTasks.size}
+              onClick={()=> {if(selectedTasks.size === 1) {
+                setShow( false)
+                action(selectedTasks)
+              } else {
+                setShow( true)
+              }}}>
+        {buttonContent}
+      </button>
 
 
-                <Modal show={show} onHide={handleClose} centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Delete Selected</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Do you really want to delete selected {selectedTasks.size} task{selectedTasks.size>1?"s":""} ?</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="danger" onClick={() => {
-                            handleClose()
-                            action(selectedTasks)}}>
-                            Delete {selectedTasks.size} task{selectedTasks.size>1?"s":""}
-                        </Button>
-                        <Button variant="secondary"
-                                onClick={handleClose}>
-                            Close
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </>
-        )
-    }
+      <div className={`${cls.overlay} ${show? cls.show: cls.hide}`}>
+        <div className={cls.modal}>
+          <div className={cls.header}>
+            <h4 className={cls.title}>Delete Selected</h4>
+            <span className={cls.closeModal} onClick={toggleShow}>
+              <FontAwesomeIcon icon={faTimes} />
+            </span>
+          </div>
+          <div className={cls.body}>
+            <p className={cls.text}>
+            Do you really want to delete selected {selectedTasks.size} task{selectedTasks.size>1?"s":""} ?
+            </p>
+          </div>
+          <div className={cls.footer}>
+            <button className={`${cls.button} ${cls.add}`}
+                    onClick={() => {
+                      toggleShow()
+                      action(selectedTasks)
+                    }}>
+              Delete {selectedTasks.size} task{selectedTasks.size>1?"s":""}
+            </button>
+            <button className={`${cls.button} ${cls.cancel}`}
+                    onClick={toggleShow}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </>
+  )
 }
 
 export default Confirm

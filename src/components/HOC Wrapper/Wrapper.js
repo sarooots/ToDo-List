@@ -23,6 +23,9 @@ function Wrapper(WrappedComponent) {
     if (pageAddress === "signup") {
       document.title = "Todo - Register"
     }
+    if (pageAddress === "not-found") {
+      document.title = "Todo - Oops! 404 bad request"
+    }
     if (pageAddress.substr(0,5) === "task/") {
       document.title = "Todo - View task"
     }

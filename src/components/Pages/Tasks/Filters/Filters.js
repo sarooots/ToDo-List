@@ -326,14 +326,11 @@ function Filters({
 
                     }
                   />
-
                 </div>
             ))
           }
-
         </div>
       </div>
-
 
       {/*click on this element to change value "showAllFilters" and show date filters*/}
       <div className={cls.moreFilters}
