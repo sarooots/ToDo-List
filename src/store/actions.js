@@ -143,3 +143,16 @@ export function logout(jwt) {
       })
   }
 }
+
+export function getUserInfo() {
+  return (dispatch)=>{
+    dispatch({type: act.PENDING})
+    requestWithToken(`${apiHost}/user`, "GET")
+      .then((user)=>{
+        dispatch({type: act.GET_USER, user})
+      })
+      .catch((error) => {
+        dispatch({type: act.ERROR, errorMessage: error.message})
+      })
+  }
+}

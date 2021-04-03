@@ -1,8 +1,8 @@
 @import "../Style assets/main"
 
 .header
-  @include content-padding(1.875rem, 1.875rem)
-  height: 7.5rem
+  @include content-padding(1rem, 1rem)
+  height: 5.5rem
   background: rgba(255, 255, 255, 0)
   transition: background-color 0.3s
   font-family: Segoe UI, sans-serif
@@ -19,6 +19,8 @@
   // this class is active when user scrolled down
   &.withBG
     background: rgb(255, 255, 255)
+    .user
+      color: $main
 
 
 
@@ -34,6 +36,17 @@
     img
       width: 5.875rem
 
+  .user
+    height: 100%
+    display: flex
+    align-items: center
+    margin-left: 0.625rem
+    font-size: 1.1875rem
+    color: $white
+    width:
+    font-weight: 600
+    @include aspect-ratio($size3, $size6)
+      color: $main
 
   // links
   .menu
@@ -76,6 +89,7 @@
 
       &.logedIn
         &:last-child
+          justify-self: flex-end
           margin:
             right: 0
             left: auto
