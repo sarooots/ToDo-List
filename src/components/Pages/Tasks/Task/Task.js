@@ -115,6 +115,69 @@ function Task ({task, selectTask, selectedTasks, handleEdit, changeMode, deleteT
   )
 }
 
+export function TaskPreview ({task}) {
+  return (
+    // please check "Task.module.sass" file to understand each element of the code
+    // there are elements which is necessary for styling
+    <div className={`${cls.task}
+         `}>
+      <div className={cls.item}>
+        <div className={cls.link}>
+          <div className={cls.content}>
+            <h2 className={cls.title}>  {stringTrimmer(task.title, 115)}</h2>
+            <h6 className={cls.details}>
+              <span className={cls.detail}>
+                Deadline:
+                <span className={cls.date}>
+                  {formatDate2(task.date)}
+                </span>
+              </span>
+              <span className={cls.detail}>
+                Created:
+                <span>
+                  {`${formatDate2(task.created_at)}`}
+                </span>
+              </span>
+              <span className={cls.detail}>
+                Status:
+                <span className={cls.status}>
+                  {` ${task.status}`}
+                </span>
+              </span>
+            </h6>
+            <p
+              className={`${cls.description}`}
+            >
+              {task.description }
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/*task action buttons*/}
+      <div className={cls.item}>
+        <div
+          className={`${cls.action} ${cls.edit}`}
+        >
+          <FontAwesomeIcon icon={faEdit} />
+        </div>
+        <div
+          className={`${cls.action} ${cls.delete}`}
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </div>
+        <div
+          className={`${cls.action} ${cls.changeStatus}`}
+        >
+          <FontAwesomeIcon icon={ task.status === "done" ? faRedo: faCheck} />
+        </div>
+
+      </div>
+    </div>
+
+  )
+}
+
 
 // editTask and deleteTask action given to this component as props
 const mapDispatchToProps =  {

@@ -26,20 +26,44 @@
           font-weight: 400
 
 
-.submit
+.button
   all: unset
   padding: 0 1.25rem
   height: 3.125rem
   width: max-content
-  border: 0.125rem solid $white
+  border: 0.125rem solid $main
   border-radius: 0.625rem
   text-transform: uppercase
-  color: $white
+  display: flex
+  align-items: center
+  color: $main
   cursor: pointer
   font-size: 1.375rem
   font-weight: 600
   &:hover
-    background: $red
+    background: $white
   &:active
-    background: $red
-    border-color: $red
+    color: $white
+    background: $main
+    border-color: $main !important
+  &.submit
+    border-color: $white
+    color: $white
+    &:hover
+      background: $main
+    &:active
+      background: $main
+      border-color: $main !important
+
+.tasks
+  padding: 3.75rem 0
+  display: flex
+  align-items: center
+  flex-direction: column-reverse
+  .button
+    margin-top: 1.875rem
+
+.text
+  font-size: 1.8125rem
+  font-weight: 600
+  height: 18.75rem
