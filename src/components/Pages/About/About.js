@@ -1,7 +1,7 @@
 import React from "react"
 import Wrapper from "../../HOC Wrapper/Wrapper";
-import cls from "../Tasks/Tasks.module.sass";
-import illustration from "../../Style assets/Tasks page illustration.svg";
+import cls from "./About.module.sass";
+import illustration from "../../Style assets/About page illustration.png";
 
  function About({intro, article}){
 
@@ -18,7 +18,25 @@ import illustration from "../../Style assets/Tasks page illustration.svg";
         </div>
 
         <div className={`${cls.introItem} ${cls.introInfo}`}>
+          <h1 className={`${cls.introTitle}`}>Read about</h1>
 
+          <ul className={`${cls.list}`}>
+            <li>
+              <a href="#intro">Intro</a>
+            </li>
+            <li>
+              <a href="#documentation">Documentation</a>
+            </li>
+            <li>
+              <a href="#porduction">Production process</a>
+            </li>
+            <li>
+              <a href="#course">The course</a>
+            </li>
+            <li>
+              <a href="#author">Author</a>
+            </li>
+          </ul>
         </div>
       </article>
 

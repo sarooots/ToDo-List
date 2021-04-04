@@ -44,11 +44,11 @@ function Welcome ({intro, article, isAuthenticated}) {
               <p className={cls.text}>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cupiditate dolore eligendi eum id neque quaerat quo, tempore vero voluptate? Consectetur consequuntur deserunt esse et laudantium magnam molestiae quo vero!
               </p>
-              <button
+              <Link to={"/about"}
                       className={`${cls.submit} ${cls.button}`}
               >
                 Read more
-              </button>
+              </Link>
 
             </div>
           </article>

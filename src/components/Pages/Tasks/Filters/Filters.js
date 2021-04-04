@@ -181,8 +181,6 @@ function Filters({
 
   // change dates state value, this method is called on "onChange" event of each datepicker element
   const handleChangeDates = (value, name) => {
-    console.log(value)
-    console.log(name)
     setDates({
       ...dates,
       [name]: value

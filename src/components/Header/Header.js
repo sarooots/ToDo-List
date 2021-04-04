@@ -105,8 +105,6 @@ function Header ({isAuthenticated, logout, user, getUserInfo, offset}) {
             // checks if current page is one of these "Tasks", "SingleTask"
             // then adds ".offset" class to "Link" element
             return (
-
-              <>
                 <NavLink to={`/${link.address}`} key={index}
                          activeClassName={cls.active}
                          className={`${cls.label}  
@@ -126,8 +124,6 @@ function Header ({isAuthenticated, logout, user, getUserInfo, offset}) {
                     {link.title}
                   </div>
                 </NavLink>
-              </>
-
             )
           })
 
