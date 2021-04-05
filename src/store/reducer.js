@@ -10,6 +10,8 @@ const defaultState = {
     successMessage: null,
     errorMessage: null,
     task: null,
+    user: null,
+    offset: false,
     isAuthenticated: checkLoginStatus()
 }
 export default  function reducer(state=defaultState, action)  {
@@ -117,6 +119,17 @@ export default  function reducer(state=defaultState, action)  {
                 ...state,
                 successMessage:  "Message sent successfully",
                 loading: false
+            }}
+        case act.GET_USER:{
+            return {
+                ...state,
+                user: action.user,
+                loading: false
+            }}
+        case act.SET_OFFSET:{
+            return {
+                ...state,
+                offset: action.scrollTop,
             }}
         default : return state
     }

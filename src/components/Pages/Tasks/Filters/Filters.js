@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react"
+import React, {useCallback, useEffect, useState} from "react"
 import {connect} from "react-redux"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -8,19 +8,17 @@ import {history} from "../../../../helpers/history"
 import {withRouter} from "react-router-dom"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {
-  faSearch,
-  faTrash,
   faCaretDown,
-  faSortAlphaUpAlt,
+  faSearch,
   faSortAlphaUp,
+  faSortAlphaUpAlt,
   faSortAmountUp,
   faSortAmountUpAlt,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons"
 import cls from "./Filters.module.sass"
 import PropTypes from "prop-types"
 import Confirm from "../../../Confirm/Confirm"
-
-
 
 
 const statusOptions = [
@@ -91,7 +89,7 @@ function Filters({
                    selectAllTasks,
                    tasks,
                    toggleShow,
-                   changeMode
+                   changeMode,
                  }) {
 
   //filters states
@@ -122,17 +120,22 @@ function Filters({
   const [showSelectMenu, setShowSelectMenu] = useState(false) // show or hide sort menu items
   const [showAllFilters, setShowAllFilters] = useState(false) // show or hide dates filter
 
-  // get tasks by by URL search query
-  // this part of code wil work once the component is loaded
-  useEffect(()=> {
-
+  //creates
+  const filtersFromQuery = () => {
     // import query-string module
     const queryString = require('query-string')
     // get search query from URL (gives a string)
     const url = history.location.search
     // create object from query string
-    const filters = {...queryString.parse(url)}
+    return {...queryString.parse(url)}
 
+  }
+
+  // get tasks by by URL search query
+  // this part of code wil work once the component is loaded
+  useEffect(()=> {
+
+    const filters = filtersFromQuery()
     //the following code checks if the filters from query has value then  use that value to change each filter state value
     if (filters.sort) {
       const newSort = sortOptions.find((option)=>{
@@ -210,6 +213,9 @@ function Filters({
 
   // this callback method reset all filters
   const clearFilters = useCallback(() => {
+    let hasFilter
+    const filters = filtersFromQuery()
+    hasFilter = Object.keys(filters).length
     setSort({
       label: "Sort",
       value: ["", ""],
@@ -223,26 +229,27 @@ function Filters({
       complete_gte: null,
     })
 
-    getTasks("")
-
+    if (hasFilter) {
+      getTasks("")
+    }
   },  [getTasks])
 
   // this code will reset all filters values when we query URL is changed
   useEffect(()=>{!location.search && clearFilters()},
     [location.search, clearFilters])
-
   return (
 
     <div>
       {/*container for all filters, there are 2 filter groups second one hidden by default */}
       <div className={cls.filters}>
+        <div className={selectedTasks.size ? cls.overlay:""}/>
         <div className={`${cls.filtersGroup}`}>
           <div className={`${cls.filter} ${cls.search}`}>
             <input
               className={cls.input}
               type="search"
               placeholder="search"
-              value={search && search}
+              value={search ? search:""}
               onChange={(e)=> setSearch(e.target.value)}
             />
             <span className={`${cls.title}`}>
@@ -308,7 +315,8 @@ function Filters({
                         <input type="search"
                                className={cls.input}
                                placeholder={option.label}
-                               defaultValue={dates[option.value] ? formatDate(dates[option.value].toISOString()) : ""}
+                               value={dates[option.value] ? formatDate(dates[option.value].toISOString()):""}
+                               readOnly
                         />
                         <span className={`${cls.title}`}>{option.label}</span>
 
@@ -316,14 +324,11 @@ function Filters({
 
                     }
                   />
-
                 </div>
             ))
           }
-
         </div>
       </div>
-
 
       {/*click on this element to change value "showAllFilters" and show date filters*/}
       <div className={cls.moreFilters}
@@ -424,7 +429,7 @@ Filters.propTypes = {
 
 const mapStateToProps = (state) => {
   return{
-    tasks: state.tasks
+    tasks: state.tasks,
   }
 }
 

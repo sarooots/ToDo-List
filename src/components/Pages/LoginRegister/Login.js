@@ -2,11 +2,11 @@ import React, {useState, useRef, useEffect} from "react"
 import {Link} from "react-router-dom"
 import {connect} from 'react-redux'
 import {login} from "../../../store/actions"
-import cls from "./Register.module.sass";
-import illustration from "../../Style assets/Contact page illustration.png";
+import cls from "./LoginRegister.module.sass";
+import illustration from "../../Style assets/Login page illustration.png";
 import Wrapper from "../../HOC Wrapper/Wrapper";
 
-function Login({login}){
+function Login({login, intro, article}){
   const focusedRef = useRef();
   const [values, setValues] = useState({
     email: "",
@@ -28,7 +28,6 @@ function Login({login}){
   }
 
   const submit = () => {
-    changeErr()
     const errArr = Object.values(err);
     const errExist = !errArr.every(el => el===null);
 
@@ -39,6 +38,7 @@ function Login({login}){
       values.name = values.email
       login(values)
     }
+    changeErr()
   }
 
   const changeValues = ({target: {name, value}}) => {
@@ -71,7 +71,7 @@ function Login({login}){
       {/*whole page content*/}
       <section className={cls.wrapper}>
         {/*first section of page, intro*/}
-        <article className={`${cls.intro} ${cls.article}`}>
+        <article className={`${intro} ${article} ${cls.article}`}>
           <div className={`${cls.introItem}`}>
             <img src={illustration} alt=""
                  className={`${cls.illustration}`}
@@ -87,6 +87,7 @@ function Login({login}){
                        value={values.email}
                        className={err.email? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                        ref={focusedRef}
 
                 />
@@ -101,6 +102,7 @@ function Login({login}){
                        value={values.password}
                        className={err.password? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Password:</span>
                 <p>

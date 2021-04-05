@@ -24,12 +24,8 @@
     color: $darkGrey
     padding: 0.5rem 0.625rem
   input
-    text-indent: 3.5rem
+    text-indent: 5.3125rem
     height: 3.125rem
-  textarea
-    text-indent: 5rem
-    height: 9.375rem
-    resize: none
   span
     top: 0.9375rem
     left: 0.625rem
@@ -60,6 +56,14 @@
     font-size: 1rem
 
 
+.link
+  margin-top: 1rem
+  color: $white
+  font-size: 1.1875rem
+  &:hover, &:active, &:visited, &:focus
+    color: $white
+
+
 
 .submit
   all: unset
@@ -85,8 +89,8 @@
 //page main content
 .wrapper
   width: 100%
-  // first section of page
   .article
+    // first section of page
     @include aspect-ratio($size3, $size6)
       .introItem:first-child
         display: none

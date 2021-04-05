@@ -1,8 +1,10 @@
 import decode from "jwt-decode"
-import {store} from "../store/store"
-import {LOGOUT_SECCESS} from "../store/actTypes"
-import {history} from "./history"
+import {logout} from "../store/actions"
 
+//get API host, this will be used to make request to API
+const apiHost = process.env.REACT_APP_API_HOST
+
+// this request function is used to make request to API without passing token in "headers"
 export default function request(url, method = "GET", body) {
   const config = {
     method,
@@ -34,52 +36,57 @@ export default function request(url, method = "GET", body) {
 
 
 
-
+// anyway returns jwt token or calls logout function
 export const getToken = () =>{
+  //get token from local storage, it gives us a JSON string
   const token = localStorage.getItem("token")
   if (token) {
 
+    //create object from the string we have got
+    //the object has 2 pairs of key and value,
+    //first key is "jwt" and the second one is "refreshToken"
     const parsed =  JSON.parse(token)
+    //creates object with 4 pairs of keys and values
+    // "userId", "timestamp", "iat", "exp"
     const decoded = decode(parsed.jwt)
-
     const currentDate = new Date().getTime()/1000
+    // get token expiration date
     const tokenDate = decoded.exp
 
+    //checks if token is up to date then returns current jwt token
     if (tokenDate - currentDate > 60) {
       return Promise.resolve(parsed.jwt)
     }
+    //works when token expired, send request to API to get new token
     else {
-      const apiHost = process.env.REACT_APP_API_HOST
-      return request(`${apiHost}/user/${decoded.user}/token`,"PUT",
+      return request(`${apiHost}/user/${decoded.userId}/token`,"PUT",
         {
           refreshToken: parsed.refreshToken
         })
         .then(token => {
           saveToken(token)
-          console.log(token.jwt)
           return token.jwt
         })
         .catch(()=>{
-          logout()
+          //logout when API didn't returned new token, we pass jwt token to logout action
+          const parsed =  JSON.parse(token)
+          logout(parsed.jwt)
         })
     }
   }
   else{
-    logout()
+    const parsed =  JSON.parse(token)
+    logout(parsed.jwt)
   }
 }
 
+
+//save token in local storage
 export function saveToken(token) {
   localStorage.setItem("token", JSON.stringify(token))
 }
 
-export function logout() {
-  localStorage.removeItem("token")
-  store.dispatch({type: LOGOUT_SECCESS})
-  history.push("/")
-
-}
-
+// returns true if token exist in local storage else returns false
 export function checkLoginStatus () {
   const token = localStorage.getItem("token")
   return !!token

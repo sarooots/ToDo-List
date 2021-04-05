@@ -3,7 +3,8 @@ import Tasks from "./components/Pages/Tasks/Tasks"
 import Welcome from './components/Pages/Welcome/Welcome'
 import About from './components/Pages/About/About'
 import Contact from './components/Pages/Contact/Contact'
-import LogInOut from './components/Pages/LogInOut/LogInOut'
+import Register from './components/Pages/LoginRegister/Register'
+import Login from './components/Pages/LoginRegister/Login'
 import SingleTask from './components/Pages/SingleTask/SingleTask'
 import NotFound from './components/Pages/NotFound/NotFound'
 import {Router, Route, Switch, Redirect} from 'react-router-dom'
@@ -16,8 +17,6 @@ import { ToastContainer, toast, Flip} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import {history} from "./helpers/history"
 import AuthRoute from "./components/AuthRoute"
-
-
 
 function App({loading, successMessage, errorMessage}) {
     // checks if there is notification message then shows it
@@ -44,68 +43,68 @@ function App({loading, successMessage, errorMessage}) {
     }, [successMessage, errorMessage])
 
     return (
-        <div className="App">
+          <div className="App">
 
-            <Router history={history}>
-                <Header/>
-                <Switch>
-                    <Route
+              <Router history={history}>
+                  <Header/>
+                  <Switch>
+                      <Route
                         path='/'
                         component = {Welcome}
                         exact
-                    />
-                    <Route
+                      />
+                      <Route
                         path='/welcome'
                         component = {Welcome}
                         exact
-                    />
-                    <AuthRoute
+                      />
+                      <AuthRoute
                         path='/tasks'
                         component = {Tasks}
                         type="private"
                         exact
-                    />
-                    <Route
+                      />
+                      <Route
                         path='/about'
                         component = {About}
                         exact
-                    />
-                    <Route
+                      />
+                      <Route
                         path='/contact'
                         component = {Contact}
                         exact
-                    />
-                    <AuthRoute
+                      />
+                      <AuthRoute
                         path='/signup'
-                        component = {LogInOut}
+                        component = {Register}
                         type="public"
                         exact
-                    />
-                    <AuthRoute
+                      />
+                      <AuthRoute
                         path='/signin'
-                        component = {LogInOut}
+                        component = {Login}
                         type="public"
                         exact
-                    />
-                    <AuthRoute
+                      />
+                      <AuthRoute
                         path='/task/:taskId'
                         component = {SingleTask}
                         type="private"
                         exact
-                    />
-                    <Route
+                      />
+                      <Route
                         path='/not-found'
                         component = {NotFound}
                         exact
-                    />
-                    <Redirect to='not-found'/>
-                </Switch>
-                <Footer/>
-            </Router>
-            { loading && <Spinner/> }
-            <ToastContainer
+                      />
+                      <Redirect to='not-found'/>
+                  </Switch>
+                  <Footer/>
+              </Router>
+              { loading && <Spinner/> }
+              <ToastContainer
                 position="bottom-right"
-                autoClose={7000}
+                autoClose={5000}
                 hideProgressBar
                 newestOnTop
                 closeOnClick
@@ -113,11 +112,9 @@ function App({loading, successMessage, errorMessage}) {
                 draggable
                 pauseOnHover
                 transition={Flip}
-            />
-
-
-        </div>
-    );
+              />
+          </div>
+    )
 }
 
 const mapStateToProps = (state) => {

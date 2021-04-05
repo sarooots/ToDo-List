@@ -1,84 +1,14 @@
-@import "../../Style assets/Vars"
-
+@import "../../Style assets/main"
 
 //page main content
 .wrapper
   width: 100%
-  .article
-    padding:
-      left: 8.75rem
-      right: 8.75rem
+  // first section of page
+  .actions
+    padding-top: 10rem
 
-    // first section of page
-    &.intro
-      padding:
-        top: 5rem
-      width: 100%
-      height: 100vh
-      display: flex
-      align-items: center
-      background:
-        image: url("../../Style assets/Background full width.png")
-        size: 100% 100vh
-        repeat: no-repeat
-      @include aspect-ratio($size3, $size6)
-        background:
-          image: url("../../Style assets/Background small width.png")
-        .introItem:first-child
-          display: none
-        .introItem:last-child
-          width: 100%
-          padding-left: 2rem !important
-
-      // elements in the first section
-      .introItem
-        width: 50%
-        .illustration
-          width: 33.75rem
-        &.introInfo
-          text-align: left
-          padding-left: 8rem
-          color: $white
-          .introTitle
-            font-size: 3.5rem
-            font-weight: 400
-          .list
-            all: unset
-            list-style: none
-            font-size: 1.8125rem
-            font-weight: 600
-            li
-              padding-left: 2rem
-              background: // custom circle for list item
-                image: url("../../Style assets/circle.png")
-                repeat: no-repeat
-                size: 0.625rem
-                position: 0 1.3rem
-
-    // second section, search filters and actions
-    &.actions
-      padding-top: 3.75rem
-
-    // third section of page, list of tasks
-    &.tasks
-      padding-bottom: 3.75rem
-      display: flex
-      flex-direction: column-reverse
-
-
-    @include aspect-ratio($size2, $size3)
-      padding:
-        left: 6.25rem
-        right: 6.25rem
-    @include aspect-ratio($size3, $size4)
-      padding:
-        left: 4.375rem
-        right: 4.375rem
-    @include aspect-ratio($size4, $size5)
-      padding:
-        left: 3.125rem
-        right: 3.125rem
-    @include aspect-ratio($size5, $size6)
-      padding:
-        left: 1.875rem
-        right: 1.875rem
+  // third section of page, list of tasks
+  .tasks
+    padding-bottom: 3.75rem
+    display: flex
+    flex-direction: column-reverse

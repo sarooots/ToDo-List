@@ -1,28 +1,10 @@
-@import "../Style assets/Vars"
-
-
-// media query creator function
-@mixin aspect-ratio($max, $min)
-  @media (min-width: $min) and (max-width: $max)
-    @content
-
+@import "../Style assets/main"
 
 .footer
-  background: $red
-  padding: 4.375rem  8.75rem 1.875rem 8.75rem
+  @include content-padding(4.375rem, 1.875rem)
+  background: $main
   width: 100%
   color: $white
-
-  //changing padding of left and right side of header
-  @include aspect-ratio($size2, $size3)
-    padding: 4.375rem 6.25rem 1.875rem 6.25rem
-  @include aspect-ratio($size3, $size4)
-    padding: 4.375rem 4.375rem 1.875rem 4.375rem
-  @include aspect-ratio($size4, $size5)
-    padding: 4.375rem 3.125rem 1.875rem 3.125rem
-  @include aspect-ratio($size5, $size6)
-    padding: 4.375rem 1.875rem 1.875rem 1.875rem
-
 
 .links
   display: flex

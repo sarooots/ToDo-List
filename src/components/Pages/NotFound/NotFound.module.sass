@@ -1,0 +1,48 @@
+@import "../../Style assets/main"
+
+
+//page main content
+.wrapper
+  width: 100%
+  // first section of page
+  .article
+    @include content-padding(0, 0)
+    @include aspect-ratio($size3, $size6)
+      background: $lightGrey !important
+      flex-direction: column
+      justify-content: center
+      .introItem
+        width: 100% !important
+        padding-left: 0 !important
+        .message, .link
+          color: $dark !important
+      .introTitle
+        margin-top: 1.875rem
+        color: $dark
+        text-align: center
+      .links
+        flex-direction: column
+
+    // elements in the first section
+    .introItem
+      width: 50%
+      .illustration
+        width: 33.75rem
+        @include aspect-ratio($size4, $size6)
+          width: 30rem
+      &.introInfo
+        text-align: left
+        padding-left: 8rem
+        color: $white
+        .introTitle
+          font-size: 3.5rem
+          font-weight: 400
+        .message, .link
+          font-size: 1.6875rem
+          color: $white
+        .links
+          display: flex
+          flex-direction: row
+        .link
+          margin-right: 0.625rem
+          font-weight: 600

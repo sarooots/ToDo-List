@@ -2,11 +2,11 @@ import React, {useState, useRef, useEffect} from "react"
 import {Link} from "react-router-dom"
 import {connect} from 'react-redux'
 import {register} from "../../../store/actions"
-import cls from "./Register.module.sass";
-import illustration from "../../Style assets/Contact page illustration.png";
+import cls from "./LoginRegister.module.sass";
+import illustration from "../../Style assets/Register page illustration.png";
 import Wrapper from "../../HOC Wrapper/Wrapper";
 
-function Register({register}){
+function Register({register, intro, article}){
   const focusedRef = useRef();
   const [values, setValues] = useState({
     name: "",
@@ -24,7 +24,6 @@ function Register({register}){
   })
   useEffect(()=>focusedRef.current.focus(), [])
 
-
   const changeErr = () => {
     let newErr = {}
 
@@ -36,20 +35,22 @@ function Register({register}){
 
     setErr({...err, ...newErr})
   }
+  const pswReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/;
+  const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+  const valuesArr = Object.values(values);
+  const valuesExist = !valuesArr.some(el => el==='');
+
+  const errArr = Object.values(err);
+  const errExist = !errArr.every(el => el===null);
 
   const submit = () => {
-    changeErr()
-    const errArr = Object.values(err);
-    const errExist = !errArr.every(el => el===null);
-
-    const valuesArr = Object.values(values);
-    const valuesExist = !valuesArr.some(el => el==='');
 
     if(valuesExist && !errExist && values.password===values.confirmPassword){
-
-      register(values)
-    } else {
-
+      if(pswReg.test(values.password)){
+        register(values)
+        changeErr()
+      }
     }
   }
 
@@ -67,7 +68,6 @@ function Register({register}){
     }
 
     if (name==="email" && value) {
-      const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
       if(!emailReg.test(value)){
         setErr({
           ...err,
@@ -76,11 +76,10 @@ function Register({register}){
       }
     }
     if (name==="password" && value) {
-      const pswReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
       if(!pswReg.test(value)){
         setErr({
           ...err,
-          password: 'use UPPERCASE, lowercase and numbers'
+          password: 'use UPPERCASE, lowercase and numbers, at least 6 characters'
         })
       }
     }
@@ -103,7 +102,7 @@ function Register({register}){
       {/*whole page content*/}
       <section className={cls.wrapper}>
         {/*first section of page, intro*/}
-        <article className={`${cls.intro} ${cls.article}`}>
+        <article className={`${intro} ${article} ${cls.article}`}>
           <div className={`${cls.introItem}`}>
             <img src={illustration} alt=""
                  className={`${cls.illustration}`}
@@ -118,6 +117,7 @@ function Register({register}){
                        name="name"
                        value={values.name}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                        ref={focusedRef}
                 />
                 <span>Name:</span>
@@ -129,6 +129,7 @@ function Register({register}){
                        value={values.surname}
                        className={err.surname? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Surname:</span>
                 <p>
@@ -141,6 +142,7 @@ function Register({register}){
                        value={values.email}
                        className={err.email? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Email:</span>
                 <p>
@@ -153,6 +155,7 @@ function Register({register}){
                        value={values.password}
                        className={err.password? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Password:</span>
                 <p>
@@ -165,6 +168,7 @@ function Register({register}){
                        value={values.confirmPassword}
                        className={err.confirmPassword? cls.required: ""}
                        onChange={(e) => changeValues(e)}
+                       onKeyUp={(e) => e.key === "Enter" && submit()}
                 />
                 <span>Confirm:</span>
                 <p>
@@ -172,6 +176,7 @@ function Register({register}){
                 </p>
               </label>
               <button onClick={submit}
+                      disabled={!valuesExist}
                       className={`${cls.submit}`}
               >
                Register

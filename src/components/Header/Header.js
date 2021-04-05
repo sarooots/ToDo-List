@@ -1,12 +1,18 @@
-import React, {Component} from "react"
+import React, {useState, useEffect} from "react"
 import {Nav} from "react-bootstrap"
 import {NavLink} from "react-router-dom"
-import classes from "./Header.module.sass"
+import cls from "./Header.module.sass"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBars} from "@fortawesome/free-solid-svg-icons";
 import {connect} from "react-redux";
-import {logout} from "../../helpers/auth"
-import {getToken} from "../../helpers/auth";
+import {logout, getUserInfo} from "../../store/actions"
+import Logo from "../Style assets/Todo.svg"
+import {history} from "../../helpers/history";
+import 'overlayscrollbars/css/OverlayScrollbars.css';
+// import OverlayScrollbars from 'overlayscrollbars';
+import {store} from "../../store/store";
+import * as act from "../../store/actTypes";
+
 
 // creating array of menu links
 // "title" is shown in link element
@@ -15,7 +21,6 @@ const links = [
   {
     title: "Tasks",
     address: "tasks",
-    auth: true
   },
   {
     title: "About",
@@ -28,108 +33,148 @@ const links = [
 
   },
   {
+    title: "Sign up",
+    address: "signup"
+  },
+  {
     title: "Sign in",
     address: "signin"
+  },
+  {
+    title: "Logout",
+    address: "welcome"
   },
 ]
 
 
-class Header extends Component {
-  state = {
-    offset: false, // used for conditional css class adding to header component
-    show: false, // used for conditional css class adding to menu
+function Header ({isAuthenticated, logout, user, getUserInfo, offset}) {
+  const [show, setShow] = useState(false) // used for conditional css class adding to menu
 
-  }
-
-  //function to check if user scrolled down then change value of state "show" from "false" to "true"
-  handleScroll =() => {
-    let DOMPosition = document.body.getBoundingClientRect()
-    let scrollTop = Math.abs(DOMPosition.y)
-    if (!this.state.offset && scrollTop> 40) {
-      this.setState({offset: true})
-    }
-    if (this.state.offset && scrollTop< 40) {
-      this.setState({offset: false})
-    }
-  }
-
-  handleHideMenu = () => {
-    this.state.show && this.setState({show: false})
-  }
   // add handleScroll function on window.scroll event
-  componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll)
-    document.getElementById("mainWrapper").onmousedown = this.handleHideMenu
-  }
-  // remove handleScroll function from window.scroll event
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll)
+  useEffect(() => {
+    //function to check if user scrolled down then change value of state "show" from "false" to "true"
+    // const customScrollHandler = () => {
+    //   //The first argument are the elements to which the plugin shall be initialized
+    //   //The second argument has to be at least a empty object or a object with your desired options
+    //
+    //   OverlayScrollbars(document.querySelectorAll('body'), {
+    //     scrollbars: {clickScrolling: true},
+    //     callbacks: {
+    //       onScroll: () => {
+    //         let customScroll = OverlayScrollbars(document.querySelectorAll('body'), {})
+    //         let scrollTop = customScroll.scroll().position.y >40
+    //         if (scrollTop)
+    //           store.dispatch({type: act.SET_OFFSET, scrollTop})
+    //       }
+    //     }
+    //   });
+    // }
 
-  }
+    const scrollHandler = () => {
+      let DOMPosition = document.body.getBoundingClientRect()
+      let scrollTop = Math.abs(DOMPosition.y) > 40
+      if (Math.abs(DOMPosition.y) < 50) {
+        store.dispatch({type: act.SET_OFFSET, scrollTop})
+      }
+    }
 
-  render() {
-    const {offset, show} = this.state
-    const {isAuthenticated} = this.props
-    return (
+// document.addEventListener("DOMContentLoaded", customScrollHandler);
+    window.addEventListener("scroll", scrollHandler);
 
-      // please check "Header.module.sass" file to understand the code
-      <header className={`${classes.header} ${ offset && classes.offset}`}
-      >
-        <NavLink to="/" className={`${classes.logo}`}>
-          <div>Todo</div>
-        </NavLink>
-        <Nav className={`${classes.menu} ${show && classes.show}`}>
-          {
+return () => {
+  // document.removeEventListener("DOMContentLoaded", customScrollHandler);
+  window.removeEventListener("scroll", scrollHandler);
+}
+  }, [])
 
-            links.map((link, index)=>{
 
-              if (isAuthenticated && link.title === "Sign in") {
-                link = {
-                  title: "Log out",
-                  address: "welcome"
-                }
-              }
-              if (!isAuthenticated && link.title === "Tasks") {
+  useEffect(() => {
+    getUserInfo()
+  }, [isAuthenticated, getUserInfo])
+  const {pathname} = history.location, showButton = pathname.substr(0, 5) === "/task"
+  return (
+
+    // please check "Header.module.sass" file to understand the code
+    <header className={`${cls.header} ${ offset && cls.withBG}`}
+    >
+      <NavLink to="/" className={`${cls.logo}`}>
+        <img src={Logo} alt=""/>
+      </NavLink>
+      <Nav className={`${cls.menu} ${show && cls.show}`}>
+        {
+
+          links.map((link, index)=>{
+            // checks if user is authenticated then hides "signin" and "signup" links
+            // either if user isn't authenticated then hides "tasks" link instead of "signin" and "signup" links
+            if (isAuthenticated) {
+              if (link.title === "Sign up" || link.title === "Sign in") {
                 return null
-              } else{
-                return <NavLink to={`/${link.address}`} key={index}
-                                activeClassName={classes.active}
-                                className={`${classes.label}`}
-                  // change "show" value to hide menu after clicking one of links
-                                onClick={()=> {
-                                  this.setState({show: !show})
-                                  if (link.address === "welcome" && isAuthenticated) {
-                                    logout(getToken())
-                                  }
-
-                                }}
-                >
-                  <div className={`${classes.link}`}>{link.title}</div>
-                </NavLink>
               }
-            })
+            }
+            else {
+              if (link.title === "Tasks" || link.title === "Logout") {
+                return null
+              }
+            }
 
-          }
-        </Nav>
-        <button className={`${classes.bars} ${show && classes.show}`}
-          // change "show" value to hide or show menu
-                onClick={()=> this.setState({show: !show})}
-        >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
+            // checks if current page is one of these "Tasks", "SingleTask"
+            // then adds ".offset" class to "Link" element
+            return (
+                <NavLink to={`/${link.address}`} key={index}
+                         activeClassName={cls.active}
+                         className={`${cls.label}  
+                                ${isAuthenticated ? cls.logedIn: cls.logedOut}
+                                ${ offset || showButton ? cls.linkWithBG:""}
+                                `}
+                  // change "show" value to hide menu after clicking one of links
+                         onClick={()=> {
+                           setShow(!show)
+                           if (link.address === "welcome" && isAuthenticated) {
+                             const token = JSON.parse(localStorage.getItem("token"))
+                             logout(token.jwt)
+                           }
+                         }}
+                >
+                  <div className={`${cls.link}`}>
+                    {link.title}
+                  </div>
+                </NavLink>
+            )
+          })
 
-      </header>
-    )
-  }
+        }
+      </Nav>
+      {
+        user &&
+        <span className={`
+        ${cls.user}         
+        ${offset || showButton ? cls.withBG:""}
+        `}
+        >{`${user.name} ${user.surname}`} </span>
+      }
+
+
+      <button className={`${cls.bars} ${show ? cls.show:''}`}
+        // change "show" value to hide or show menu
+              onClick={()=> setShow( !show)}
+      >
+        <FontAwesomeIcon icon={faBars} />
+      </button>
+
+    </header>
+  )
 }
 
 const mapStateToProps = (state) => {
   return{
     isAuthenticated: state.isAuthenticated,
+    user: state.user,
+    offset: state.offset
   }
 }
-// const mapDispatchToProps = {
-//   logout,
-// }
+const mapDispatchToProps = {
+  logout,
+  getUserInfo
+}
 
-export default connect(mapStateToProps)(Header)
+export default connect(mapStateToProps, mapDispatchToProps)(Header)

@@ -3,12 +3,12 @@ import cls from "./Contact.module.sass"
 import request from "../../../helpers/auth"
 import illustration from "../../Style assets/Contact page illustration.png";
 import Wrapper from "../../HOC Wrapper/Wrapper"
-import {CONTACT_SECCESS, PENDING} from "../../../store/actTypes";
+import {CONTACT_SECCESS, PENDING, ERROR} from "../../../store/actTypes";
 import {store} from "../../../store/store"
 
 const apiHost = process.env.REACT_APP_API_HOST
 
-function Contact() {
+function Contact(props) {
     const focusedRef = useRef();
     const [values, setValues] = useState({
         name: "",
@@ -34,13 +34,13 @@ function Contact() {
     }
 
     const submit = () => {
-        changeErr()
         const errArr = Object.values(err);
         const errExist = !errArr.every(el => el===null);
 
         const valuesArr = Object.values(values);
         const valuesExist = !valuesArr.some(el => el==='');
 
+        console.log(process.env)
         if(valuesExist && !errExist){
             store.dispatch({type: PENDING})
             request(`${apiHost}/form`,"POST", values)
@@ -48,9 +48,11 @@ function Contact() {
                   setValues({name: "", email: "", message: ""})
                   store.dispatch({type: CONTACT_SECCESS})
               })
-        } else {
-
+              .catch(()=> {
+                  store.dispatch({type: ERROR, errorMessage: "Message wasn't sent, please check your internet connection"})
+              })
         }
+        changeErr()
     }
 
     const changeValues = ({target: {name, value}}) => {
@@ -78,12 +80,13 @@ function Contact() {
         }
         setValues({...values, [name]: value})
     }
+    const {intro, article} = props
     return (
       <>
           {/*whole page content*/}
           <section className={cls.wrapper}>
               {/*first section of page, intro*/}
-              <article className={`${cls.intro} ${cls.article}`}>
+              <article className={`${intro} ${article} ${cls.article}`}>
                   <div className={`${cls.introItem}`}>
                       <img src={illustration} alt=""
                            className={`${cls.illustration}`}
@@ -98,6 +101,7 @@ function Contact() {
                                      name="name"
                                      value={values.name}
                                      onChange={(e) => changeValues(e)}
+                                     onKeyUp={(e) => e.key === "Enter" && submit()}
                                      ref={focusedRef}
                               />
                               <span>Name:</span>
@@ -109,6 +113,7 @@ function Contact() {
                                      value={values.email}
                                      className={err.email? cls.required: ""}
                                      onChange={(e) => changeValues(e)}
+                                     onKeyUp={(e) => e.key === "Enter" && submit()}
                               />
                               <span>Email:</span>
                               <p>
