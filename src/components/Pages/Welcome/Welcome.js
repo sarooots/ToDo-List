@@ -53,6 +53,10 @@ function Welcome ({intro, article, isAuthenticated}) {
             </div>
           </article>
           <article className={`${article}`}>
+            <h1 className={cls.title}> Task examples</h1>
+            <p className={cls.desc}>
+              Here you can se how tasks looks like. To create your tasks you have to create account or simply login.
+            </p>
             <div className={cls.tasks}>
               {
                 repeatTask(5)

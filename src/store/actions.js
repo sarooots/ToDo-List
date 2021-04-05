@@ -115,7 +115,6 @@ export function register(data) {
 }
 
 export function login(data) {
-  console.log(process.env)
   return (dispatch)=>{
     dispatch({type: act.PENDING})
     request(`${apiHost}/user/sign-in`, "POST", data)

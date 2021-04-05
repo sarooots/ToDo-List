@@ -73,7 +73,9 @@ function Header ({isAuthenticated, logout, user, getUserInfo, offset}) {
     const scrollHandler = () => {
       let DOMPosition = document.body.getBoundingClientRect()
       let scrollTop = Math.abs(DOMPosition.y) > 40
+      if (Math.abs(DOMPosition.y) < 50) {
         store.dispatch({type: act.SET_OFFSET, scrollTop})
+      }
     }
 
 // document.addEventListener("DOMContentLoaded", customScrollHandler);

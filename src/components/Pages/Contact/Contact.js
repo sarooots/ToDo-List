@@ -48,8 +48,7 @@ function Contact(props) {
                   setValues({name: "", email: "", message: ""})
                   store.dispatch({type: CONTACT_SECCESS})
               })
-              .catch((err)=> {
-                  console.log(err)
+              .catch(()=> {
                   store.dispatch({type: ERROR, errorMessage: "Message wasn't sent, please check your internet connection"})
               })
         }
