@@ -95,7 +95,7 @@ export function editTask(data, from, statusChanged) {
 export function editFailed() {
   return (dispatch)=>{
     dispatch({type: act.PENDING})
-    setTimeout(()=>dispatch({type: act.EDIT_FAILED}),100)
+    setTimeout(()=>dispatch({type: act.ERROR, errorMessage: "Task title can't be empty, please write title"}),100)
 
   }
 }
@@ -115,6 +115,7 @@ export function register(data) {
 }
 
 export function login(data) {
+  console.log(process.env)
   return (dispatch)=>{
     dispatch({type: act.PENDING})
     request(`${apiHost}/user/sign-in`, "POST", data)
@@ -151,8 +152,8 @@ export function getUserInfo() {
       .then((user)=>{
         dispatch({type: act.GET_USER, user})
       })
-      .catch((error) => {
-        dispatch({type: act.ERROR, errorMessage: error.message})
+      .catch(() => {
+        dispatch({type: act.ERROR})
       })
   }
 }

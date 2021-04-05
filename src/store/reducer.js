@@ -120,12 +120,6 @@ export default  function reducer(state=defaultState, action)  {
                 successMessage:  "Message sent successfully",
                 loading: false
             }}
-        case act.EDIT_FAILED:{
-            return {
-                ...state,
-                errorMessage:  "Task title can't be empty, please write title",
-                loading: false
-            }}
         case act.GET_USER:{
             return {
                 ...state,

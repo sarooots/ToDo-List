@@ -3,7 +3,7 @@ import cls from "./Contact.module.sass"
 import request from "../../../helpers/auth"
 import illustration from "../../Style assets/Contact page illustration.png";
 import Wrapper from "../../HOC Wrapper/Wrapper"
-import {CONTACT_SECCESS, PENDING} from "../../../store/actTypes";
+import {CONTACT_SECCESS, PENDING, ERROR} from "../../../store/actTypes";
 import {store} from "../../../store/store"
 
 const apiHost = process.env.REACT_APP_API_HOST
@@ -40,12 +40,17 @@ function Contact(props) {
         const valuesArr = Object.values(values);
         const valuesExist = !valuesArr.some(el => el==='');
 
+        console.log(process.env)
         if(valuesExist && !errExist){
             store.dispatch({type: PENDING})
             request(`${apiHost}/form`,"POST", values)
               .then( ()=>{
                   setValues({name: "", email: "", message: ""})
                   store.dispatch({type: CONTACT_SECCESS})
+              })
+              .catch((err)=> {
+                  console.log(err)
+                  store.dispatch({type: ERROR, errorMessage: "Message wasn't sent, please check your internet connection"})
               })
         }
         changeErr()

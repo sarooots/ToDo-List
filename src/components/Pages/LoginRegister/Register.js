@@ -35,18 +35,23 @@ function Register({register, intro, article}){
 
     setErr({...err, ...newErr})
   }
+  const pswReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{6,})/;
+  const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+  const valuesArr = Object.values(values);
+  const valuesExist = !valuesArr.some(el => el==='');
+
+  const errArr = Object.values(err);
+  const errExist = !errArr.every(el => el===null);
 
   const submit = () => {
-    const errArr = Object.values(err);
-    const errExist = !errArr.every(el => el===null);
-
-    const valuesArr = Object.values(values);
-    const valuesExist = !valuesArr.some(el => el==='');
 
     if(valuesExist && !errExist && values.password===values.confirmPassword){
-      register(values)
+      if(pswReg.test(values.password)){
+        register(values)
+        changeErr()
+      }
     }
-    changeErr()
   }
 
   const changeValues = ({target: {name, value}}) => {
@@ -63,7 +68,6 @@ function Register({register, intro, article}){
     }
 
     if (name==="email" && value) {
-      const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
       if(!emailReg.test(value)){
         setErr({
           ...err,
@@ -72,11 +76,10 @@ function Register({register, intro, article}){
       }
     }
     if (name==="password" && value) {
-      const pswReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
       if(!pswReg.test(value)){
         setErr({
           ...err,
-          password: 'use UPPERCASE, lowercase and numbers'
+          password: 'use UPPERCASE, lowercase and numbers, at least 6 characters'
         })
       }
     }
@@ -173,6 +176,7 @@ function Register({register, intro, article}){
                 </p>
               </label>
               <button onClick={submit}
+                      disabled={!valuesExist}
                       className={`${cls.submit}`}
               >
                Register

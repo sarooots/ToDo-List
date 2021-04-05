@@ -52,21 +52,6 @@ const pages = [
     address: "/signin"
   },
 ]
-
-const trainer = [
-  {
-    title: "Github",
-    address: "https://github.com/MASISKAR"
-  },
-  {
-    title: "Linkedin",
-    address: "https://www.linkedin.com/in/masiskar"
-  },
-  {
-    title: "Facebook",
-    address: "https://www.facebook.com/masiskar"
-  },
-]
 const bitschool = [
   {
     title: "Website",
@@ -136,21 +121,6 @@ function Footer ({isAuthenticated}) {
         </div>
 
         <div className={cls.row}>
-          <div className={cls.linkGroup}>
-            <h4 className={cls.title}>Trainer</h4>
-            {
-              trainer.map((link, index)=>(
-                <a href={link.address}
-                   target="_blank"
-                   className={cls.link}
-                   rel="noopener noreferrer"
-                   key={index}
-                >
-                  {link.title}
-                </a>
-              ))
-            }
-          </div>
 
           <div className={cls.linkGroup}>
             <h4 className={cls.title}>Bitschool</h4>
