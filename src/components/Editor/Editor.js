@@ -40,6 +40,16 @@ class Editor extends Component {
     this.focusedRef.current.focus()
   }
 
+// checks if task added or edited successfuly then hides the editor modal
+  componentDidUpdate(prevState, prevProps) {
+    if (this.props.mode === "new") {
+      this.props.addTaskSuccess && this.props.toggleShow()
+    }else {
+      this.props.editTaskSuccess &&  this.props.toggleShow()
+
+    }
+  }
+
   changeTaskProperty = (event, property ) => {
     this.setState({[property]: event.target.value})
   }
@@ -52,11 +62,10 @@ class Editor extends Component {
   acceptButton = () => {
     const newTask = {...this.state}
     newTask.date = formatDate(newTask.date.toISOString())
-    const {toggleShow, addTask, editTask, mode, from, editFailed} = this.props
+    const {addTask, editTask, mode, from, editFailed} = this.props
     const action = mode==="new"? addTask:editTask
     if (newTask.title.trim() !==  "") {
-      from === "single" ? action(newTask, from): action(newTask)
-      toggleShow()
+      from === "single"? action(newTask, from):action(newTask)
       if (mode === "new") {
         this.setState({title: "", description: ""})
       }
@@ -128,9 +137,17 @@ class Editor extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return{
+    addTaskSuccess: state.addTaskSuccess,
+    editTaskSuccess: state.editTaskSuccess,
+  }
+}
+
 const mapDispatchToProps =  {
   addTask,
   editTask ,
   editFailed
 }
-export default connect(null, mapDispatchToProps)(Editor)
+export default connect(mapStateToProps, mapDispatchToProps)(Editor)

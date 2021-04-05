@@ -15,6 +15,7 @@ const defaultState = {
     isAuthenticated: checkLoginStatus()
 }
 export default  function reducer(state=defaultState, action)  {
+    console.log(action.scrollTop)
     switch (action.type) {
         case act.GET_TASKS:
             return {
