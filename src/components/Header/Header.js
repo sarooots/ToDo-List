@@ -9,9 +9,7 @@ import {logout, getUserInfo} from "../../store/actions"
 import Logo from "../Style assets/Todo.svg"
 import {history} from "../../helpers/history";
 import 'overlayscrollbars/css/OverlayScrollbars.css';
-// import OverlayScrollbars from 'overlayscrollbars';
-import {store} from "../../store/store";
-import * as act from "../../store/actTypes";
+
 
 
 // creating array of menu links
@@ -49,44 +47,6 @@ const links = [
 
 function Header ({isAuthenticated, logout, user, getUserInfo, offset}) {
   const [show, setShow] = useState(false) // used for conditional css class adding to menu
-
-  // add handleScroll function on window.scroll event
-  useEffect(() => {
-    //function to check if user scrolled down then change value of state "show" from "false" to "true"
-    // const customScrollHandler = () => {
-    //   //The first argument are the elements to which the plugin shall be initialized
-    //   //The second argument has to be at least a empty object or a object with your desired options
-    //
-    //   OverlayScrollbars(document.querySelectorAll('body'), {
-    //     scrollbars: {clickScrolling: true},
-    //     callbacks: {
-    //       onScroll: () => {
-    //         let customScroll = OverlayScrollbars(document.querySelectorAll('body'), {})
-    //         let scrollTop = customScroll.scroll().position.y >40
-    //         if (scrollTop)
-    //           store.dispatch({type: act.SET_OFFSET, scrollTop})
-    //       }
-    //     }
-    //   });
-    // }
-
-    const scrollHandler = () => {
-      let DOMPosition = document.body.getBoundingClientRect()
-      let scrollTop = Math.abs(DOMPosition.y) > 40
-      if (Math.abs(DOMPosition.y) < 50) {
-        store.dispatch({type: act.SET_OFFSET, scrollTop})
-      }
-    }
-
-// document.addEventListener("DOMContentLoaded", customScrollHandler);
-    window.addEventListener("scroll", scrollHandler);
-
-return () => {
-  // document.removeEventListener("DOMContentLoaded", customScrollHandler);
-  window.removeEventListener("scroll", scrollHandler);
-}
-  }, [])
-
 
   useEffect(() => {
     getUserInfo()

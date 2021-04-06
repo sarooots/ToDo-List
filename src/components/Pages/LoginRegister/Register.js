@@ -79,7 +79,7 @@ function Register({register, intro, article}){
       if(!pswReg.test(value)){
         setErr({
           ...err,
-          password: 'use UPPERCASE, lowercase and numbers, at least 6 characters'
+          password: 'password must consist ABC, abc, 123, 6 symbols'
         })
       }
     }
