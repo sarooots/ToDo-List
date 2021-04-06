@@ -42,8 +42,9 @@ function Welcome ({intro, article, isAuthenticated}) {
             <div className={`${cls.introItem} ${cls.introInfo}`}>
               <h1 className={`${cls.introTitle}`}>About The Project</h1>
               <p className={cls.text}>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cupiditate dolore eligendi eum id neque quaerat quo, tempore vero voluptate? Consectetur consequuntur deserunt esse et laudantium magnam molestiae quo vero!
-              </p>
+                This project was made during the React JS course as an experimental project, for learning purposes.
+                Working on this project was a great opportunity to use all skills that I've got during the participating to the course.
+                This project was developed with React JS, Redux JS, REST API and token based authentication.              </p>
               <Link to={"/about"}
                       className={`${cls.submit} ${cls.button}`}
               >

@@ -40,7 +40,6 @@ function Contact(props) {
         const valuesArr = Object.values(values);
         const valuesExist = !valuesArr.some(el => el==='');
 
-        console.log(process.env)
         if(valuesExist && !errExist){
             store.dispatch({type: PENDING})
             request(`${apiHost}/form`,"POST", values)
