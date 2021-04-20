@@ -17,9 +17,9 @@ function Wrapper(WrappedComponent) {
         callbacks: {
           onScroll: () => {
             let scrollTop = instance.scroll().position.y >40
-            if (instance.scroll().position.y < 150) {
+            // if (instance.scroll().position.y < 150) {
               store.dispatch({type: act.SET_OFFSET, scrollTop})
-            }
+            // }
           }
         }
       });

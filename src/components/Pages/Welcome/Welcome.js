@@ -56,7 +56,7 @@ function Welcome ({intro, article, isAuthenticated}) {
           <article className={`${article}`}>
             <h1 className={cls.title}> Task examples</h1>
             <p className={cls.desc}>
-              Here you can se how tasks looks like. To create your tasks you have to create account or simply login.
+              Here you can see how tasks looks like. To create your tasks you have to create account or simply login.
             </p>
             <div className={cls.tasks}>
               {
