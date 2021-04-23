@@ -7,15 +7,15 @@ import {connect} from "react-redux"
 const author = [
   {
     title: "Github",
-    address: "https://github.com/sarooots"
+    address: "https://github.com/HaykMkrtich"
   },
   {
     title: "Linkedin",
-    address: "https://www.linkedin.com/in/sarooots"
+    address: "https://www.linkedin.com/in/HaykMkrtich"
   },
   {
     title: "Behance",
-    address: "https://www.behance.net/sarooots"
+    address: "https://www.behance.net/HaykMkrtich"
   },
   {
     title: "DeviantArt",
@@ -23,7 +23,7 @@ const author = [
   },
   {
     title: "Facebook",
-    address: "https://www.facebook.com/sarooots"
+    address: "https://www.facebook.com/HaykMkrtich"
   },
 ]
 const pages = [
@@ -142,11 +142,11 @@ function Footer ({isAuthenticated}) {
 
       {/*2nd element of footer, information about designer*/}
       <p className={cls.copyright}>
-        design by               <a href='https://www.facebook.com/FrozenSisian'
+        design by               <a href='https://www.facebook.com/FrozianCreation'
                                    target="_blank"
                                    rel="noopener noreferrer"
       >
-        Frozen Sisian Productions
+        Frozian Creation
       </a>
       </p>
     </footer>
