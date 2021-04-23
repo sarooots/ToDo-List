@@ -33,9 +33,7 @@ function Login({login, intro, article}){
 
     const valuesArr = Object.values(values);
     const valuesExist = !valuesArr.some(el => el==='');
-
     if(valuesExist && !errExist){
-      values.name = values.email
       login(values)
     }
     changeErr()
